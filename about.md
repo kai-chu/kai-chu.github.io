@@ -3,7 +3,7 @@ layout: page
 title: About me
 permalink: /about/
 ---
-> I'm not trying to be a developer, but to be an engineer. 
+I'm not trying to be a developer, but to be an engineer. 
 
 > I graduated with double master degree, one from software engineer from HIT in China and computer science degree from Liu in Sweden.
 
@@ -14,3 +14,15 @@ permalink: /about/
 > I'm a co-founder of Foodla AB, as a CTO, I propose intial platform archtecture and implement the platform with Reactjs, Nodejs with GraphQL backend api schema definition. I built DevOps pipeline to use GCP to build from Github and deploy into kubernetes CI/CD pipeline. I also managed to lead an intern by using Scrum.
 
 > I like to play pingpong, tennis and good at badminton. I like to fish with my friends even though I haven't succeeded yet. 
+
+---
+
+People always tell me that life is so hard,
+I always ask what your definition of life is.
+If you want more than that you can achieve,
+life will always be hard, forever.
+Either change your goal or improve yourself
+Life will be easier as expect,
+I choose the later.
+
+![me](/assets/me.jpg)
