@@ -3,26 +3,19 @@ layout: page
 title: About me
 permalink: /about/
 ---
-I'm not trying to be a developer, but to be an engineer. 
 
-> I graduated with double master degree, one from software engineer from HIT in China and computer science degree from Liu in Sweden.
+I'm not trying to become a developer, but to be an engineer. 
 
-> I worked as Java developer in a fintech company, which is providing Foreign Exchange System for banks in European, in Stockholm for 3 years. I got great interests in DevOps to learn software artecture and automate CI/CD pieplines.
+> I graduated with double master degrees, one is in software engineering from [HIT](http://en.hit.edu.cn) in China and the other is in computer science from [Liu](https://liu.se) in Sweden.
 
-> I'm a Senior Developer and DevOps in Inovia AB, which is focusing on big data and AI solution. As a DevOps, I defined git way of working to help microsevice teams coordinate and also suggest and implement a solution to automate microservices delivery and deployment. As a big data developer, I'm working in a team to help a customer to create their data lake. 
+> I worked as Java developer in a fintech company for 3 years since I graduated. We are providing Foreign Exchange System for banks around the world. I got a lot interests in DevOps during that time. I learnt to think as a software architect, to build and maintain CI/CD pipelines and also to drink beers. 
 
-> I'm a co-founder of Foodla AB, as a CTO, I propose intial platform archtecture and implement the platform with Reactjs, Nodejs with GraphQL backend api schema definition. I built DevOps pipeline to use GCP to build from Github and deploy into kubernetes CI/CD pipeline. I also managed to lead an intern by using Scrum.
+> I'm a Senior Developer and DevOps in Inovia AB now. We are focusing on big data and AI solutions. As a DevOps, I collected suggestions from different microservices development teams and defined git way of working so that we can reduce the complexity of product build and release. I propose a way to manage different customer, environment configuration management and scripting it. I'm trying automate microservices delivery and deployment to make sure quick feedback and smooth deployment. As a big data developer, I'm working in a team to help a customer to create their data lake. 
 
-> I like to play pingpong, tennis and good at badminton. I like to fish with my friends even though I haven't succeeded yet. 
+> I'm co-founder of Foodla AB, as a CTO, I proposed intial platform archtecture and implemented the platform with Reactjs, Nodejs with GraphQL backend api schema definition. I built CI/CD pipelin in GCP, google cloud build from Github, push docker image into cloud registry, deploy it into kubernetes. I also managed to lead an intern to work in the team. Coordinate with CEO, analysis requirements, break them into measurable tasks, managing sprint in github project Kanban board and review codes.
+
+> In my spare time, I play pingpong, tennis and I'm good at badminton. I like to fish with my friends even though I haven't succeeded to catch one yet. 
 
 ---
-
-People always tell me that life is so hard,
-I always ask what your definition of life is.
-If you want more than that you can achieve,
-life will always be hard, forever.
-Either change your goal or improve yourself
-Life will be easier as expect,
-I choose the later.
 
 ![me](/assets/me.jpg)
