@@ -2,7 +2,7 @@
 layout: post
 title:  "Concepts before starting to use ansible"
 date:   2019-10-12 13:49:42 +0200
-categories: devops,ansible
+categories: devops ansible
 ---
 
 I started to get involved into DevOps area since july of 2017. Jenkins, groovy and ssh are all my equipments to construct all the CI/CD pipeline realms. 
