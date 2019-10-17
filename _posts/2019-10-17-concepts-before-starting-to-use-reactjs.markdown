@@ -2,7 +2,7 @@
 layout: post
 title:  "Concepts before starting to use reactjs"
 date:   2019-10-17 16:06:12 +0200
-categories: 
+categories: frontend reactjs react component
 ---
 # What is React JS
 ReactJs is an javascript library for building interactive web user interfaces. It provides a framework for frontend developers to divide their web pages into different reusable components.
