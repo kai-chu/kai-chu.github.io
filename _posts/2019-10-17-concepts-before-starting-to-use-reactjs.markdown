@@ -9,17 +9,16 @@ ReactJs is an javascript library for building interactive web user interfaces. I
 
 Back to the old days, we have html static page(or use template engine to create) to be served from an webserver, through http everyone having internet can access the content by using an browser. 
 
-Javascript create more posibilities for web page developers to add more dynamic part on the page, like showing windows, showing dynamic content to html dom and sending ajax request to get extra data without refreshing pages.
+Javascript gives the posibilities for web page developers to add more dynamic parts on a page, such as showing windows, showing dynamic content to html dom and sending ajax request to get extra data without refreshing whole pages.
 
-As more and more contents and interactions grow, web pages become more complicated. A lot of software development will end up with a common question, how to reuse instead of copy/paste? In web page development, the question is how to break a page into different part so that we can reused some of the part in different projects.
+As more and more contents and interactions grow, web pages become more complex. A lot of software developments will end up with a common question, how to reuse codes instead of copy/paste? In web page development, the question is how to break a page into different part so that we can reuse some of them in different projects.
 
 ReactJS is trying to solve this problem by using component-based development. 
 
-React is a declarative, efficient, and flexible JavaScript library for building user interfaces. It lets you compose complex UIs from small and isolated pieces of code called “components”.
-
 # What's a component in reactjs?
-As I mentioned, how to reused thing is purpose of Reactjs, component is the thing which is gonna be resued.
-Function is the initial and basic idea in most of programing world when people don't want to copy paste pieces of codes around.  I think generic functions will need a few parts in (von neumann architecture)[https://en.wikipedia.org/wiki/Von_Neumann_architecture]
+As I mentioned above, how to reuse thing is one of purposes of React and component is the one which will be resued in react.
+
+Function is the initial and basic idea in most of programme world when people don't want to copy/paste pieces of codes around.  I think generic functions will need a few parts in (von neumann architecture)[https://en.wikipedia.org/wiki/Von_Neumann_architecture]
 - input, 
 - output,
 - control logic, how to react with input
@@ -108,5 +107,7 @@ class A extends React.Component {
   }
 }
 ``` 
+
+React is a framework to compose complex UIs from small and isolated pieces of code called “components”. It's also a runtime to load, manage component states.
 
 A component in react is a small service and it follows specific lifecycles.
