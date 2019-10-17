@@ -1,0 +1,112 @@
+---
+layout: post
+title:  "Concepts before starting to use reactjs"
+date:   2019-10-17 16:06:12 +0200
+categories: 
+---
+# What is React JS
+ReactJs is an javascript library for building interactive web user interfaces. It provides a framework for frontend developers to divide their web pages into different reusable components.
+
+Back to the old days, we have html static page(or use template engine to create) to be served from an webserver, through http everyone having internet can access the content by using an browser. 
+
+Javascript create more posibilities for web page developers to add more dynamic part on the page, like showing windows, showing dynamic content to html dom and sending ajax request to get extra data without refreshing pages.
+
+As more and more contents and interactions grow, web pages become more complicated. A lot of software development will end up with a common question, how to reuse instead of copy/paste? In web page development, the question is how to break a page into different part so that we can reused some of the part in different projects.
+
+ReactJS is trying to solve this problem by using component-based development. 
+
+React is a declarative, efficient, and flexible JavaScript library for building user interfaces. It lets you compose complex UIs from small and isolated pieces of code called “components”.
+
+# What's a component in reactjs?
+As I mentioned, how to reused thing is purpose of Reactjs, component is the thing which is gonna be resued.
+Function is the initial and basic idea in most of programing world when people don't want to copy paste pieces of codes around.  I think generic functions will need a few parts in (von neumann architecture)[https://en.wikipedia.org/wiki/Von_Neumann_architecture]
+- input, 
+- output,
+- control logic, how to react with input
+- local state, where the function can store middle computation result.
+
+In engineering, a function is interpreted as a specific process, action or task that a system is able to perform. 
+
+Not surprised that React will use similar idea. We can consider ReactJS as a system and a component as a function.
+
+From (reactjs offical website)[https://reactjs.org/tutorial/tutorial.html#what-is-react], a component takes in parameters, called props (short for “properties”), and returns a hierarchy of views to display via the render method. The function is something similar as following. 
+```
+Component A {
+    render(props) {
+        // variables 
+        //... control logic
+        return htmlView;
+    }
+}
+```
+
+input is called props
+output is the result of render
+logic is determined by render method
+
+The above component we defined based on the definition cannot use any other information except the props we give it. We can do a lot of simple things with it, such as rendering a list with different names
+```
+Component NameList {
+    render(props) {
+        return <ul><li>props.name</li></ul>
+    }
+}
+
+ReactRenderEngine.render(NameList,{props={name:"kai"}})
+ReactRenderEngine.render(NameList,{props={name:"Erik"}})
+ReactRenderEngine.render(NameList,{props={name:"Fabio"}})
+```
+
+All of above is what we can imagine before going into real Reactjs implementation.
+
+------
+https://reactjs.org/docs/components-and-props.html
+In practice, react did similar implementation. It has an render engine which is called `ReactDOM.render` to render a component into html dom, React introduces (element)[https://reactjs.org/docs/rendering-elements.html] concept which is similar as html tags. The (component)[] specification is as following
+```
+// Definition function
+function Welcome(props) {
+  return <h1>Hello, {props.name}</h1>;
+}
+
+// ES6 Definition class
+class Welcome extends React.Component {
+  render() {
+    return <h1>Hello, {this.props.name}</h1>;
+  }
+}
+
+ReactDOM.render(<Welcome name="Sara" />, document.getElementById('root'))
+```
+
+One important thing about react component is that * React component is not the same as a function in javascript* even though we can define it by a function. 
+
+A function is finished and forget by system once it's returned. 
+however, a component can have runtime storage and keeps track its storage until it's deleted by React. A component can have state by setting this.state in their constructors. 
+
+
+I would like to compare react component with a function with a global variable
+
+```
+// javascript function with global variables
+functionState=[]
+function A() {
+    functionState[count]++;
+    return <div/>
+}
+
+// react component
+class A extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {count: 0};
+  }
+  render() {
+    return (
+      this.state.count++;
+      return <div/>
+    );
+  }
+}
+``` 
+
+A component in react is a small service and it follows specific lifecycles.
