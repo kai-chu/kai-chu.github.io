@@ -18,7 +18,7 @@ ReactJS is trying to solve this problem by using component-based development.
 # What's a component in reactjs?
 As I mentioned above, how to reuse thing is one of purposes of React and component is the one which will be resued in react.
 
-Function is the initial and basic idea in most of programme world when people don't want to copy/paste pieces of codes around.  I think generic functions will need a few parts in (von neumann architecture)[https://en.wikipedia.org/wiki/Von_Neumann_architecture]
+Function is the initial and basic idea in most of programme world when people don't want to copy/paste pieces of codes around. I think generic functions will need a few parts in (von neumann architecture)[https://en.wikipedia.org/wiki/Von_Neumann_architecture]
 - input, 
 - output,
 - control logic, how to react with input
