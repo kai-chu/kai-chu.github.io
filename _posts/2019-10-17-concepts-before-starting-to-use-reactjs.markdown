@@ -59,7 +59,7 @@ ReactRenderEngine.render(NameList,{props={name:"Fabio"}})
 All of above is what we can imagine before going into real Reactjs implementation.
 
 ------
-In practice, react did similar implementation. It has an render engine which is called `ReactDOM.render` to render a component into html dom, React introduces (element)[https://reactjs.org/docs/rendering-elements.html] concept which is similar as html tags. The (component)[https://reactjs.org/docs/components-and-props.html] specification is as following
+In practice, React does similar implementation. It has a render engine `ReactDOM.render` to render a component into html dom structure. React introduces (element)[https://reactjs.org/docs/rendering-elements.html] concept which is similar as html tags. The (component)[https://reactjs.org/docs/components-and-props.html] specification is as following
 ```
 // Definition function
 function Welcome(props) {
@@ -78,11 +78,9 @@ ReactDOM.render(<Welcome name="Sara" />, document.getElementById('root'))
 
 One important thing about react component is that * React component is not the same as a function in javascript* even though we can define it by a function. 
 
-A function is finished and forget by system once it's returned. 
-however, a component can have runtime storage and keeps track its storage until it's deleted by React. A component can have state by setting this.state in their constructors. 
+A function is finished and forget by system once it's returned. However, a component can have runtime states and keeps track its states until it's deleted by React. A component can have states by setting this.state in their constructors.
 
-
-I would like to compare react component with a function with a global variable
+I would like to compare react component with a function with a global variable.
 
 ```
 // javascript function with global variables
