@@ -59,8 +59,7 @@ ReactRenderEngine.render(NameList,{props={name:"Fabio"}})
 All of above is what we can imagine before going into real Reactjs implementation.
 
 ------
-https://reactjs.org/docs/components-and-props.html
-In practice, react did similar implementation. It has an render engine which is called `ReactDOM.render` to render a component into html dom, React introduces (element)[https://reactjs.org/docs/rendering-elements.html] concept which is similar as html tags. The (component)[] specification is as following
+In practice, react did similar implementation. It has an render engine which is called `ReactDOM.render` to render a component into html dom, React introduces (element)[https://reactjs.org/docs/rendering-elements.html] concept which is similar as html tags. The (component)[https://reactjs.org/docs/components-and-props.html] specification is as following
 ```
 // Definition function
 function Welcome(props) {
