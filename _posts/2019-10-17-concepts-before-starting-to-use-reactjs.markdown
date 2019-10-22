@@ -18,7 +18,7 @@ ReactJS is trying to solve this problem by using component-based development.
 # What's a component in reactjs?
 As I mentioned above, how to reuse thing is one of purposes of React and component is the one which will be resued in react.
 
-Function is the initial and basic idea in most of programme world when people don't want to copy/paste pieces of codes around. I think generic functions will need a few parts in (von neumann architecture)[https://en.wikipedia.org/wiki/Von_Neumann_architecture]
+Function is the initial and basic idea in most of programme world when people don't want to copy/paste pieces of codes around. I think generic functions will need a few parts in [von neumann architecture](https://en.wikipedia.org/wiki/Von_Neumann_architecture)
 - input, 
 - output,
 - control logic, how to react with input
@@ -28,7 +28,7 @@ In engineering, a function is interpreted as a specific process, action or task 
 
 Not surprised that React will use similar idea. We can consider ReactJS as a system and a component as a function.
 
-From (reactjs offical website)[https://reactjs.org/tutorial/tutorial.html#what-is-react], a component takes in parameters, called props (short for “properties”), and returns a hierarchy of views to display via the render method. The function is something similar as following. 
+From [reactjs offical website](https://reactjs.org/tutorial/tutorial.html#what-is-react), a component takes in parameters, called props (short for “properties”), and returns a hierarchy of views to display via the render method. The function is something similar as following. 
 ```
 Component A {
     render(props) {
@@ -59,7 +59,7 @@ ReactRenderEngine.render(NameList,{props={name:"Fabio"}})
 All of above is what we can imagine before going into real Reactjs implementation.
 
 ------
-In practice, React does similar implementation. It has a render engine `ReactDOM.render` to render a component into html dom structure. React introduces (element)[https://reactjs.org/docs/rendering-elements.html] concept which is similar as html tags. The (component)[https://reactjs.org/docs/components-and-props.html] specification is as following
+In practice, React does similar implementation. It has a render engine `ReactDOM.render` to render a component into html dom structure. React introduces [element](https://reactjs.org/docs/rendering-elements.html) concept which is similar as html tags. The [component](https://reactjs.org/docs/components-and-props.html) specification is as following
 ```
 // Definition function
 function Welcome(props) {
