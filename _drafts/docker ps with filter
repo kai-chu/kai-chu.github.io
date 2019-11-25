@@ -1,0 +1,4 @@
+docker ps --filter key=value
+https://docs.docker.com/engine/reference/commandline/ps/
+
+docker ps --filter status=exited
