@@ -24,3 +24,7 @@ CoreDNS is running at https://xserattd002:6443/api/v1/namespaces/kube-system/ser
 To further debug and diagnose cluster problems, use 'kubectl cluster-info dump'.
 ```
 7. deploy a hello world 
+
+8. Clear a rke cluster
+
+./rke remove --config cluster.yml
