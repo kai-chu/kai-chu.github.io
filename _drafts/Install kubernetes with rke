@@ -1,0 +1,26 @@
+1. Prepare 
+1.1 host machine
+A user
+ssh keys
+1.2 cluster machine
+authorization keys for the user
+docker 
+user in docker group
+
+2. Generate rke yml config file
+
+3. Run rke to start cluster
+
+4. Install kubectl 
+
+5. add config for kubectl
+
+6. validate kube cluster is running 
+```
+$ kubectl cluster-info
+Kubernetes master is running at https://xserattd002:6443
+CoreDNS is running at https://xserattd002:6443/api/v1/namespaces/kube-system/services/kube-dns:dns/proxy
+
+To further debug and diagnose cluster problems, use 'kubectl cluster-info dump'.
+```
+7. deploy a hello world 
