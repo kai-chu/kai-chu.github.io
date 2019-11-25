@@ -1,0 +1,19 @@
+We can format docker cli output with go template
+a template is a processor 
+it recieves data and a template
+a=2
+print {{.a}} /2
+https://golang.org/pkg/text/template/#pkg-overview
+
+
+we can use go json function template to see a command output
+docker volume ls --format '{{json .}}'
+{"Driver":"local","Labels":"","Links":"N/A","Mountpoint":"/app/docker/volumes/22e9943498847862bade46396c0a1c3508a33b6025027b620c96110622252022/_data","Name":"22e9943498847862bade46396c0a1c3508a33b6025027b620c96110622252022","Scope":"local","Size":"N/A"}
+{"Driver":"local","Labels":"","Links":"N/A","Mountpoint":"/app/docker/volumes/a4b6bb60fd9947136994c28f4091ee6ebac641fc0a728c4cced7221c8a55bd0d/_data","Name":"a4b6bb60fd9947136994c28f4091ee6ebac641fc0a728c4cced7221c8a55bd0d","Scope":"local","Size":"N/A"}
+{"Driver":"local","Labels":"","Links":"N/A","Mountpoint":"/app/docker/volumes/e068e6795bc2e172e4b6a6e069b3e14a145f9f281f6c8448ccbe0250eeb90b64/_data","Name":"e068e6795bc2e172e4b6a6e069b3e14a145f9f281f6c8448ccbe0250eeb90b64","Scope":"local","Size":"N/A"}
+
+then use go dot syntax to walk through the data structure
+$ docker volume ls --format '{{.Driver}} whatever will be show in the final output {{.Name}}'
+local whatever will be show in the final output 22e9943498847862bade46396c0a1c3508a33b6025027b620c96110622252022
+local whatever will be show in the final output a4b6bb60fd9947136994c28f4091ee6ebac641fc0a728c4cced7221c8a55bd0d
+local whatever will be show in the final output e068e6795bc2e172e4b6a6e069b3e14a145f9f281f6c8448ccbe0250eeb90b64
