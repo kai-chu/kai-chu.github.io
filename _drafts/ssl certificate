@@ -1,0 +1,18 @@
+A access website B  www.b.com
+A cannot make sure www.b.com is hosted by B, hackers created a site
+
+
+A -------  I love u ----------> B
+A <------- I love u too  ------ B
+             +
+             C
+
+A's text is explicit, C can see it directly.
+B is not real B, a hacker site
+
+
+https://www.ibm.com/support/knowledgecenter/en/SSMNED_5.0.0/com.ibm.apic.cmc.doc/task_apionprem_gernerate_self_signed_openSSL.html
+https://raymii.org/s/tutorials/Sign_and_verify_text_files_to_public_keys_via_the_OpenSSL_Command_Line.html
+https://letsencrypt.org/how-it-works/
+B uses encrypted keys, private key and public key. 
+B tell everyone to used its pubkey to encrypt 
