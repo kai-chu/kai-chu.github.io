@@ -14,5 +14,7 @@ B is not real B, a hacker site
 https://www.ibm.com/support/knowledgecenter/en/SSMNED_5.0.0/com.ibm.apic.cmc.doc/task_apionprem_gernerate_self_signed_openSSL.html
 https://raymii.org/s/tutorials/Sign_and_verify_text_files_to_public_keys_via_the_OpenSSL_Command_Line.html
 https://letsencrypt.org/how-it-works/
+https://superuser.com/questions/620121/what-is-the-difference-between-a-certificate-and-a-key-with-respect-to-ssl
+https://www.openssl.org/docs/man1.0.2/man1/openssl-req.html
 B uses encrypted keys, private key and public key. 
 B tell everyone to used its pubkey to encrypt 
