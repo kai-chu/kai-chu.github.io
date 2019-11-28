@@ -1,0 +1,54 @@
+Stories 
+Imagine the code you want to run is a king and node is the army of servants.
+The day starts by one servant waking up the king and asking him if he needs anything. The king gives the servant a list of tasks and goes back to sleep a little longer. The servant now distributes those tasks among his colleagues and they get to work.
+Once a servant finishes a task, he lines up outside the kings quarter to report. The king lets one servant in at a time, and listens to things he reports. Sometimes the king will give the servant more tasks on the way out.
+Life is good, for the king's servants carry out all of his tasks in parallel, but only report with one result at a time, so the king can focus.
+
+Callback programming model
+Request an action and register a callback which will be called when the action has been done.
+The first request is from node main.js, 
+1. all function calls will be done in the current phase
+2. any async function call (await on async, async.then) will register a callback in the pending callbacks queue
+3. any timer will be registered in the timers queue
+4. any I/O events from OS level will be listened in poll phases, (timeout and count limitation) 
+5. any setImmediate will be run in check, right after next event loop
+6. any close callbacks 
+7. checks if it is waiting for any asynchronous I/O or timers and shuts down cleanly if there are not any
+8. nextTickQueue will be processed after the current operation is completed, regardless of the current phase of the event loop
+
+
+   ┌───────────────────────────┐
+┌─>│           timers          │
+│  └─────────────┬─────────────┘
+│  ┌─────────────┴─────────────┐
+│  │     pending callbacks     │
+│  └─────────────┬─────────────┘
+│  ┌─────────────┴─────────────┐
+│  │       idle, prepare       │
+│  └─────────────┬─────────────┘      ┌───────────────┐
+│  ┌─────────────┴─────────────┐      │   incoming:   │
+│  │           poll            │<─────┤  connections, │
+│  └─────────────┬─────────────┘      │   data, etc.  │
+│  ┌─────────────┴─────────────┐      └───────────────┘
+│  │           check           │
+│  └─────────────┬─────────────┘
+│  ┌─────────────┴─────────────┐
+└──┤      close callbacks      │
+   └───────────────────────────┘
+
+
+
+
+
+
+nextTick, setImmediate and setTimeout
+
+A function passed to process.nextTick() is going to be executed on the current iteration of the event loop, after the current operation ends.
+Any function passed as the setImmediate() argument is a callback that’s executed in the next iteration of the event loop.
+
+
+
+
+References 
+1. https://nodejs.org/en/docs/guides/event-loop-timers-and-nexttick/#timers
+2. https://stackoverflow.com/questions/45566463/node-js-event-loop-understanding-with-a-diagram
