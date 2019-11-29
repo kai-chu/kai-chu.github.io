@@ -131,25 +131,45 @@ set immediate in the end
 ```
 $ node examples/event-loop.js
 current phase is started >>>>>>
+current phase
 register 0
+current phase
 register 1
+current phase
 register 2
+current phase
 register 3
+current phase
 register 4
+current phase
 register 5
+current phase
 register 6
+current phase
 register 7
+current phase
 register 8
+current phase
 register 9
+current phase
 register 10
+current phase
 register 11
+current phase
 register 12
+current phase
 register 13
+current phase
 register 14
+current phase
 register 15
+current phase
 register 16
+current phase
 register 17
+current phase
 register 18
+current phase
 register 19
 current phase is done >>>>>>
 set nexttick0
