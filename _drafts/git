@@ -1,0 +1,10 @@
+
+
+# Engineering problems
+1. Git pull results in 
+```
+fatal: refusing to merge unrelated histories
+```
+```
+git pull --allow-unrelated-histories
+```
