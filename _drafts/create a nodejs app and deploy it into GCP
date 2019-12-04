@@ -1,0 +1,15 @@
+
+
+
+
+
+# Submit a build into gcp and push images into google cloud docker registry
+gcloud builds submit -t gcr.io/foodlab2b/b2bintegrator-coop-statistics:latest .
+
+starting build...
+DONE
+-------------------------------------------------------------------------------------------------------------------------
+
+ID                                    CREATE_TIME                DURATION  SOURCE                                                                               IMAGES                                                    STATUS
+be0c3d98-2c1d-4191-b3b5-cb142c895557  2019-12-01T09:40:20+00:00  1M4S      gs://foodlab2b_cloudbuild/source/1575193212.15-df83340656a445649b38f0b64a8e3128.tgz  gcr.io/foodlab2b/b2bintegrator-coop-statistics (+1 more)  SUCCESS
+
