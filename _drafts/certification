@@ -3,6 +3,7 @@ http://tutorials.jenkov.com/java-cryptography/keytool.html
 https://docs.oracle.com/cd/E19509-01/820-3503/gfzbf/index.html
 https://en.wikipedia.org/wiki/Certificate_signing_request
 https://www.ibm.com/support/knowledgecenter/en/SSFKSJ_7.5.0/com.ibm.mq.sec.doc/q009870_.htm
+
 Generating a Key Pair and a Self-Signed Certificate
 The genkey command of the keytool program enables you to generate a key pair.
 
@@ -91,4 +92,28 @@ KeyIdentifier [
 0010: 66 9D B9 99                                        f...
 ]
 ]
+
+generate keys and cert
+c:\Users\kach07>"c:\Program Files\Java\jdk-13.0.1\bin\keytool.exe"  -genkeypair -alias kaiCaAlias -keyalg RSA -keysize 2048 -keypass 123456 -validity 2 -storetype JKS -keystore kaijavakeystore.jks -storepass 111111 -v
+export cert
+c:\Users\kach07>"c:\Program Files\Java\jdk-13.0.1\bin\keytool.exe" -exportcert -alias kaiCaAlias -keystore .\kaijavakeystore.jks -storepass 111111 -v -file kaiRootCa.cert
+
+Generate keys for my client
+c:\Users\kach07>"c:\Program Files\Java\jdk-13.0.1\bin\keytool.exe"  -genkeypair -alias kaiClientAlias -keyalg RSA -keysize 2048 -keypass 123456 -dname "cn=Kai Client App, ou=daim, o=handelsbanken" -validity 2 -storetype JKS -keystore kaijavakeystore.jks -storepass 111111 -v
+Generating 2,048 bit RSA key pair and self-signed certificate (SHA256withRSA) with a validity of 2 days
+        for: CN=Kai Client App, OU=daim, O=handelsbanken
+[Storing kaijavakeystore.jks]
+
+Create a certificate request with my client pub key inside 
+c:\Users\kach07>"c:\Program Files\Java\jdk-13.0.1\bin\keytool.exe" -certreq -alias kaiClientAlias -sigalg SHA256withRSA -file .\kaiclient.csr -keystore .\kaijavakeystore.jks -storepass 111111 -dname "cn=kai,o=handelsbanken,ou=daim,l=stockholm,c=SE" -v
+Enter key password for <kaiClientAlias>
+Certification request stored in file <.\kaiclient.csr>
+Submit this to your CA
+
+Assign a cert from my root cert with the request 
+c:\Users\kach07>"c:\Program Files\Java\jdk-13.0.1\bin\keytool.exe" -gencert -infile kaiclient.csr -storepass 111111 -keystore kaijavakeystore.jks -alias kaiCaAlias  -outfile kaiclient.crt
+Enter key password for <kaiCaAlias>
+
+Add it into my browser
+
 
