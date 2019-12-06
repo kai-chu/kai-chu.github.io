@@ -1,0 +1,94 @@
+https://www.ibm.com/support/knowledgecenter/en/SSYKE2_7.1.0/com.ibm.java.security.component.71.doc/security-component/keytoolDocs/ex_generatingkeypair.html
+http://tutorials.jenkov.com/java-cryptography/keytool.html
+https://docs.oracle.com/cd/E19509-01/820-3503/gfzbf/index.html
+https://en.wikipedia.org/wiki/Certificate_signing_request
+https://www.ibm.com/support/knowledgecenter/en/SSFKSJ_7.5.0/com.ibm.mq.sec.doc/q009870_.htm
+Generating a Key Pair and a Self-Signed Certificate
+The genkey command of the keytool program enables you to generate a key pair.
+
+ProcedureTo Generate a Key Pair and a Self-Signed Certificate
+Navigate to the JAVA_HOME/bin directory, where JAVA_HOME is the installation directory of the Java SDK.
+
+Enter the following command:
+
+
+keytool -genkey -keyalg RSA -alias CAPS -keystore keystore_filename
+When prompted, enter your keystore password.
+
+When prompted, enter the Distinguished Name information.
+
+What is your first and last name?
+
+Caution – Caution –
+When prompted for your first and last name, make sure you enter the machine hostname.
+
+What is the name of your organizational unit?
+
+What is the name of your organization?
+
+What is the name of your City or Locality?
+
+What is the name of your State or Province?
+
+What is the two-letter country code for this unit?
+
+Is CN=first_and_last_name, OU=organizational_unit, O=organization_name, L=city_or_locality, ST=state_or_province, C=two_letter_country_code correct?
+
+When prompted, enter a password for the keystore entry. If the password is same as the keystore password, press Return.
+
+Note –
+If you want to use a keystore, it is recommended to use the sbyn.keystore file in the JavaCAPS-install-dir/repository/repository/server directory.
+
+c:\Users\kach07>"c:\Program Files\Java\jdk-13.0.1\bin\keytool.exe"  -genkeypair -alias kaiTestKeyPairAlias -keyalg RSA -keysize 2048 -dname "cn=kai, o=handelsbanken" -keypass 123456 -validity 2 -storetype JKS -keystore kaijavakeystore.jks -storepass 111111 -v
+Generating 2,048 bit RSA key pair and self-signed certificate (SHA256withRSA) with a validity of 2 days
+        for: CN=kai, O=handelsbanken
+[Storing kaijavakeystore.jks]
+
+c:\Users\kach07>"c:\Program Files\Java\jdk-13.0.1\bin\keytool.exe" -certreq -alias kaitestkeypairalias -sigalg SHA256withRSA -file .\crq.csr -keystore .\kaijavakeystore.jks -storepass 111111 -dname "cn=kai,o=handelsbanken,ou=daim,l=stockholm,c=SE" -v
+Enter key password for <kaitestkeypairalias>
+Certification request stored in file <.\crq.csr>
+Submit this to your CA
+
+
+c:\Users\kach07>"c:\Program Files\Java\jdk-13.0.1\bin\keytool.exe" -printcertreq -file crq.csr
+PKCS #10 Certificate Request (Version 1.0)
+Subject: CN=kai, O=handelsbanken, OU=daim, L=stockholm, C=SE
+Format: X.509
+Public Key: 2048-bit RSA key
+Signature algorithm: SHA256withRSA
+
+Extension Request:
+
+#1: ObjectId: 2.5.29.14 Criticality=false
+SubjectKeyIdentifier [
+KeyIdentifier [
+0000: 66 11 BC A0 A7 97 F3 69   D0 63 3D 28 45 41 6C 61  f......i.c=(EAla
+0010: 66 9D B9 99                                        f...
+]
+]
+
+c:\Users\kach07>"c:\Program Files\Java\jdk-13.0.1\bin\keytool.exe" -gencert -infile crq.csr -storepass 111111 -keystore kaijavakeystore.jks -alias kaitestkeypairalias -outfile mycert.crt -dname "cn=KaiCA, o=gov" -validity 2 -v
+Enter key password for <kaitestkeypairalias>
+
+c:\Users\kach07>"c:\Program Files\Java\jdk-13.0.1\bin\keytool.exe" -printcert -file mycert.crt -v
+Owner: CN=KaiCA, O=gov
+Issuer: CN=kai, O=handelsbanken
+Serial number: 1ddec1e0445b0d50
+Valid from: Fri Dec 06 15:26:27 CET 2019 until: Sun Dec 08 15:26:27 CET 2019
+Certificate fingerprints:
+         SHA1: 64:70:DC:11:0E:2F:D6:2C:62:DA:34:74:0B:34:7A:8A:4B:09:3F:4F
+         SHA256: F0:29:6F:0B:1C:53:13:F2:00:15:BB:F4:65:EB:AF:BE:93:C9:05:EC:66:66:BC:6D:C0:FB:C4:D7:18:6C:61:9B
+Signature algorithm name: SHA256withRSA
+Subject Public Key Algorithm: 2048-bit RSA key
+Version: 3
+
+Extensions:
+
+#1: ObjectId: 2.5.29.14 Criticality=false
+SubjectKeyIdentifier [
+KeyIdentifier [
+0000: 66 11 BC A0 A7 97 F3 69   D0 63 3D 28 45 41 6C 61  f......i.c=(EAla
+0010: 66 9D B9 99                                        f...
+]
+]
+
