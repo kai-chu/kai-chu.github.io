@@ -1,0 +1,58 @@
+1. Tasks
+1.1 Use tasks with key-values
+```
+---
+- hosts: webservers
+  tasks:
+  - name: make sure apache is running
+    service:
+      name: httpd
+      state: started
+```
+1.2 Use tasks with module argument lists
+```
+---
+- hosts: webservers
+  tasks:
+  - name: run this command and ignore the result
+    shell: /usr/bin/somecommand || /bin/true
+```
+// The command and shell modules are the only modules that just take a list of arguments and don’t use the key=value form
+
+2. Roles
+2.1 Use roles with simple name
+---
+- hosts: webservers
+  roles:
+    - common
+2.2 Use roles with full key-values
+---
+- hosts: webservers
+  roles:
+  - role: common
+    vars:
+       dir: '/opt/a'
+2.3 Use roles with include_role
+---
+- hosts: webservers
+  tasks:
+  - include_role:
+      name: common
+    vars:
+      dir: '/opt/a'
+
+3. Task Role (Ansible 2.4)
+```
+---
+- hosts: webservers
+  tasks:
+  - import_role:
+      name: example
+  - include_role:
+      name: example
+```
+// Difference between import and include, check https://docs.ansible.com/ansible/latest/user_guide/playbooks_reuse.html#dynamic-vs-static
+
+4. References
+https://docs.ansible.com/ansible/latest/user_guide/playbooks_intro.html
+https://docs.ansible.com/ansible/latest/user_guide/playbooks_reuse_roles.html
