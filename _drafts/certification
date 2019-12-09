@@ -116,4 +116,114 @@ Enter key password for <kaiCaAlias>
 
 Add it into my browser
 
+[kach07@xserattd001 openssltests]$ openssl genrsa -h
+usage: genrsa [args] [numbits]
+ -des            encrypt the generated key with DES in cbc mode
+ -des3           encrypt the generated key with DES in ede cbc mode (168 bit key)
+ -idea           encrypt the generated key with IDEA in cbc mode
+ -seed
+                 encrypt PEM output with cbc seed
+ -aes128, -aes192, -aes256
+                 encrypt PEM output with cbc aes
+ -camellia128, -camellia192, -camellia256
+                 encrypt PEM output with cbc camellia
+ -out file       output the key to 'file
+ -passout arg    output file pass phrase source
+ -f4             use F4 (0x10001) for the E value
+ -3              use 3 for the E value
+ -engine e       use engine e, possibly a hardware device.
+ -rand file:file:...
+                 load the file (or the files in the directory) into
+                 the random number generator
+                 
+$openssl genrsa -out example_rsa.private 2048
+$openssl genrsa -out example_rsa.private -des3 2048
 
+[kach07@xserattd001 openssltests]$ openssl rsa -h
+unknown option -h
+rsa [options] <infile >outfile
+where options are
+ -inform arg     input format - one of DER NET PEM
+ -outform arg    output format - one of DER NET PEM
+ -in arg         input file
+ -sgckey         Use IIS SGC key format
+ -passin arg     input file pass phrase source
+ -out arg        output file
+ -passout arg    output file pass phrase source
+ -des            encrypt PEM output with cbc des
+ -des3           encrypt PEM output with ede cbc des using 168 bit key
+ -idea           encrypt PEM output with cbc idea
+ -seed           encrypt PEM output with cbc seed
+ -aes128, -aes192, -aes256
+                 encrypt PEM output with cbc aes
+ -camellia128, -camellia192, -camellia256
+                 encrypt PEM output with cbc camellia
+ -text           print the key in text
+ -noout          don't print key out
+ -modulus        print the RSA key modulus
+ -check          verify key consistency
+ -pubin          expect a public key in input file
+ -pubout         output a public key
+ -engine e       use engine e, possibly a hardware device.
+
+[kach07@xserattd001 openssltests]$ openssl rsa -text -in example_rsa.private 
+Enter pass phrase for example_rsa.private:
+Private-Key: (2048 bit)
+modulus:
+    00:c8:4d:27:ff:70:ae:99:77:7e:8a:d3:7b:ec:f7:
+    ...
+publicExponent: 65537 (0x10001)
+privateExponent:
+    00:88:67:fb:00:3b:65:bc:3f:a3:5e:b9:8d:60:a0:
+    ...
+prime1:
+    00:e3:ca:34:a0:ba:54:0a:b4:e5:0a:8c:f3:e1:a1:
+    ...
+prime2:
+    00:e1:1b:76:78:b9:59:02:f6:6c:8a:a0:c5:8b:62:
+    ...
+exponent1:
+    45:16:5e:11:e5:91:79:d1:d5:a9:f6:88:3d:85:bb:
+    ...
+exponent2:
+    ...
+    62:e9:86:4e:9f:2a:e1:19
+coefficient:
+    54:f7:93:a4:d1:fb:0a:22:47:09:d6:af:bf:c7:13:
+    ...
+writing RSA key
+-----BEGIN RSA PRIVATE KEY-----
+MIIEowIBAAKCAQEAyE0n/3CumXd+itN77PeSSkbnlHJw2hBYy3O1DBeCrfaSDiZ5
+...
+Fhp7/6Xw26QUo0OlPfOY8p9rl9gqFPqNZTacDYYjL/nKXJHxh8cI
+-----END RSA PRIVATE KEY-----
+
+[kach07@xserattd001 openssltests]$ openssl rsa -noout -text -in example_rsa.private 
+Enter pass phrase for example_rsa.private:
+Private-Key: (2048 bit)
+modulus:
+    00:c8:4d:27:ff:70:ae:99:77:7e:8a:d3:7b:ec:f7:
+    ...
+publicExponent: 65537 (0x10001)
+privateExponent:
+    00:88:67:fb:00:3b:65:bc:3f:a3:5e:b9:8d:60:a0:
+    ...
+prime1:
+    00:e3:ca:34:a0:ba:54:0a:b4:e5:0a:8c:f3:e1:a1:
+    ...
+prime2:
+    00:e1:1b:76:78:b9:59:02:f6:6c:8a:a0:c5:8b:62:
+    ...
+exponent1:
+    45:16:5e:11:e5:91:79:d1:d5:a9:f6:88:3d:85:bb:
+    ...
+exponent2:
+    ...
+    62:e9:86:4e:9f:2a:e1:19
+coefficient:
+    54:f7:93:a4:d1:fb:0a:22:47:09:d6:af:bf:c7:13:
+    ...
+
+$ openssl rsa -des3 -in unprotected.key -out protected.key
+$ openssl rsa -in protected.key -out unprotected.key
+http://fileformats.archiveteam.org/wiki/PEM_encoded_RSA_private_key
