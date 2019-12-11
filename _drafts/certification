@@ -227,3 +227,6 @@ coefficient:
 $ openssl rsa -des3 -in unprotected.key -out protected.key
 $ openssl rsa -in protected.key -out unprotected.key
 http://fileformats.archiveteam.org/wiki/PEM_encoded_RSA_private_key
+
+# Check all certs in keystore are valid or not
+keytool -list -v -storepass 123456 -keystore ./keystoreservers.pkcs12 | grep Alias | cut -d ':' -f2 | sed -e 's/^[[:space:]]*//' -e 's/[[:space:]]*$//' | while read Alias; do keytool -exportcert -storepass 123456 -keystore ./keystoreservers.pkcs12 -alias "$Alias" -file "${Alias}.cert" -rfc; openssl x509 -noout -dates -in "${Alias}.cert"; if [[ "$?" == 0 ]]; then echo "$Alias is valid"; else echo "$Alias is invalid"; fi; done
