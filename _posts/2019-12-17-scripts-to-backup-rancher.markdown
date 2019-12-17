@@ -73,7 +73,7 @@ function main() {
 
 
 # Change to your proxy registry if you are behind a proxy
-docker_repository="ivy.sth.shb.se/docker-shb"
+docker_repository="registry.hub.docker.com/library"
 
 main "$@"
 ```
