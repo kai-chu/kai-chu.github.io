@@ -1,7 +1,7 @@
 ---
 layout: post
 title:  "Scripts to backup your rancher container"
-date:   2019-09-20 18:28:39 +0200
+date:   2019-12-17 18:28:39 +0200
 categories: rancher cloud
 ---
 Following [rancher official website](https://rancher.com/docs/rancher/v2.x/en/backups/backups/single-node-backups/
