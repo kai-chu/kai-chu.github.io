@@ -87,7 +87,7 @@ In 2.2, we add the key - role explicitly.
     ...
 ```
 
-4. References
+5. References
 https://docs.ansible.com/ansible/latest/user_guide/playbooks_intro.html
 https://docs.ansible.com/ansible/latest/user_guide/playbooks_reuse_roles.html
 // Difference between import and include, check https://docs.ansible.com/ansible/latest/user_guide/playbooks_reuse.html#dynamic-vs-static
