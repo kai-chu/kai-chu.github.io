@@ -1,0 +1,87 @@
+Going through official website for beginner is somehow difficult and confused, since ansible provides a few slightly different ways to add tasks to
+playbook. As a software developer, I always think this is not make users's world better, in contrast, which makes it hard to work. 
+My opinion is that 
+```
+Giving a unique interface will make users much more easier than giving freedom to do the same thing in a few ways.
+```
+
+In this post, I'm summerizing 3 ways of adding tasks to ansible book. I do recommand that u shouldn't mix them too much. 
+
+1. Tasks
+1.1 Use tasks with key-values
+```
+---
+- hosts: webservers
+  tasks:
+  - name: make sure apache is running
+    service:
+      name: httpd
+      state: started
+```
+1.2 Use tasks with module argument lists
+```
+---
+- hosts: webservers
+  tasks:
+  - name: run this command and ignore the result
+    shell: /usr/bin/somecommand || /bin/true
+```
+1.3 Use tasks with import_tasks
+```
+---
+- hosts: webservers
+  tasks:
+  - name: run this command and ignore the result
+    import_tasks: sometask.yaml
+```
+// The command and shell modules are the only modules that just take a list of arguments and don’t use the key=value form
+
+2. Roles
+2.1 Use roles with simple name
+```
+---
+- hosts: webservers
+  roles:
+    - common
+```
+2.2 Use roles with full key-values
+```
+---
+- hosts: webservers
+  roles:
+  - role: common
+    vars:
+       dir: '/opt/a'
+```
+In 2.2, we add the key - role explicitly.
+
+3. Task Role (Ansible 2.4)
+```
+---
+- hosts: webservers
+  tasks:  // Here is tasks, not roles compared to section 2
+  - import_role:
+      name: example
+  - include_role:
+      name: example
+    vars:
+      dir: '/opt/a'
+```
+
+4. Import a whole playbook 
+```
+---
+- name: Include a play after another play // here is top level of playbook
+  import_playbook: otherplays.yaml 
+
+//otherplays.yaml
+---
+- hosts: webservers
+  tasks:
+    ...
+```
+
+4. References
+https://docs.ansible.com/ansible/latest/user_guide/playbooks_intro.html
+https://docs.ansible.com/ansible/latest/user_guide/playbooks_reuse_roles.html
+// Difference between import and include, check https://docs.ansible.com/ansible/latest/user_guide/playbooks_reuse.html#dynamic-vs-static
