@@ -13,8 +13,8 @@ Giving a unique interface will make users much more easier than giving freedom t
 
 In this post, I'm summerizing 4 ways of adding tasks to ansible book. I do recommand that u shouldn't mix them too much. 
 
-1. Tasks
-1.1 Use tasks with key-values
+# 1 Tasks
+## 1.1 Use tasks with key-values
 ```
 ---
 - hosts: webservers
@@ -24,7 +24,7 @@ In this post, I'm summerizing 4 ways of adding tasks to ansible book. I do recom
       name: httpd
       state: started
 ```
-1.2 Use tasks with module argument lists
+## 1.2 Use tasks with module argument lists
 ```
 ---
 - hosts: webservers
@@ -32,7 +32,7 @@ In this post, I'm summerizing 4 ways of adding tasks to ansible book. I do recom
   - name: run this command and ignore the result
     shell: /usr/bin/somecommand || /bin/true
 ```
-1.3 Use tasks with import_tasks
+## 1.3 Use tasks with import_tasks
 ```
 ---
 - hosts: webservers
@@ -40,17 +40,17 @@ In this post, I'm summerizing 4 ways of adding tasks to ansible book. I do recom
   - name: run this command and ignore the result
     import_tasks: sometask.yaml
 ```
-// The command and shell modules are the only modules that just take a list of arguments and don’t use the key=value form
+The command and shell modules are the only modules that just take a list of arguments and don’t use the key=value form
 
-2. Roles
-2.1 Use roles with simple name
+# 2 Roles
+## 2.1 Use roles with simple name
 ```
 ---
 - hosts: webservers
   roles:
     - common
 ```
-2.2 Use roles with full key-values
+## 2.2 Use roles with full key-values
 ```
 ---
 - hosts: webservers
@@ -61,7 +61,8 @@ In this post, I'm summerizing 4 ways of adding tasks to ansible book. I do recom
 ```
 In 2.2, we add the key - role explicitly.
 
-3. Task Role (Ansible 2.4)
+# 3. Task Role (Ansible 2.4)
+Using import_role or include_role to add tasks in the target role, [Difference between import and include] (https://docs.ansible.com/ansible/latest/user_guide/playbooks_reuse.html#dynamic-vs-static)
 ```
 ---
 - hosts: webservers
@@ -74,7 +75,7 @@ In 2.2, we add the key - role explicitly.
       dir: '/opt/a'
 ```
 
-4. Import a whole playbook 
+# 4. Import a whole playbook 
 ```
 ---
 - name: Include a play after another play // here is top level of playbook
@@ -87,7 +88,6 @@ In 2.2, we add the key - role explicitly.
     ...
 ```
 
-5. References
+# 5. References
 https://docs.ansible.com/ansible/latest/user_guide/playbooks_intro.html
 https://docs.ansible.com/ansible/latest/user_guide/playbooks_reuse_roles.html
-// Difference between import and include, check https://docs.ansible.com/ansible/latest/user_guide/playbooks_reuse.html#dynamic-vs-static
