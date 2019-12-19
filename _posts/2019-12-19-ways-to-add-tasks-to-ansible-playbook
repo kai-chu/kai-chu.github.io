@@ -1,3 +1,9 @@
+---
+layout: post
+title:  "Ways to add tasks to ansible playbook"
+date:   2019-12-19 18:28:39 +0200
+categories: ansible ansible-playbook ansible-roles ansible-tasks import_role import_tasks import_playbook
+---
 Going through official website for beginner is somehow difficult and confused, since ansible provides a few slightly different ways to add tasks to
 playbook. As a software developer, I always think this is not make users's world better, in contrast, which makes it hard to work. 
 My opinion is that 
@@ -5,7 +11,7 @@ My opinion is that
 Giving a unique interface will make users much more easier than giving freedom to do the same thing in a few ways.
 ```
 
-In this post, I'm summerizing 3 ways of adding tasks to ansible book. I do recommand that u shouldn't mix them too much. 
+In this post, I'm summerizing 4 ways of adding tasks to ansible book. I do recommand that u shouldn't mix them too much. 
 
 1. Tasks
 1.1 Use tasks with key-values
