@@ -1,0 +1,22 @@
+server routes
+# query 
+# Init Express
+Enable x-powered-by and add response header X-Powered-By: Express 
+# Setup keycloak by middleware setup.js
+Add .kauth to request
+# postAuth middleware
+Depending on the query.auth_callback in the request, keycloak will try to get grant from query.code and denied the access if authenticated failed.
+# addmin middleware
+Depending the request url, express will check urlLogout, urlNotBefore or go futher to adminRequest
+# grant-attacher middleware
+keycloak will get grant from auth server and assign the grant back to the .kauth object in the request created in the setup middleware
+## Get grant
+It depending on the stores used by keycloak connector, there're bearerstore which is the default one.
+### BearerStore, supported for non-interactive APIs, it's mandatory in default.
+When using following http get request, get grant will fetch the bearer token as the grantData and  create a Grant object with fields such as access_token, refresh_token, expired_in and so on.
+```
+curl -H 'authorization: bearer X64basedtoken' url
+```
+### CookieStore
+### SessionStore
+#
