@@ -1,0 +1,7 @@
+1. Findout well-known endpoints for a realm
+https://www.keycloak.org/docs/4.8/authorization_services/
+
+2. Request a token by using username and password
+curl -X POST http://localhost:8080/auth/realms/foodla-b2b/protocol/openid-connect/token -H 'Authorization: Basic Zm9vZGxhYjJiLWNsaWVudDpkMGM0YzFlNC0yYTE0LTQ0M2YtOGZiZC1mZmZiY2NhM2NjZDAK' -H 'content-type: application/x-www-form-urlencoded'  -d 'username=alice&password=123456&grant_type=password&client_id=foodlab2b-client&client_secret=d0c4c1e4-2a14-443f-8fbd-fffbcca3ccd0'
+
+3. 
