@@ -1,0 +1,18 @@
+- name: Check admin workspace CA files
+  stat:
+    path: "{{ admin_workspace }}/CA/RootCA.cer"
+  register: ca_check
+
+- name: Move ca files to ansible workspace
+  local_action: shell mv {{ admin_workspace }}/CA/RootCA.cer {{ local_certs_folder }}/RootCA.cer
+  when: ca_check.stat.exists == True
+
+- name: Move sub ca files to ansible workspace
+  local_action: shell mv {{ admin_workspace }}/CA/SubCA.cer {{ local_certs_folder }}/SubCA.cer
+  when: ca_check.stat.exists == True
+  ignore_errors: yes
+
+- name: Move certs for nodes to ansible workspace
+  local_action: shell mv {{ admin_workspace }}/CRT/* {{ local_certs_folder }}/
+  run_once: True
+  ignore_errors: yes
