@@ -1,0 +1,42 @@
+# Array
+concat
+
+forEach with async {
+await
+}
+for(let o in arr) {
+ await
+}
+
+type convert
+var num = 15;
+var n = num.toString();
+
+localStorage store list
+let orders = {};
+localStorage.setItem("orders", JSON.stringify(orders))
+function addOrder(order) {
+  let orders = JSON.parse(localStorage.getItem("orders"))
+  orders[order.orderNumber] = order;
+  localStorage.setItem("orders", JSON.stringify(orders));
+}
+function getOrder(orderNumber) {
+  return JSON.parse(localStorage.getItem("orders"))[orderNumber];
+}
+
+
+
+Apollo client query
+1. variables definition cannot be the same as the variable name
+
+Graphql Execution
+resolver
+  object
+  object: {
+    field
+  }
+  
+
+base64 
+echo -n '' | base64 
+to avoid new line 
