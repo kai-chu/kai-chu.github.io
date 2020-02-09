@@ -1,0 +1,21 @@
+1. Start a standalone keycloak server 
+$ cd ./bin
+$ ./standalone.sh -Djboss.socket.binding.port-offset=100 
+1.1 Add a management user 
+$ cd bin
+$ ./add-user.sh -u admin -p 123456 -ds 
+1.2 Go to wildfly server to check the container with admin/123456
+http://127.0.0.1:10090
+1.3 Go to keycloak server and login with any admin/admin to see keycloak app
+Go to the application runtime 
+http://localhost:10090/console/index.html#deployments;path=deployment~dply-keycloak-serverwar
+find where keycloak is published http://127.0.0.1:8081
+
+2. Generate certs
+openssl req -newkey rsa:2048 -nodes -keyout key.pem -x509 -days 365 -out certificate.pem
+or
+keytool -genkey -alias localhost -keyalg RSA -keystore keycloak.jks -validity 10950
+...
+https://www.keycloak.org/docs/latest/server_installation/
+
+
