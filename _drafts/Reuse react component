@@ -1,0 +1,126 @@
+React’s diffing algorithm (called reconciliation) uses component identity to determine whether it should update the existing subtree or throw it away and mount a new one. If the component returned from render is identical (===) to the component from the previous render, React recursively updates the subtree by diffing it with the new one. If they’re not equal, the previous subtree is unmounted completely.
+Remember that components may accept arbitrary props, including primitive values, React elements, or functions
+  Elements Of Different Types, unmount and mount new
+  DOM Elements Of The Same Type, When comparing two React DOM elements of the same type, React looks at the attributes of both, keeps the same underlying DOM node, and only updates the changed attributes. 
+  Component Elements Of The Same Type, When a component updates, the instance stays the same, so that state is maintained across renders. React updates the props of the underlying component instance to match the new elementcomponentWillReceiveProps() and componentWillUpdate() on the underlying instance
+     once mount, instance will stay all the time
+     Recursing On Children, React just iterates over both lists of children at the same time and generates a mutation whenever there’s a difference
+         List mutation order performance solved by using key property
+         
+React could rerender the whole app on every action; the end result would be the same. Just to be clear, rerender in this context means calling render for all components, it doesn’t mean React will unmount and remount them. It will only apply the differences following the rules stated in the previous sections.
+    React.render(<App/>, document.getElementById('app'))
+    root will never be unmounted since noone can change it.
+    
+1. High order component, we use it created generic functions, networking and enrich targe component with props (The props is common)
+
+And that’s it! The wrapped component receives all the props of the container, along with a new prop, data, which it uses to render its output. The HOC isn’t concerned with how or why the data is used, and the wrapped component isn’t concerned with where the data came from.
+ HOCs and a pattern called container components, Containers manage things like subscriptions and state, and pass props to components that handle things like rendering UI
+
+No mutation
+function logProps(InputComponent) {
+  InputComponent.prototype.componentWillReceiveProps = function(nextProps) {
+    console.log('Current props: ', this.props);
+    console.log('Next props: ', nextProps);
+  };
+  // The fact that we're returning the original input is a hint that it has
+  // been mutated.
+  return InputComponent;
+}
+
+// EnhancedComponent will log whenever props are received
+const EnhancedComponent = logProps(InputComponent);
+Instead of mutation, HOCs should use composition, by wrapping the input component in a container component:
+function logProps(WrappedComponent) {
+  return class extends React.Component {
+    componentWillReceiveProps(nextProps) {
+      console.log('Current props: ', this.props);
+      console.log('Next props: ', nextProps);
+    }
+    render() {
+      // Wraps the input component in a container, without mutating it. Good!
+      return <WrappedComponent {...this.props} />;
+    }
+  }
+}
+Convention: 
+Pass Unrelated Props Through to the Wrapped Component
+Maximizing Composability
+
+
+The compose utility function is provided by many third-party libraries including lodash (as lodash.flowRight), Redux, and Ramda.
+// Instead of doing this...
+const EnhancedComponent = withRouter(connect(commentSelector)(WrappedComponent))
+
+// ... you can use a function composition utility
+// compose(f, g, h) is the same as (...args) => f(g(h(...args)))
+const enhance = compose(
+  // These are both single-argument HOCs
+  withRouter,
+  connect(commentSelector)
+)
+const EnhancedComponent = enhance(WrappedComponent)
+
+Convention: Wrap the Display Name for Easy Debugging
+The most common technique is to wrap the display name of the wrapped component
+function withSubscription(WrappedComponent) {
+  class WithSubscription extends React.Component {/* ... */}
+  WithSubscription.displayName = `WithSubscription(${getDisplayName(WrappedComponent)})`;
+  return WithSubscription;
+}
+
+function getDisplayName(WrappedComponent) {
+  return WrappedComponent.displayName || WrappedComponent.name || 'Component';
+}
+
+
+2. Children or props, we use it create generic structure and put other component in (The structure is common)
+
+function FancyBorder(props) {
+  return (
+    <div className={'FancyBorder FancyBorder-' + props.color}>
+      {props.children}
+    </div>
+  );
+}
+or
+function SplitPane(props) {
+  return (
+    <div className="SplitPane">
+      <div className="SplitPane-left">
+        {props.left}
+      </div>
+      <div className="SplitPane-right">
+        {props.right}
+      </div>
+    </div>
+  );
+}
+
+function App() {
+  return (
+    <SplitPane
+      left={
+        <Contacts />
+      }
+      right={
+        <Chat />
+      } />
+  );
+}
+
+Specialization
+component is reused, special component is a special case of other general component
+For example, we might say that a WelcomeDialog is a special case of Dialog.
+In React, this is also achieved by composition, where a more “specific” component renders a more “generic” one and configures it with props:
+
+3. Combine above two, by using React api to create common structure and common props, useful when the children is a list of items
+Otherwise, should be separated by above two
+function FancyBorder(props) {
+  return (
+    <div className={'FancyBorder FancyBorder-' + props.color}>
+      {React.Children.map(children, child => (React.cloneElement(child, {...newprops}, newChildren )}
+    </div>
+  );
+}
+
+4. children() functions
