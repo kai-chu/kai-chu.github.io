@@ -46,6 +46,7 @@ Convention:
 Pass Unrelated Props Through to the Wrapped Component
 Maximizing Composability
 The hoc is common functions, to cascade some args to wrappedcomponents. 
+It gives a returned component to receive specific props and process with those props to give the target wrapped one enhanced props.
 
 The compose utility function is provided by many third-party libraries including lodash (as lodash.flowRight), Redux, and Ramda.
 // Instead of doing this...
