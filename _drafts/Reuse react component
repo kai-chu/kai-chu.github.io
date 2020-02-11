@@ -15,7 +15,7 @@ React could rerender the whole app on every action; the end result would be the 
 
 And that’s it! The wrapped component receives all the props of the container, along with a new prop, data, which it uses to render its output. The HOC isn’t concerned with how or why the data is used, and the wrapped component isn’t concerned with where the data came from.
  HOCs and a pattern called container components, Containers manage things like subscriptions and state, and pass props to components that handle things like rendering UI
-
+A new component definition is returned from the HOC.
 No mutation
 function logProps(InputComponent) {
   InputComponent.prototype.componentWillReceiveProps = function(nextProps) {
@@ -45,7 +45,7 @@ function logProps(WrappedComponent) {
 Convention: 
 Pass Unrelated Props Through to the Wrapped Component
 Maximizing Composability
-
+The hoc is common functions, to cascade some args to wrappedcomponents. 
 
 The compose utility function is provided by many third-party libraries including lodash (as lodash.flowRight), Redux, and Ramda.
 // Instead of doing this...
@@ -74,6 +74,8 @@ function getDisplayName(WrappedComponent) {
 
 
 2. Children or props, we use it create generic structure and put other component in (The structure is common)
+The component will be enhanced and add extra structure around the children, render structure is reused
+
 
 function FancyBorder(props) {
   return (
