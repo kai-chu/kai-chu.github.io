@@ -1,0 +1,13 @@
+Undestanding Concepts of DevOps CI/CD pipeline
+
+Service source code, codes to define logic to handle input and output
+Service release, a specific version of definition tag with version number
+Service artifact, a service definition built from source code
+Service, a running state machine in a environment
+Service configuration, a set of static values accepted by a service
+Service configuration management, a tool to manage configurations for a service running in a environment
+Service deployment definition, a define of put release X with configuration Y to environment Z
+Service deployment, an execution of a deployment definition
+Environment Configuration Management, a tool to provision an environment with given properties
+Environment, a set of static values to a state machine
+Service/Application/System, a state machine waiting for accept inputs 
