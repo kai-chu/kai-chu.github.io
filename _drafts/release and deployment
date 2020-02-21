@@ -9,5 +9,6 @@ Service configuration management, a tool to manage configurations for a service 
 Service deployment definition, a define of put release X with configuration Y to environment Z
 Service deployment, an execution of a deployment definition
 Environment Configuration Management, a tool to provision an environment with given properties
-Environment, a set of static values to a state machine
+Environment Configuration, the configs of application stack in an environment
+Environment, a set of static values of a state machine
 Service/Application/System, a state machine waiting for accept inputs 
