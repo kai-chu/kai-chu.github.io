@@ -8,3 +8,74 @@ fatal: refusing to merge unrelated histories
 ```
 git pull --allow-unrelated-histories
 ```
+
+
+
+
+To start a project
+Create project and master branch
+Branch out develop branch from master
+Add ReadMe file in develop branch
+To start a feature development
+Feature branch should be small enough to be finished in a few days
+
+Pull from remote project (local env)
+Branch out from develop branch, named as feature/feature-name-here (local env)
+Add commits in the feature branch (local env)
+Merge the feature branch back into develop (local env)
+Push to remote (local env)
+Notes:
+
+After merging a feature branch into develop branch, bugs may be found before releasing. To fix that bug in develop branch, developers shall follow the same feature development produce. Do not use bugfix as a keywork, the concept of bugfix will be explained in a later section.
+
+To release a new version
+A new release shall be planned in a beginning of a sprint, while bugfixes and features shall be clearly defined. Such as texts in the following format:
+
+Next release version 1.x.x
+
+Features
+feature x
+feature y
+feature z
+Bugfixes
+bugfix 1
+bugfix 2
+bugfix 3
+In the end of a sprint, all features or bugfixes shall be finished and a release action can be performed.
+
+Release action includes two parts, release codes and adding release notes for a project.
+
+To release code
+
+Create release branch from develop, named as release/v1.2
+Using some scripts to bump versions defined in the code repository and commit it
+CI/CD should run to make sure it works as expected
+Once tests are done, the release branch shall be merged into master and tag with version v1.0.0 (if v1.0.0 is the planned version)
+To create release notes
+
+Review planned release and check with PM to see if all features are done. 
+Move unfinished feature to next release plan
+Create a release notes and put it in a public place to be accessed by users.
+To start a bugfix 
+A bug fix is a bug found in the lastest release branch, which means you can only creating fix a bug against a release branch. 
+
+If a bug found in the latest release branch
+
+Create a bugfix branch from latest release branch, named as bugfix/the-issue-summary
+Add commits in the bugfix branch
+Merge the branch back into the release branch and develop branch.
+If a bug found in an old release, we don't maintain it, users of that service shall be forced to upgraded to a newer version.
+
+If a bug found in master, which is not critical, follow creating feature branch rule, but name the branch as feature/fix-issue-summary
+
+If a bug found in master, which is critial, following to hotfix procedure.
+
+To start a hotfix
+A hotfix is a minor bug found in production. A minor bug is very tinny of codes changes which should be avoided as much as possible.
+
+Create hotfix branch from latest tag in master, named as hotfix/v1.2.x, e.g. hotfix/v1.2.1
+Bump version in the source code and commit
+Add commits to fix the bug
+Merge hotfix back to master and create a new tag v1.2.1 in master
+Merge hotfix into develop branch 
+Merge hotfix into release branch if latest release branch is preparing, eventually, the hotfix will go into develop when release branch merge back into develop.
