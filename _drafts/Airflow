@@ -9,8 +9,9 @@ Dagbag
 - default dags
 -- /usr/local/airflow/dags
 Task
-A work unit in a DAG
+A work unit in a DAG, it is an implementation of an Operator. for example a PythonOperator to execute some Python code, or a BashOperator to run a Bash command
 Task instance
+A runtime exection of a task, It should be a combination of a DAG, a task, and a point in time (execution_date)
 Job
 UI
 command line tools
