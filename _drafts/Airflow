@@ -9,6 +9,7 @@ Dagbag
 - default dags
 -- /usr/local/airflow/dags
 Task
+A work unit in a DAG
 Task instance
 Job
 UI
@@ -22,7 +23,19 @@ A folder where airflow is searching DAG definition python files, execute and bui
 When searching for DAGs, Airflow only considers python files that contain the strings “airflow” and “DAG” by default. 
 To consider all python files instead, disable the DAG_DISCOVERY_SAFE_MODE configuration flag.
 
+Dag definition
+Airflow use python file to declare dag objects, a DAG function is provided to accept configurations. e.g. dag=DAG('dag_name', default_args=default_args)
+Dag arguments
+The arguments provided for the dag object when the dag is run
+Dag default arguments
+The default dag argument, which is provided when defining the dag in dag definition python file
+
+
 Dag objects build
+Airflow will find and run dag definition python files to create dags
+
+
+
 
 
 
