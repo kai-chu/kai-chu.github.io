@@ -4,7 +4,7 @@ Airflow is an
 3. Archtecture
 Executor
 Dag
-Directed Acyclic Graph – is a collection of all the tasks you want to run, organized in a way that reflects their relationships and dependencies In general, each one should correspond to a single logical workflow
+Directed Acyclic Graph – is a workflow of all the tasks you want to run, organized in a way that reflects their relationships and dependencies In general, each one should correspond to a single logical workflow
 Dagbag
 - default dags
 -- /usr/local/airflow/dags
@@ -31,14 +31,28 @@ The arguments provided for the dag object when the dag is run
 Dag default arguments
 The default dag argument, which is provided when defining the dag in dag definition python file
 
+Context manager
+airflow will find a dag definition in a python and assign that dat to operators defined in that definition file
 
 Dag objects build
 Airflow will find and run dag definition python files to create dags
 
+Task relationship
+Tasks a a dag can has dependencies by using task_1 >> task_2
+Upstream
+if we have a taskA, then the task running before it is the upstream of taskA, task A need to wait until upstream has completed successfully.
+Downsteam
+if we have a taskA, then the task after it is the downstream of taskA
 
+Task lifecycle
+https://airflow.apache.org/docs/stable/_images/task_lifecycle_diagram.png
 
-
-
+Operators
+Operators is specific implementations of tasks. It defines what the task does and are only loaded by Airflow if they are assigned to a DAG.
+BashOperator - executes a bash command
+PythonOperator - calls an arbitrary Python function
+EmailOperator - sends an email
+SimpleHttpOperator - sends an HTTP request
 
 
 4. Basic usage
