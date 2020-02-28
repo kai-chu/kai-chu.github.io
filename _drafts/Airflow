@@ -84,6 +84,18 @@ airflow@7feed34ba9f5:~/dags$ airflow trigger_dag sa
 [2020-02-28 10:47:19,380] {{dagbag.py:403}} INFO - Filling up the DagBag from /usr/local/airflow/dags/sa.py
 Created <DagRun sa @ 2020-02-28 10:47:19+00:00: manual__2020-02-28T10:47:19+00:00, externally triggered: True>
 
+airflow@7feed34ba9f5:~/dags$ airflow list_dag_runs sa
+[2020-02-28 10:54:20,568] {{__init__.py:51}} INFO - Using executor SequentialExecutor
+[2020-02-28 10:54:20,569] {{dagbag.py:403}} INFO - Filling up the DagBag from /usr/local/airflow/dags
+
+
+------------------------------------------------------------------------------------------------------------------------
+DAG RUNS
+------------------------------------------------------------------------------------------------------------------------
+id  | run_id               | state      | execution_date       | state_date           |
+
+12  | manual__2020-02-28T10:52:11.301141+00:00 | running    | 2020-02-28T10:52:11.301141+00:00 | 2020-02-28T10:52:11.320291+00:00 |
+11  | manual__2020-02-28T10:47:19+00:00 | running    | 2020-02-28T10:47:19+00:00 | 2020-02-28T10:47:19.397062+00:00 |
 
 
 5. References
