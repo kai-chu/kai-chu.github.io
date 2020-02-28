@@ -45,6 +45,7 @@ Downsteam
 if we have a taskA, then the task after it is the downstream of taskA
 
 Task lifecycle
+A task goes through various stages from start to completion
 https://airflow.apache.org/docs/stable/_images/task_lifecycle_diagram.png
 
 Operators
@@ -54,6 +55,8 @@ PythonOperator - calls an arbitrary Python function
 EmailOperator - sends an email
 SimpleHttpOperator - sends an HTTP request
 
+Bitshift Composition
+A convinient way to define relationships between tasks.
 
 4. Basic usage
 
