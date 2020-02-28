@@ -72,6 +72,8 @@ Processes to get tasks out from queue and run it, workers can listen to one or m
 
 
 5. References
+
+https://airflow.apache.org/docs/stable/cli.html
 usage: airflow [-h]
                {backfill,list_dag_runs,list_tasks,clear,pause,unpause,trigger_dag,delete_dag,show_dag,pool,variables,kerberos,render,run,initdb,list_dags,dag_state,task_failed_deps,task_state,serve_logs,test,webserver,resetdb,upgradedb,checkdb,shell,scheduler,worker,flower,version,connections,create_user,delete_user,list_users,sync_perm,next_execution,rotate_fernet_key}
                ...
