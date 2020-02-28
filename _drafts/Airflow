@@ -58,6 +58,16 @@ SimpleHttpOperator - sends an HTTP request
 Bitshift Composition
 A convinient way to define relationships between tasks.
 
+Pool
+A named of list of workers which can be refered by a task to manually balance airflow workload.
+
+Queue
+Queue for a executor to cache tasks
+
+Worker
+Processes to get tasks out from queue and run it, workers can listen to one or multiple queues of tasks. 
+
+
 4. Basic usage
 
 
