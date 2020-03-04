@@ -1,0 +1,15 @@
+# Understand hypervisor 
+https://en.wikipedia.org/wiki/Hypervisor
+https://en.wikipedia.org/wiki/Kernel-based_Virtual_Machine
+https://image.slidesharecdn.com/els305-100323102407-phpapp02/95/virtualization-with-kvm-kernelbased-virtual-machine-4-728.jpg?cb=1269341011
+http://www.linux-kvm.org/page/FAQ#General_KVM_information
+
+# Hosted hypervisors
+It is an application(also called guest os) running on top of another os(named host os), it runs as a process on the host.
+It's kind of os software to emulate other system commands and translate them into host os commands. (No hardware involved)
+QUME is type1 hypervisor 
+
+
+# Native Hypervisor
+Also called native or bare-metal hypervisor, controls the hardware in os kernel level.  
+KVM is type1 hypervisor, it requires a processor with hardware virtualization extensions, such as Intel VT or AMD-V, to help to translate or map instructions to hardware cpu
