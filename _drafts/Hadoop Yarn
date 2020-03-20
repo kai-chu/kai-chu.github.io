@@ -1,0 +1,24 @@
+Apache hadoop YARN(Yet Another Resource Negotiator), one of the core components in Apache hadoop, as a resource manager and job scheduler. It allocates and monitor system resources(cpu, memeory, network, disk) in 
+in the hadoop cluster.
+>> It's commonly referred to by the acronym alone; the full name was self-deprecating humor on the part of its developers
+
+Apache hadoop 1.0 is HDFS with MapReduce framework, to provide a distributed compute cluster scaling up on cheap hardwares. 
+Developers can create applications based on the MapReduce framework and deployed it into the Hadoop cluster to utilize distribution computes. 
+MapReduce framework in Hadoop 1.0 implements Google MR algorithm as well as distributed tracker system which consists of JobTracker and TaskTracker. 
+JobTrack run in master node to split an task into independent units and assign task to taskTrack in each node.
+
+Apache hadoop 2.0 improves limitions of v1.0, add extract JobTracker and TaskTracker from MapReduce implementation in V1.0. 
+Yarn has ResourceManager running in master and NodeManager running in node.
+`
+The ResourceManager is the ultimate authority that arbitrates resources among all the applications in the system. 
+The NodeManager is the per-machine framework agent who is responsible for containers, monitoring their resource usage (cpu, memory, disk, network) and reporting the same to the ResourceManager/Scheduler.
+`
+
+ResourceManager
+Scheduler, allocating resources based on the abstract notion of a resource Container which incorporates elements such as memory, cpu, disk, network et
+ApplicationsManager, accepting jobs, exposing services to restart application master. 
+- The per-application ApplicationMaster has the responsibility of negotiating appropriate resource containers from the Scheduler, tracking their status and monitoring for progress.
+ a) communicating with the ResourceManager to negotiate and allocate resources for future containers
+ b) after container allocation, communicating YARN NodeManagers (NMs) to launch application containers on them. Task a) can be performed asynchronously through an AMRMClientAsync object, with event handling methods specified in a
+https://hadoop.apache.org/docs/current/hadoop-yarn/hadoop-yarn-site/YARN.html
+https://hadoop.apache.org/docs/current/hadoop-yarn/hadoop-yarn-site/WritingYarnApplications.html
