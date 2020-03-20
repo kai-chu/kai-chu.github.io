@@ -1,0 +1,31 @@
+Spark Shell
+1. cd /usr/hdp/current/spark2-client
+2. ./bin/spark-shell --master yarn
+```
+scala> res1.lines foreach println
+aux
+bin
+conf
+data
+doc
+examples
+jars
+LICENSE
+licenses
+NOTICE
+python
+R
+README.md
+RELEASE
+sbin
+standalone-metastore
+work
+yarn
+
+scala> :sh pwd
+res4: scala.tools.nsc.interpreter.ProcessResult = `pwd` (1 lines, exit 0)
+
+scala> res4.lines foreach println
+/usr/hdp/3.0.1.0-187/spark2
+```
+
