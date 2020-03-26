@@ -165,3 +165,19 @@ positional arguments:
 
 optional arguments:
   -h, --help            show this help message and exit
+
+
+Connection
+create by UI or Envrionment
+https://airflow.apache.org/docs/stable/howto/connection/index.html#connection-types
+ENV
+AIRFLOW_CONN_${ConnectionID}=connection str
+e.g.
+postgres://user:password@localhost:5432/master
+
+connection to hdfs namenode 
+
+
+
+
+
