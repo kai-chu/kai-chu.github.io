@@ -1,0 +1,49 @@
+hdfs nameservices
+services to help to figure out which name nodes to used by given request name
+
+In this scenarion instead of checking for active namenode host and port combination, we should use nameservice as, nameservice will automatically transfer client requests to active namenode.
+
+Name service acts like a proxy among Namenodes, which always divert HDFS request to active namenode
+
+Example: hdfs://nameservice_id/file/path/in/hdfs
+
+Sample steps to create nameservice
+In hdfs-site.xml file
+
+Create a nameservice by adding an id to it(here nameservice_id is mycluster)
+
+<property>
+  <name>dfs.nameservices</name>
+  <value>mycluster</value>
+  <description>Logical name for this new nameservice</description>
+</property>
+Now specify namenode ids to determine namenodes in cluster
+
+dfs.ha.namenodes.[$nameservice ID]:
+
+<property>
+  <name>dfs.ha.namenodes.mycluster</name>
+  <value>nn1,nn2</value>
+  <description>Unique identifiers for each NameNode in the nameservice</description>
+</property>
+Then link namenode ids with namenode hosts
+
+dfs.namenode.rpc-address.[$nameservice ID].[$name node ID]
+
+<property>
+  <name>dfs.namenode.rpc-address.mycluster.nn1</name>
+  <value>machine1.example.com:8020</value>
+</property>
+<property>
+  <name>dfs.namenode.rpc-address.mycluster.nn2</name>
+  <value>machine2.example.com:8020</value>
+</property>
+There are so many properties involved to Configure Namenode HA properly with Nameservice
+
+With this setup the HDFS url for a file will looks like this
+
+hdfs://mycluster/file/location/in/hdfs/wo/namenode/host
+
+https://hadoop.apache.org/docs/r2.7.0/hadoop-project-dist/hadoop-hdfs/HDFSHighAvailabilityWithQJM.html#Configuration_details
+
+
