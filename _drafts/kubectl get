@@ -47,4 +47,12 @@ it is the same as @. since @ means the current item
  kubectl exec -it $(kubectl get pods --selector "app=airflow-server" -o jsonpath={.items[0].metadata.name}) /bin/bash
 
  
+Try to get events from openshift-network-operator 
+oc get events -n openshift-network-operator
+ LAST SEEN   TYPE      REASON    OBJECT                                  MESSAGE
+169m        Normal    Pulling   pod/network-operator-5c7c7dc988-xrbv6   Pulling image "quay.io/openshift-release-dev/ocp-v4.0-art-dev@sha256:14e59b09da6a818014ec9f6e0ed83fbfbb3d90f46097c1e66ef80594f0511b19"
+59m         Warning   Failed    pod/network-operator-5c7c7dc988-xrbv6   Error: ErrImagePull
+9m46s       Normal    BackOff   pod/network-operator-5c7c7dc988-xrbv6   Back-off pulling image "quay.io/openshift-release-dev/ocp-v4.0-art-dev@sha256:14e59b09da6a818014ec9f6e0ed83fbfbb3d90f46097c1e66ef80594f0511b19"
+4m54s       Warning   Failed    pod/network-operator-5c7c7dc988-xrbv6   Error: ImagePullBackOff
+
  
