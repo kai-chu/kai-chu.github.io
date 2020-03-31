@@ -1,0 +1,42 @@
+-o output format
+ wide, given more inforarmation more than 
+
+kubectl get pod airflow-deployment-74df595785-kcqxn
+NAME                                  READY   STATUS    RESTARTS   AGE
+airflow-deployment-74df595785-kcqxn   1/1     Running   0          17h
+
+kubectl get pod airflow-deployment-74df595785-kcqxn -o wide
+NAME                                  READY   STATUS    RESTARTS   AGE   IP            NODE                       NOMINATED NODE   READINESS GATES
+airflow-deployment-74df595785-kcqxn   1/1     Running   0          17h   10.254.3.60   worker0.ocp4.ignalina.dk   <none>           <none>
+
+
+ jsonpath
+ https://kubernetes.io/docs/reference/kubectl/jsonpath/
+JSONPath template is composed of JSONPath expressions enclosed by curly braces {}. Kubectl uses JSONPath expressions to filter on specific fields in the JSON object and format the output. In addition to the original JSONPath template syntax, the following functions and syntax are valid:
+
+Use double quotes to quote text inside JSONPath expressions.
+Use the range, end operators to iterate lists.
+
+To specify json output
+ kubectl get pod airflow-deployment-74df595785-kcqxn -o json
+{
+    "apiVersion": "v1",
+    "kind": "Pod",
+    "metadata": {
+        "annotations": {
+        ...
+    ...
+}
+
+To use jsonpath to filter required fields
+kubectl get pod airflow-deployment-74df595785-kcqxn -o jsonpath="{.kind}"
+Pod
+# kubectl get pod airflow-deployment-74df595785-kcqxn -o jsonpath="{@.kind}"
+Pod
+
+> . means path to child item from the current item, in above case, it means the output from kubectl get
+it is the same as @. since @ means the current item
+
+ kubectl get pods -o jsonpath="{.items[*].metadata.name}"
+
+ 
