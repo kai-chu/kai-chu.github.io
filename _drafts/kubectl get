@@ -38,5 +38,13 @@ Pod
 it is the same as @. since @ means the current item
 
  kubectl get pods -o jsonpath="{.items[*].metadata.name}"
+ 
+ selector 
+ Used to filter out result by label in the yaml file
+ kubectl get pods --selector "app=airflow-server" -o jsonpath={.items[0].metadata.name}
 
+ Combined with other command 
+ kubectl exec -it $(kubectl get pods --selector "app=airflow-server" -o jsonpath={.items[0].metadata.name}) /bin/bash
+
+ 
  
