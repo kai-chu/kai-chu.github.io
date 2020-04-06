@@ -1,0 +1,41 @@
+A namespace is a mapping from names to objects, it is dictionaries. Python uses namespaces for mananging a defined name in the scripts
+- global namespaces, manage global defined objects, variables
+- built-in, manage built-in functions
+- function scope, manage defined variables inside a function
+- object scope, manage attributes defined in a object
+
+Namespace lifecycle
+- The namespace containing the built-in names is created when the Python interpreter starts up, and is never deleted
+- The global namespace for a module is created when the module definition is read in
+- Function or local scope namespaces are created when function is called and deleted when it's finished. The statements executed by the top-level invocation of the interpreter, either read from a script file or interactively, are considered part of a module called __main__
+
+Attribute, a reference to a module defined in another module.
+- readonly x.y
+- writable x.y = a
+- delete, del x.y
+ 
+Python scope, a scope is a textual region of a Python program where a namespace is directly accessible
+
+Define a class
+```
+class DeploymentSpecification:
+    """DeploymentSpecification class defines a deployment"""
+    version = 'v1'
+    def __init__(self, name, description):
+        self.data = []
+        self.name = name
+        self.description = description
+
+deployment = DeploymentSpecification('AppDeployment','Deploy app into a server')
+print(deployment.__doc__)
+print(deployment.version)
+print(deployment.data)
+print(deployment.name)
+print(deployment.description)
+
+DeploymentSpecification class defines a deployment
+v1
+[]
+AppDeployment
+Deploy app into a server
+```
