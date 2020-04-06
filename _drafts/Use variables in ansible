@@ -1,0 +1,19 @@
+Vars can exist in many places
+
+1. Defined in ansible playbook level
+- hosts: all
+  vars:
+    varName: value
+  vars_files:
+    - vars/dags.yml
+  tasks:
+    - name: Push dags to remote 
+  
+1.1 Create a var file
+Clear text can be created by vi or any text editor
+1.2 Encrypted var file which is called vault file
+ansible-vault create foo.yml
+
+2. host_vars
+
+3. group_vars
