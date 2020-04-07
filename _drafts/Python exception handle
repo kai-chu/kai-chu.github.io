@@ -1,0 +1,108 @@
+1. Error and Exception
+
+
+2. Define an error or exception
+```
+    """Base class for exceptions in this module."""
+    pass
+
+class InputError(Error):
+    """Exception raised for errors in the input.
+
+    Attributes:
+        expression -- input expression in which the error occurred
+        message -- explanation of the error
+    """
+
+    def __init__(self, expression, message):
+        self.expression = expression
+        self.message = message
+
+class TransitionError(Error):
+    """Raised when an operation attempts a state transition that's not
+    allowed.
+
+    Attributes:
+        previous -- state at beginning of transition
+        next -- attempted new state
+        message -- explanation of why the specific transition is not allowed
+    """
+
+    def __init__(self, previous, next, message):
+        self.previous = previous
+        self.next = next
+        self.message = message
+```
+
+3. raise error or exception
+3.1 Raise an object
+raise ValueError  # shorthand for 'raise ValueError()'
+3.2 Raise an catched exception
+try:
+  raise NameError('HiThere')
+except NameError:
+  print('An exception flew by!')
+  raise
+
+4. catch
+4.1 catch exception
+except ExceptionClassName
+class B(Exception):
+    pass
+
+class C(B):
+    pass
+
+class D(C):
+    pass
+
+for cls in [B, C, D]:
+    try:
+        raise cls()
+    except D:
+        print("D")
+    except C:
+        print("C")
+    except B:
+        print("B")
+        
+4.2 Except with given var name
+try:
+  this_fails()
+except ZeroDivisionError as err:
+  print('Handling run-time error:', err)
+4.3 optional else clause
+for arg in sys.argv[1:]:
+    try:
+        f = open(arg, 'r')
+    except OSError:
+        print('cannot open', arg)
+    else:
+        print(arg, 'has', len(f.readlines()), 'lines')
+        f.close()
+        
+5. finally clean up
+try:
+finally:
+   print("executing finally clause")
+
+finally will be run in all circumstances, Goodbye, world will be shown before exception is caught
+try:
+   raise KeyboardInterrupt
+finally:
+  print('Goodbye, world!')
+  
+  
+6. auto clean up
+
+File operation is I/O heavy tasks and usually requires manully clean up in most of the programming languages
+open("myfile.txt")
+
+Use with to make it auto clean up after usage.
+
+for line in open("myfile.txt"):
+    print(line, end="")
+    
+with open("myfile.txt") as f:
+    for line in f:
+        print(line, end="")
