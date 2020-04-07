@@ -1,0 +1,44 @@
+Definition
+def my_function():
+  print("Hello from a function")
+
+Invoke a function 
+my_function()
+
+Arguments
+1. Fixed number arguments, By default, a function must be called with the correct number of arguments. 
+def my_function(fname, lname):
+  print(fname + " " + lname)
+
+my_function("Emil", "Refsnes")
+
+2. Arbitory arguments
+def my_function(*kids):
+  print("The youngest child is " + kids[2])
+
+my_function("Emil", "Tobias", "Linus")
+
+3. Keyword arguments
+def my_function(child3, child2, child1):
+  print("The youngest child is " + child3)
+
+my_function(child1 = "Emil", child2 = "Tobias", child3 = "Linus")
+
+4. Arbitory keyword arguments
+def my_function(**kid):
+  print("His last name is " + kid["lname"])
+
+my_function(fname = "Tobias", lname = "Refsnes")
+
+Default values
+def my_function(country = "Norway"):
+  print("I am from " + country)
+
+Return value
+def my_function(x):
+  return 5 * x
+
+Special in Python 
+pass statement is used for empty body function
+def myfunction():
+  pass
