@@ -2,3 +2,22 @@ http://blog.joncairns.com/2013/12/understanding-ssh-agent-and-ssh-add/
 
 ssh-keyscan -H $host >> ~/.ssh/known_hosts
 sshpass -p $password ssh $host
+
+Use sshpass:
+
+sshpass -p "password" scp -r user@example.com:/some/remote/path /some/local/path
+or so the password does not show in the bash history
+
+sshpass -f "/path/to/passwordfile" scp -r user@example.com:/some/remote/path /some/local/path
+The above copies contents of path from the remote host to your local.
+
+Install :
+
+ubuntu/debian
+apt install sshpass
+centos/fedora
+yum install sshpass
+mac w/ macports
+port install sshpass
+mac w/ brew
+brew install https://raw.githubusercontent.com/kadwanev/bigboybrew/master/Library/Formula/sshpass.rb
