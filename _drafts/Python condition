@@ -14,6 +14,7 @@ print("A") if a > b else print("B")
 Operator
 and
 or
+not
 
 Nested
 x = 41
