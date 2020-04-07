@@ -21,3 +21,7 @@ mac w/ macports
 port install sshpass
 mac w/ brew
 brew install https://raw.githubusercontent.com/kadwanev/bigboybrew/master/Library/Formula/sshpass.rb
+
+
+sshd_config in the server side will control the authencitcation method client can use 
+
