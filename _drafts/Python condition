@@ -1,0 +1,25 @@
+Normal structure
+if condition:
+elif condition:
+else:
+
+short hand
+
+if condition: statement
+if a > b: print("a is greater than b")
+
+statement if condition else statement
+print("A") if a > b else print("B")
+
+Operator
+and
+or
+
+Nested
+x = 41
+if x > 10:
+  print("Above ten,")
+  if x > 20:
+    print("and also above 20!")
+  else:
+    print("but not above 20.")
