@@ -1,0 +1,28 @@
+from airflow import DAG
+from airflow.operators.bash_operator import BashOperator
+from airflow.operators.http_operator import SimpleHttpOperator
+from airflow.utils.dates import days_ago
+from airflow.contrib.sensors.hdfs_sensor import HdfsSensorRegex
+import re
+
+default_args = {
+    'depends_on_past': False,
+    'start_date': days_ago(2),
+}
+
+dag = DAG(
+    'data-pipeline',
+    default_args=default_args,
+    description='big data pipeline',
+    schedule_interval="0 */12 * * *"
+)
+
+hdfsSensorRegex = HdfsSensorRegex(
+    regex=re.compile('.*'),
+    task_id='hdfs_sensor_regex',
+    filepath='/incoming', 
+    hdfs_conn_id='hdfs_connection',
+    dag=dag
+)
+
+hdfsSensorRegex
