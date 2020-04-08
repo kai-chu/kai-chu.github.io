@@ -28,4 +28,21 @@ with dag:
     os_operator = PythonOperator(task_id = "os_operator", python_callable=print_env)
     jinja_operator = BashOperator(task_id="get_variable_value", bash_command='echo {{ var.value.env }} ')
 
-jinja_operator = BashOperator(task_id="get_variable_value", bash_command='echo {{ var.value.env }} ')
+When parsed with python
+```
+python dags/demo-airflow-capability.py
+devparse time
+
+```
+When executed
+```
+//os_operator
+[2020-04-08 14:56:50,752] {{logging_mixin.py:112}} INFO - devexecution time
+...
+//get_variable_value
+[2020-04-08 14:56:59,133] {{bash_operator.py:115}} INFO - Running command: echo dev 
+[2020-04-08 14:56:59,151] {{bash_operator.py:122}} INFO - Output:
+[2020-04-08 14:56:59,158] {{bash_operator.py:126}} INFO - dev
+```
+
+
