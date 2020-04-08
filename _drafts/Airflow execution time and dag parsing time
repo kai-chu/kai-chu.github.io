@@ -47,3 +47,34 @@ Conclusion:
 4. Keep time consuming operations out of dag parsing phase 
 
 https://airflow.apache.org/docs/stable/best-practices.html#variables
+
+Origin file
+```
+from airflow.utils.dates import days_ago
+from airflow.models import DAG
+from airflow.operators.python_operator import PythonOperator
+import os
+
+args = {
+    'owner': 'airflow',
+    'start_date': days_ago(2),
+}
+
+dag = DAG(
+    dag_id='demo-airflow-capability',
+    default_args=args,
+    schedule_interval="@once",
+    tags=['example']
+)
+
+
+print(os.environ['PYTHON_PIP_VERSION'])
+
+def print_env():
+    print(os.environ['PYTHON_PIP_VERSION'])
+
+with dag:
+    os_operator = PythonOperator(task_id = "os_operator", python_callable=print_env)
+
+os_operator
+```
