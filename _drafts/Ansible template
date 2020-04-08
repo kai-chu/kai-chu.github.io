@@ -1,0 +1,8 @@
+- name: filter templates with token to target
+  template:
+    src: "{{ item }}"
+    dest: /tmp/{{ item | basename | regex_replace('\.j2$', '') }}
+  with_fileglob:
+    - ../templates/*.j2
+    
+ 
