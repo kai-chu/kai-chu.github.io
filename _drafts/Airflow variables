@@ -1,0 +1,29 @@
+Variables are a generic way to store and retrieve arbitrary content or settings as a simple key value store within Airflow
+While your pipeline code definition and most of your constants and variables should be defined in code and stored in source control, it can be useful to have some variables or configuration items accessible and modifiable through the UI.
+
+Create variables
+UI
+CLI
+code
+
+Read variables
+from airflow.models import Variable
+
+foo = Variable.get("foo")
+bar = Variable.get("bar", deserialize_json=True)
+baz = Variable.get("baz", default_var=None)
+
+You can use a variable from a jinja template with the syntax :
+echo {{ var.value.<variable_name> }}
+or if you need to deserialize a json object from the variable :
+echo {{ var.json.<variable_name> }}
+
+You should avoid usage of Variables outside an operator’s execute() method or Jinja templates if possible, as Variables create a connection to metadata DB of Airflow to fetch the value, which can slow down parsing and place extra load on the DB.
+parse time variables will create db connection every time dag parsing happens
+...
+env = Variable.get("env")
+print('' if env is None else env + 'parse time')
+
+def print_env():
+    env = Variable.get("env")
+    print('' if env is None else env + 'execution time')
