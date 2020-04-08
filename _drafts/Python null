@@ -1,0 +1,7 @@
+There is no null, but None
+
+To print a var which is possibly None as string, or nullable variables
+var = None
+```
+'' if var is None else var
+```
