@@ -44,11 +44,11 @@ Conclusion:
 1. The same dag file will be parsed and executed in two different places with different logic routines.
 2. Think dag file as a main entry of parser
 3. Think root operator of the dependency tree as a main entry of executor
-4. Keep time consuming operations out of dag parsing phase 
+4. Keep time consuming operations out of dag parsing phase, such as fetching [variables](https://airflow.apache.org/docs/stable/best-practices.html#variables)
 
-https://airflow.apache.org/docs/stable/best-practices.html#variables
+Appendix:
 
-Origin file
+Dag file demo-airflow-capability.py
 ```
 from airflow.utils.dates import days_ago
 from airflow.models import DAG
