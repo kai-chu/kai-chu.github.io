@@ -24,6 +24,8 @@ parse time variables will create db connection every time dag parsing happens
 env = Variable.get("env")
 print('' if env is None else env + 'parse time')
 
-def print_env():
-    env = Variable.get("env")
-    print('' if env is None else env + 'execution time')
+with dag:
+    os_operator = PythonOperator(task_id = "os_operator", python_callable=print_env)
+    jinja_operator = BashOperator(task_id="get_variable_value", bash_command='echo {{ var.value.env }} ')
+
+jinja_operator = BashOperator(task_id="get_variable_value", bash_command='echo {{ var.value.env }} ')
