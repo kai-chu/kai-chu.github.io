@@ -1,5 +1,11 @@
 Two ways are identical
 
+1. 
 import module as shortmodulename
 import module 
 
+module.actualModule
+shortmodulename.actualModule
+
+2
+from module import actualModule
