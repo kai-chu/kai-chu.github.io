@@ -1,0 +1,6 @@
+if value is type of Array 
+```
+isinstance(value, list)
+```
+
+
