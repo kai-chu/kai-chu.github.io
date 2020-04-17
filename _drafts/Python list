@@ -1,0 +1,47 @@
+Create 
+
+Using a pair of square brackets to denote the empty list: []
+
+Using square brackets, separating items with commas: [a], [a, b, c]
+
+Using a list comprehension: [x for x in iterable]
+List comprehension is an elegant and concise way to create a new list from an existing list in Python.
+
+
+Using the type constructor: list() or list(iterable)
+
+Access element
+list[index-from-0]
+list[negative-index-from--1]
+
+slice 
+list[start:end]
+list[start:]
+list[:end]
+list[:]
+Loop through
+
+Change element 
+list[index] = element
+
+Add element
+append(element)
+
+Insert at location
+insert(index, element), other element will be shift
+list[start:end] = [list,items]
+
+Concat list
+extend([list,items])
+
+Delete element by index
+del (access elemnt)
+
+delete by element
+list.remove(element)
+
+delete by index
+list.pop(index)
+
+clear list
+list.clear()
