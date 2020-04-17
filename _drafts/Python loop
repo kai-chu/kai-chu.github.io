@@ -1,0 +1,62 @@
+1. While
+while expression:
+    statement(s)
+
+# Python program to illustrate 
+# while loop 
+count = 0
+while (count < 3):	 
+	count = count + 1
+	print("Hello Geek") 
+
+# python while else, will be executed when while condition is false, break or exception won't trigger else block
+while condition: 
+	# execute these statements 
+else: 
+	# execute these statements 
+
+# python while statement 
+# Python program to illustrate 
+# Single statement while block 
+count = 0
+while (count == 0): print("Hello Geek") 
+
+
+2. For
+for iterator_var in sequence:
+    statements(s)
+
+# Python program to illustrate 
+# Iterating over a list 
+print("List Iteration") 
+l = ["geeks", "for", "geeks"] 
+for i in l: 
+	print(i) 
+	
+# Iterating over a tuple (immutable) 
+print("\nTuple Iteration") 
+t = ("geeks", "for", "geeks") 
+for i in t: 
+	print(i) 
+	
+# Iterating over a String 
+print("\nString Iteration")	 
+s = "Geeks"
+for i in s : 
+	print(i) 
+	
+# Iterating over dictionary 
+print("\nDictionary Iteration") 
+d = dict() 
+d['xyz'] = 123
+d['abc'] = 345
+for i in d : 
+	print("%s %d" %(i, d[i])) 
+
+Index iterator
+list = ["geeks", "for", "geeks"] 
+for index in range(len(list)): 
+    print list[index] 
+    
+Loop Control Statements
+- pass,=? continue, break
