@@ -1,0 +1,13 @@
+.flex-container {
+    display: flex;
+    flex-flow: row nowrap;
+}
+
+.nav-column {
+    flex: 20%;
+    justify-content: left;
+}
+
+.wrapper-column {
+    flex: 80%;
+}

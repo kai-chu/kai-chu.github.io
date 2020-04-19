@@ -1,0 +1,10 @@
+<h2>Tags</h2>
+<ul>
+    {% for p in site.posts %} 
+        {% for category in p.categories %} 
+            <li>
+                 {{ category }}
+            </li>
+        {% endfor %}
+    {% endfor %}
+</ul>
