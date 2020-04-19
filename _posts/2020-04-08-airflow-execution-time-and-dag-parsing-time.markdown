@@ -12,9 +12,9 @@ Don't mix them when writting a airflow dag. I'll have a small example to tell th
 
 In this example, I want to demo how it is important for developers to keep that in mind.
 Usually, when we create a dag, we need to give a paramerter so that we can reuse it in different environments without changing the code.
-It is implemented by using environment variables. 
-In the following case, we want to get the python pip version and show it when the dag executed, I have printed in two places.
-One is the root level and the other one is in the python operator's callable function.
+It is implemented by using variables. 
+In the following case, I want to get the python pip version and show it when the dag is executed. 
+I have printed in two places. One is the root level and the other one is in the python operator's callable function.
 
 ```
 //demo-airflow-capability.py
@@ -39,6 +39,10 @@ $ python demo-airflow-capability.py
 
 When we trigger the dag to be executed, you will find the python pip version `'20.0.2'` is printed once as well.
 That is from the python operator. 
+To test a dag execution, we can use the command from airflow cli
+```
+$ airflow test demo-airflow-capability os_operator -e 2020-04-08
+```
 
 Conclusion:
 1. The same dag file will be parsed and executed in two different places with different logic routines.
