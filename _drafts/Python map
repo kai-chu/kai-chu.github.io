@@ -1,0 +1,59 @@
+Map is unordered, changeable and indexed
+
+Create
+key, either integer or string
+
+method {} or dict
+
+# empty dictionary
+my_dict = {}
+
+# dictionary with integer keys
+my_dict = {1: 'apple', 2: 'ball'}
+
+# dictionary with mixed keys
+my_dict = {'name': 'John', 1: [2, 4, 3]}
+
+
+# using dict()
+my_dict = dict({1:'apple', 2:'ball'})
+
+# from sequence having each item as a pair
+my_dict = dict([(1,'apple'), (2,'ball')])
+
+Access
+dictName['key']
+or
+dictName.get('key')
+
+Change value
+dictName['key']=value
+
+Delete 
+by key
+dictName.pop(4) | dictName.pop(4, defaultReturnValue)
+del dictName[4]  
+
+by random
+dictName.popitem()
+
+Remove all items
+dictName.clear()
+
+Remove dictionay
+del squares
+
+Copy dict
+copieddict = dict(fromdict)
+copieddict = fromdict.copy()
+
+Atomic operation
+setDefault(key, OptionalTargetValue), get the key value if it exists in the dict, otherwise set the optional value
+
+iterator methods
+items()
+keys()
+values()
+
+Merge method
+dictName.update([key:value])
