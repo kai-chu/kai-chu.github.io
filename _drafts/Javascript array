@@ -1,0 +1,38 @@
+create array 
+let a = []
+let myArr3: boolean[] = new Array();
+let myArr4: boolean[] = Array();
+
+with values 
+[a,b,c]
+
+add 
+a.push()
+
+index
+a[index]
+
+merge two array
+a = []
+b = []
+c = a.concat(b)
+c = [...a, ...b]
+
+iterate
+a.forEach
+for (var score of scores) { // not let .. in!!!!
+    console.log(score);     //Outputs 10 20 30 40
+}
+
+for (var i = 0; i < scores.length; i++) {
+    console.log(scores[i]);     //Outputs 10 20 30 40
+}
+
+clone
+spread operater 
+cloneb = [...b]
+
+
+sort 
+var points = [40, 100, 1, 5, 25, 10];
+points.sort(function(a, b){return a - b});
