@@ -1,0 +1,51 @@
+import re
+
+To use re a pre compiled obj
+Compiled pattern, . The re module raises the exception re.error if an error occurs while compiling or using a regular expression
+matchObj = re.compile('expression')
+
+Use match object to match a string
+matches = matchObj.match('string')
+
+Access matched groups 
+matches.group(1)
+
+
+To use re directly
+re.match(pattern, str, mode)
+
+line = "Cats are smarter than dogs"
+matchObj = re.match( r'(.*) are (.*?) .*', line, re.M|re.I)
+
+
+Re other functions
+
+search
+re.search(pattern, string, flags=0)
+This function searches for first occurrence of RE pattern within string with optional flags.
+The re.search function returns a match object on success, none on failure
+Search will try to match in any position of a string
+
+replace occurence for a pattern in a string
+re.sub(pattern, repl, string, max=0)
+
+
+Modifiers
+
+re.I
+Performs case-insensitive matching.
+2
+re.L
+Interprets words according to the current locale. This interpretation affects the alphabetic group (\w and \W), as well as word boundary behavior(\b and \B).
+3
+re.M
+Makes $ match the end of a line (not just the end of the string) and makes ^ match the start of any line (not just the start of the string).
+4
+re.S
+Makes a period (dot) match any character, including a newline.
+5
+re.U
+Interprets letters according to the Unicode character set. This flag affects the behavior of \w, \W, \b, \B.
+6
+re.X
+Permits "cuter" regular expression syntax. It ignores whitespace (except inside a set [] or when escaped by a backslash) and treats unescaped # as a comment marker.
