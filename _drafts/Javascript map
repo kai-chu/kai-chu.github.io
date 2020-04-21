@@ -1,0 +1,56 @@
+Create
+map = {}
+map = new Map()
+
+
+Set
+map.set(key,value), key can be string, object or function, NaN
+Pay attention:  wrongMap['bla'] = 'blaa' doesn't work, it is method for javascript object prototype
+
+get value
+map.get(key)
+Pay attention: better no use map[key]
+
+iterate 
+by keys
+for (let key of myMap.keys()) {
+  console.log(key)
+}
+by values
+for (let value of myMap.values()) {
+  console.log(value)
+}
+by pairs 
+for (let [key, value] of myMap) {
+  console.log(key + ' = ' + value)
+}
+for (let [key, value] of myMap.entries()) {
+  console.log(key + ' = ' + value)
+}
+
+Stream iterate
+myMap.forEach(function(value, key) {
+  console.log(key + ' = ' + value)
+})
+
+Map and Array
+from array to map
+let kvArray = [['key1', 'value1'], ['key2', 'value2']]
+// Use the regular Map constructor to transform a 2D key-value Array into a map
+let myMap = new Map(kvArray)
+
+From map to array
+Array.from(myMap)
+[...myMap] 
+[...myMap.entries()]
+
+
+Clone map (Important: Keep in mind that the data itself is not cloned.)
+let original = new Map()
+let clone = new Map(original)
+
+Merge map, convert all map entries to array element and construct a new map from list
+let merged = new Map([...first, ...second, [1, 'eins']])
+
+
+
