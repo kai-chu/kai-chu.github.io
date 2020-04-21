@@ -39,3 +39,15 @@ v1
 AppDeployment
 Deploy app into a server
 ```
+
+The constructor or initilized methods in python 
+def __init__(self):
+    self.data = []
+    
+With initial data
+def __init__(self, arg1, argname2):
+    self.arg1 = arg1
+    self.argname2  =argname2
+    self.otherdata = {}
+    
+    
