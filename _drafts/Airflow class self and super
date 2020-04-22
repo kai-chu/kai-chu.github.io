@@ -1,0 +1,59 @@
+self and super is keyword for class definition
+
+Inheritance is a concept in object-oriented programming in which a class derives (or inherits) attributes and behaviors from another class without needing to implement them again. 
+super() gives you access to methods in a superclass from the subclass that inherits from i
+
+A bound method is the one which is dependent on the instance of the class as the first argument. It passes the instance as the first argument which is used to access the variables and functions. In Python 3 and newer versions of python, all functions in the class are by default bound methods.
+```
+# Python code to demonstrate 
+# use of bound methods 
+
+class A: 
+
+	def func(self, arg): 
+		self.arg = arg 
+		print("Value of arg = ", arg) 
+
+
+# Creating an instance 
+obj = A() 
+
+# bound method 
+print(obj.func) 
+
+< bound method A.func of <__main__.A object at 0x7fb81c5a09e8>>
+Here, 
+ obj.func(arg) is translated by python as A.func(obj, arg).
+```
+
+if you print super(), you will get 
+```
+super(ClassName, object)
+<super: <class 'Student'>, <Student object>>
+ isinstance(Cube, Square)
+```
+
+The super() method return a object which contains the child class and object which has been added all the bounded methods from super classes.
+
+
+class Person:
+  def __init__(self, fname, lname):
+    self.firstname = fname
+    self.lastname = lname
+
+  def printname(self):
+    print(self.firstname, self.lastname)
+
+class Student(Person):
+  def __init__(self, fname, lname, year):
+    super().__init__(fname, lname)
+    print(super().printname)
+    self.graduationyear = year
+
+x = Student("Mike", "Olsen", 2019)
+print(x.graduationyear)
+
+In the above example, we can print super().printname in Student, you will see it is a bound method 
+```
+<bound method Person.printname of <__main__.Student object at 0x2b4f7830deb8>>
+````
