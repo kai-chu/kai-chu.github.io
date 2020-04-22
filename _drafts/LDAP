@@ -1,0 +1,15 @@
+Data model
+Information model is based on entries
+- entries, an entry is a collection of attributes that has a globally-unique Distinguished Name (DN)
+  - attribute, an attribute has a type and one or more values. 
+    - type, mnemonic strings, like "cn" for common name, or "mail" for email address. 
+    - To control which attributes are required and allowed, use a special attribute called objectClass. The values of the objectClass attribute determine the schema rules the entry must obey
+
+Storage data structure
+In LDAP, directory entries are arranged in a hierarchical tree-like structure
+
+Operations
+Operations are provided for adding and deleting an entry from the directory, changing an existing entry, and changing the name of an entry. 
+
+
+ldapsearch [options] [filter [attributes...]]
