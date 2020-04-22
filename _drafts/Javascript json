@@ -1,0 +1,22 @@
+
+JSON.parse
+JSON.stringify
+
+
+
+Read json from file, encode is required since readFileSync return buffer in default 
+const shipping = JSON.parse(fs.readFileSync(path.join(__dirname, 'shippingdata', 'shipping.json'), 'utf8'))
+
+
+
+JSON.stringify's third parameter defines white-space insertion for pretty-printing. It can be a string or a number (number of spaces). Node can write to your filesystem with fs. Example:
+
+var fs = require('fs');
+
+fs.writeFile('test.json', JSON.stringify({ a:1, b:2, c:3 }, null, 4));
+/* test.json:
+{
+     "a": 1,
+     "b": 2,
+     "c": 3,
+}
