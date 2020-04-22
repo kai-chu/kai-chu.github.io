@@ -35,3 +35,63 @@ An npipe mount can be used for communication between the Docker host and a conta
 
 Empty volume files or directories will be added by container
 Bind mount or non-empty volume are obscured by the mount container
+
+
+# Volume management 
+Create a volume:
+$ docker volume create my-vol
+List volumes:
+$ docker volume ls
+
+local               my-vol
+Inspect a volume:
+$ docker volume inspect my-vol
+[
+    {
+        "Driver": "local",
+        "Labels": {},
+        "Mountpoint": "/var/lib/docker/volumes/my-vol/_data",
+        "Name": "my-vol",
+        "Options": {},
+        "Scope": "local"
+    }
+]
+Remove a volume:
+$ docker volume rm my-vol
+
+# Volume bind when create container
+Two syntax
+-v source:target 
+--mount type=bind/volume/tmpfs,source=path,target=path
+
+```
+$ docker run -d \
+  --name devtest \
+  --mount source=myvol2,target=/app \
+  nginx:latest
+  
+$ docker run -d \
+  --name devtest \
+  -v myvol2:/app \
+  nginx:latest
+```
+# Inspect a container to check volume map, container doesn't have to be in running state
+docker inspect devtest/id
+
+# remove volume by name
+docker volume rm myvol2
+
+
+Service can be used with --mount only
+```
+$ docker service create -d \
+  --replicas=4 \
+  --name devtest-service \
+  --mount source=myvol2,target=/app \
+  nginx:latest
+```
+
+
+
+
+
