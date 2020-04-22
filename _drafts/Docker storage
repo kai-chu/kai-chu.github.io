@@ -1,0 +1,37 @@
+To decide where docker container or services are storaging files
+
+Types:
+1. bind mount
+2. volume
+3. tmpfs mount
+
+
+1. Bind mount
+Maping an absolute path
+- docker and host can change files
+
+  Use case
+  - Sharing files from the host machine to container, config, build artifacts
+  - Host file structure is guranteed to be consistent with docker
+2. volume
+docker manages volumes in /var/lib/docker/volumes/VOLUME_NAME
+- only docker can change
+  Multiple containers mount. 
+  Not removed automatically. Manually remove with docker volume prune.
+  Named or anonymous
+  Volume drivers 
+  Use case
+  - read-write or read-only
+  - Sharing data among multiple running containers,  a volume is created the first time it is mounted into a container
+  - remote strorage instead of locally
+  - back data by creating container from volume
+3. tmpfs mount
+mounts are stored in the host system’s memory only, and are never written to the host system’s filesystem.
+- docker can change 
+  Use case 
+  tmpfs mounts are best used for cases when you do not want the data to persist either on the host machine or within the container. This may be for security reasons or to protect the performance of the container when your application needs to write a large volume of non-persistent state data.
+4. named pipes
+An npipe mount can be used for communication between the Docker host and a container. 
+
+Empty volume files or directories will be added by container
+Bind mount or non-empty volume are obscured by the mount container
