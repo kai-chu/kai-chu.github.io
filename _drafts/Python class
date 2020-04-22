@@ -18,6 +18,16 @@ Python scope, a scope is a textual region of a Python program where a namespace 
 
 Define a class
 ```
+class Name:
+  def __init__(self):
+    self.prop = ...
+
+To define a class, class requires body, pass can be used 
+class Name:
+  pass
+```
+
+```
 class DeploymentSpecification:
     """DeploymentSpecification class defines a deployment"""
     version = 'v1'
@@ -40,7 +50,7 @@ AppDeployment
 Deploy app into a server
 ```
 
-The constructor or initilized methods in python 
+The constructor or initilized methods in python __init__
 def __init__(self):
     self.data = []
     
@@ -49,5 +59,22 @@ def __init__(self, arg1, argname2):
     self.arg1 = arg1
     self.argname2  =argname2
     self.otherdata = {}
-    
-    
+
+self keyword?
+self is the first arguments of a bound function, in a object, it will be the object itself
+
+Create a object
+a = ClassName()
+ClassName(arg1,arg2)
+
+Using a object
+a.x 
+a.f()
+
+Delete props from object
+del a.x
+
+Delete object
+del a
+
+
