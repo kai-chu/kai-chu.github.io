@@ -1,4 +1,5 @@
-self and super is keyword for class definition
+super is keyword for class definition
+self is the first argments in a bound function, which can be argument name
 
 Inheritance is a concept in object-oriented programming in which a class derives (or inherits) attributes and behaviors from another class without needing to implement them again. 
 super() gives you access to methods in a superclass from the subclass that inherits from i
@@ -57,3 +58,26 @@ In the above example, we can print super().printname in Student, you will see it
 ```
 <bound method Person.printname of <__main__.Student object at 0x2b4f7830deb8>>
 ````
+
+In python, class is just an object blueprint which is shared by all objects that want to follow it. 
+When creating an object, it bounds itself funcitons to the class function, we can imagine it as following
+class 
+  method()
+  instance1.method -> bound(class.method, instance1) = class.method(instance1)
+  instance2.method -> bound(class.method, instance2) = class.method(instance2)
+  instance3.method -> bound(class.method, instance3) = class.method(instance3)
+
+Once we call instance.method, it actually called class.method(instance, args)
+
+since object method is bounded automatically, we can assign a method to a class as following to a class, 
+```
+def p(o,arg):
+  print(o.firstname)
+  print(arg)
+  
+setattr(Student, 'p', p)
+x.p('lalala')
+```
+setattr will add a p attribue to the function p
+when we call x.p in the end, it actually use the bound method way and try to find a method in its class object, 
+as expected, o.firstname is printed
