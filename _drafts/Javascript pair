@@ -1,0 +1,10 @@
+It is a length 2 array
+[key,value]
+
+Usages
+
+Object.entries() will return given object's own enumerable string-keyed property [key, value] pairs, 
+in the same order as that provided by a for...in loop. 
+
+Function params
+function([a,b]) {}
