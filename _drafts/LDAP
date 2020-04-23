@@ -3,7 +3,7 @@ Information model is based on entries
 - entries, an entry is a collection of attributes that has a globally-unique Distinguished Name (DN)
   - attribute, an attribute has a type and one or more values. 
     - type, mnemonic strings, like "cn" for common name, or "mail" for email address. 
-    - To control which attributes are required and allowed, use a special attribute called objectClass. The values of the objectClass attribute determine the schema rules the entry must obey
+    - objectClass To control which attributes are required and allowed, use a special attribute called objectClass. The values of the objectClass attribute determine the schema rules the entry must obey
 
 Storage data structure
 In LDAP, directory entries are arranged in a hierarchical tree-like structure
@@ -24,8 +24,10 @@ Object classes are schema elements that specify collections of attribute types t
 An object identifier (OID) is a string that is used to uniquely identify various elements in the LDAP protocol, as well as in other areas throughout computing
 Search filters are used to define criteria for identifying entries that contain certain kinds of information
 All search requests include a base DN element, which specifies the portion of the DIT in which to look for matching entries, and a scope, which specifies how much of that subtree should be considered.
-
-
+The LDIF file is a text file in a format containing data to import/modify/remove object
+ObjectClass, ObjectClass attribute specifies the object classes of an entry, LDAP specification requires every entry to have exactly one structural object class, and it may have zero or more AUXILIARY classes
+LDAP schema is a set of rules that define what can be stored as entries in an LDAP directory. Each LDAP directory has a default schema, which organizations can customize, or "extend," by adding elements to it.
+Top object class, The object classes defined constitute a class hierarchy, the central top level class is called 'top', all other classes are derived from that
 null DN/ 0 component
 
 the zero-length DN or the null DN. The null DN may be used to reference a special entry called the root DSE
@@ -59,10 +61,20 @@ Connection
 
 Authentication 
 -x Simple authentication
-   -w passwd for authentication
+   -w passwd for authentication or -W will prompt to ask
    -D bind to the admin DN
 Search 
 -b basedn  base dn for search
 
+Input
+-console
+-f from file 
+
 Example 1
 docker exec my-openldap-container ldapsearch -x -H ldap://localhost -b dc=example,dc=org -D "cn=admin,dc=example,dc=org" -w admin
+
+ldapsearch -xLLL -H ldap://localhost -w admin -D 'cn=admin,dc=example,dc=org' -b dc=example,dc=org
+ldapadd -x -H ldap://localhost -w admin -D 'cn=admin,dc=example,dc=org' -f /container/service/slapd/assets/test/new-user.ldiff
+ldapdelete [options] "entry DN"
+
+https://tools.ietf.org/html/rfc4519
