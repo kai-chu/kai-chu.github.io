@@ -12,4 +12,57 @@ Operations
 Operations are provided for adding and deleting an entry from the directory, changing an existing entry, and changing the name of an entry. 
 
 
+DN
+The LDAP API references an LDAP object by its distinguished name (DN).  A DN is much like an absolute path on a filesystem, LDAP DNs ascend the tree from right to left. For example, the DN “uid=john.doe,ou=People,dc=example,dc=com” represents an entry that is immediately subordinate to “ou=People,dc=example,dc=com” which is itself immediately subordinate to the entry “dc=example,dc=com”.
+A DN is a sequence of relative distinguished names (RDN) connected by commas. e.g. dc=a,dc=b
+An relative distinguished names (RDN) is comprised of name-value pairs; e.g. “uid=john.doe,ou=People,dc=example,dc=com” has four RDNs
+RDN pair, an attribute name followed by an equal sign and the value for that attribute. e.g. dc=a
+Multivalued RDN, multiple name-value pairs in the same RDN by separating them with plus signs.  “cn=John Doe+telephoneNumber=+1 123-456-7890”
+RDN for an entry, the leftmost component of an entry’s DN. e.g. “uid=john.doe,ou=People,dc=example,dc=com”, the component “uid=john.doe” is often referred to as the RDN for that entry
+Attributes hold the data for an entry. Each attribute has an attribute type, zero or more attribute options, and a set of values that comprise the actual data.
+Object classes are schema elements that specify collections of attribute types that may be related to a particular type of object, process, or other entity. 
+An object identifier (OID) is a string that is used to uniquely identify various elements in the LDAP protocol, as well as in other areas throughout computing
+Search filters are used to define criteria for identifying entries that contain certain kinds of information
+All search requests include a base DN element, which specifies the portion of the DIT in which to look for matching entries, and a scope, which specifies how much of that subtree should be considered.
+
+
+null DN/ 0 component
+
+the zero-length DN or the null DN. The null DN may be used to reference a special entry called the root DSE
+1 component
+
+multiple components
+
+Naming context, the DN of the entry that is at the top of an LDAP tree is called a naming context (or sometimes referred to as a suffix)
+DN string representation, the string representations of each of its RDNs, with each RDN separated by a comma
+
+
+
+The following table lists typical RDN attribute types.
+TABLE 1
+String	Attribute type
+DC	domainComponent
+CN	commonName
+OU	organizationalUnitName
+O	organizationName
+STREET	streetAddress
+L	localityName
+ST	stateOrProvinceName
+C	countryName
+UID	userid
+
+
 ldapsearch [options] [filter [attributes...]]
+
+Connection
+-H where the ldap server host is running
+
+Authentication 
+-x Simple authentication
+   -w passwd for authentication
+   -D bind to the admin DN
+Search 
+-b basedn  base dn for search
+
+Example 1
+docker exec my-openldap-container ldapsearch -x -H ldap://localhost -b dc=example,dc=org -D "cn=admin,dc=example,dc=org" -w admin
