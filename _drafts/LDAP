@@ -78,3 +78,5 @@ ldapadd -x -H ldap://localhost -w admin -D 'cn=admin,dc=example,dc=org' -f /cont
 ldapdelete [options] "entry DN"
 
 https://tools.ietf.org/html/rfc4519
+
+https://www.digitalocean.com/community/tutorials/how-to-change-account-passwords-on-an-openldap-server
