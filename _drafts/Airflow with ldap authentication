@@ -73,4 +73,16 @@ I have built my own local container, since airflow.contrib.auth.backends.ldap_au
 Others: if you want to play around ldapsearch in your command
 ldapsearch -xLLL -H ldap://localhost -w admin -D 'cn=admin,dc=example,dc=org' -b dc=example,dc=org cn=*
 
+Important:
+Don't add any quote in your configurations, I have # in my password, then I decide to use an env to test my setup 
+```
+docker run  --mount type=bind,source="C:/Users/kach07/airflow/airflow.cfg",target=/usr/local/airflow/airflow.cfg --env 
+"AIRFLOW__LDAP__BIND_PASSWORD=Fw5Mk#Sr" -p 8080:8080 testairflow webserver
+```
+
+For AD
+```
+user_name_attr = sAMAccountName
+search_scope = SUBTREE
+```
 
