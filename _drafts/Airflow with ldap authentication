@@ -1,0 +1,53 @@
+[webserver]
+authenticate = True
+auth_backend = airflow.contrib.auth.backends.ldap_auth
+
+[ldap]
+# set this to ldaps://<your.ldap.server>:<port>
+uri =ldap://172.17.0.2:389
+user_filter = objectClass=*
+user_name_attr = uid
+group_member_attr = memberOf
+superuser_filter = memberOf=CN=airflow-super-users,dc=example,dc=org
+data_profiler_filter =
+bind_user = cn=admin,dc=example,dc=org
+bind_password = admin
+basedn = dc=example,dc=org
+# You cannot comment it out, explicitly use cacert= is important
+cacert =
+search_scope = LEVEL
+
+
+Add a group
+ldapadd -x -H ldap://localhost -w admin -D 'cn=admin,dc=example,dc=org' -f /ldap/airflow-super-users.txt 
+
+dn: cn=airflow-super-users,dc=example,dc=org
+cn: airflow-super-users
+objectClass: top
+objectClass: groupOfNames
+objectClass: posixGroup
+member: uid=test_user,dc=example,dc=org
+gidNumber: 100
+memberUid: test_user
+
+Add a user
+ldapadd -x -H ldap://localhost -w admin -D 'cn=admin,dc=example,dc=org' -f /ldap/user.ldif.txt
+
+dn: uid=test_user,dc=example,dc=org
+uid: test_user
+sn: User
+cn: Test User
+objectClass: person
+objectClass: organizationalPerson
+objectClass: posixAccount
+objectClass: top
+loginShell: /bin/bash
+homeDirectory: /home/testuser
+uidNumber: 1001
+gidNumber: 1001
+
+Search
+ldapsearch -xLLL -H ldap://localhost -w admin -D 'cn=admin,dc=example,dc=org' -b dc=example,dc=org cn=*
+
+Change my test user password
+docker exec -it  my-openldap-container ldappasswd -x -H ldap://localhost -D "cn=admin,dc=example,dc=org" -w admin -S -ZZ uid=test_user,dc=example,dc=org
