@@ -1,0 +1,120 @@
+---
+layout: post
+title:  "Setup airflow with openldap authentication with docker"
+date:   2020-04-25 00:10:16 +0200
+categories: airflow docker openldap authentication
+---
+
+Airflow provides a few ways to add authentication. https://airflow.apache.org/docs/stable/security.html
+In this post, I want to demo how to setup a ldap server with docker and airflow to use that ldap.
+
+1 Setup openldap using docker image, remember to enable LDAP_RFC2307BIS_SCHEMA, which will bring in the groupOfNames, posixGroup schema definition
+```
+$ docker run -p 389:389 -p 636:636 -v C:\Users\kach07:/ldap \
+--env LDAP_RFC2307BIS_SCHEMA=true  \
+--name my-openldap-container \
+--detach \
+osixia/openldap:1.3.0
+```
+2 Create two files and put them in you home folder so that you can find them inside the container C:\Users\kach07
+I'm lazy, I have mapped the whole home dir to my container. Alternatively, you can you docker cp to move files into your container.
+
+- group.ldif
+```
+dn: cn=airflow-super-users,dc=example,dc=org
+cn: airflow-super-users
+objectClass: top
+objectClass: groupOfNames
+objectClass: posixGroup
+member: uid=test_user,dc=example,dc=org
+gidNumber: 100
+memberUid: test_user
+```
+
+- user.ldif
+```
+dn: uid=test_user,dc=example,dc=org
+uid: test_user
+sn: User
+cn: Test User
+objectClass: person
+objectClass: organizationalPerson
+objectClass: posixAccount
+objectClass: top
+loginShell: /bin/bash
+homeDirectory: /home/testuser
+uidNumber: 1001
+gidNumber: 1001
+```
+- You can chagne the password for your test_user [Commands are running inside your container]
+```
+$ docker exec -it my-openldap-container /bin/bash
+$ ldappasswd -x -H ldap://localhost -D "cn=admin,dc=example,dc=org" -w admin -S -ZZ uid=test_user,dc=example,dc=org
+```
+or 
+```
+$ docker exec my-openldap-container \
+ ldappasswd -x -H ldap://localhost -D "cn=admin,dc=example,dc=org" -w admin -S -ZZ uid=test_user,dc=example,dc=org
+```
+
+3 Go into the container to use ldapadd command to add user and group entries [Commands are running inside your container]
+```
+$ docker exec -it my-openldap-container /bin/bash
+$ cd /ldap
+$ ldapadd -x -H ldap://localhost -w admin -D 'cn=admin,dc=example,dc=org' -f /ldap/user.ldif
+$ ldapadd -x -H ldap://localhost -w admin -D 'cn=admin,dc=example,dc=org' -f /ldap/group.ldif
+```
+4 Check you container ip [], if you are running in linux, you can your docker run --network host to skip this part. I'm lazy to add network for two containers, and use the ip later in airflow to connect to the ldap server.
+```
+$ docker inspect my-openldap-container --format='{{range .NetworkSettings.Networks}}{{.IPAddress}}{{end}}'
+//my output =>  172.17.0.2
+```
+
+5 Change config in your airflow.cfg 
+```
+[webserver]
+authenticate = True
+auth_backend = airflow.contrib.auth.backends.ldap_auth
+
+[ldap]
+# set this to ldaps://<your.ldap.server>:<port>
+uri =ldap://172.17.0.2:389
+user_filter = objectClass=*
+user_name_attr = uid
+group_member_attr = memberOf
+superuser_filter = memberOf=CN=airflow-super-users,dc=example,dc=org
+data_profiler_filter =
+bind_user = cn=admin,dc=example,dc=org
+bind_password = admin
+basedn = dc=example,dc=org
+# You cannot comment it out, explicitly use cacert= is important
+cacert =
+search_scope = LEVEL
+```
+6 Start your airflow docker
+```
+$ docker run  --mount type=bind,source="C:/Users/kach07/airflow/airflow.cfg",target=/usr/local/airflow/airflow.cfg -p 8080:8080 testairflow webserver
+```
+I have built my own local container, since airflow.contrib.auth.backends.ldap_auth requires ldap3 and airflow[ldap] module
+
+7 Open you airflow in browser, you shall be asked to input your password. Use the user test_user and password you setup to login. 
+http://localhost:8080/admin 
+
+
+8 More things to say
+* Others: if you want to play around ldapsearch in your command
+ldapsearch -xLLL -H ldap://localhost -w admin -D 'cn=admin,dc=example,dc=org' -b dc=example,dc=org cn=*
+
+* Important:
+Don't add any quote in your configurations, I have # in my password, then I decide to use an env to test my setup 
+```
+docker run  --mount type=bind,source="C:/Users/kach07/airflow/airflow.cfg",target=/usr/local/airflow/airflow.cfg --env 
+"AIRFLOW__LDAP__BIND_PASSWORD=Fw5Mk#Sr" -p 8080:8080 testairflow webserver
+```
+
+* For AD Users
+```
+user_name_attr = sAMAccountName
+search_scope = SUBTREE
+```
+
