@@ -21,18 +21,19 @@ $ touch ansible.cfg.template
 [remote_user]
 YOUR_USER_NAME
 $ copy ansible.cfg.template ~/.ansbile.cfg
-````
+```
 4. Run ping to test connection
 ```
 $ ansible -i hosts all -k -m ping
 ```
-4. Add vars or vaults 
+5. Add vars or vaults 
 ```
 mkdir vars && cd vars
 ansible-vault create vaults.yml 
 touch vars.yml
 ```
-5. Add main.yml
+6. Add main.yml
+```
 - hosts: all
   vars_files:
     - vars/vars.yml
