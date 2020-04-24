@@ -33,7 +33,6 @@ ansible-vault create vaults.yml
 touch vars.yml
 ```
 6. Add main.yml 
-
 ```
 - hosts: all
   vars_files:
