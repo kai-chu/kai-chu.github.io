@@ -1,3 +1,52 @@
+1. Setup openldap using docker image, remember to enable LDAP_RFC2307BIS_SCHEMA, which will bring in the groupOfNames, posixGroup schema definition
+$ docker run -p 389:389 -p 636:636 -v C:\Users\kach07:/ldap \
+--env LDAP_RFC2307BIS_SCHEMA=true  \
+--name my-openldap-container \
+--detach \
+osixia/openldap:1.3.0
+
+2. Create two files and put them in you home folder so that you can find them inside the container C:\Users\kach07
+I'm lazy, I have mapped the whole home dir to my container. Alternatively, you can you docker cp to move files into your container.
+group.ldif
+```
+dn: cn=airflow-super-users,dc=example,dc=org
+cn: airflow-super-users
+objectClass: top
+objectClass: groupOfNames
+objectClass: posixGroup
+member: uid=test_user,dc=example,dc=org
+gidNumber: 100
+memberUid: test_user
+```
+
+user.ldif
+```
+dn: uid=test_user,dc=example,dc=org
+uid: test_user
+sn: User
+cn: Test User
+objectClass: person
+objectClass: organizationalPerson
+objectClass: posixAccount
+objectClass: top
+loginShell: /bin/bash
+homeDirectory: /home/testuser
+uidNumber: 1001
+gidNumber: 1001
+```
+Chagne the password for your test_user
+ldappasswd -x -H ldap://localhost -D "cn=admin,dc=example,dc=org" -w admin -S -ZZ uid=test_user,dc=example,dc=org
+
+2. Go into the container to use ldapadd command to add user and group entries
+$ docker exec -it my-openldap-container /bin/bash
+$ cd /ldap
+$ ldapadd -x -H ldap://localhost -w admin -D 'cn=admin,dc=example,dc=org' -f /ldap/user.ldif
+$ ldapadd -x -H ldap://localhost -w admin -D 'cn=admin,dc=example,dc=org' -f /ldap/group.ldif
+
+3. Check you container ip 
+$ docker inspect my-openldap-container
+
+4. Change config in your airflow.cfg 
 [webserver]
 authenticate = True
 auth_backend = airflow.contrib.auth.backends.ldap_auth
@@ -17,37 +66,11 @@ basedn = dc=example,dc=org
 cacert =
 search_scope = LEVEL
 
+5. Start your airflow docker
+$ docker run  --mount type=bind,source="C:/Users/kach07/airflow/airflow.cfg",target=/usr/local/airflow/airflow.cfg -p 8080:8080 testairflow webserver
+I have built my own local container, since airflow.contrib.auth.backends.ldap_auth requires ldap3 and airflow[ldap] module
 
-Add a group
-ldapadd -x -H ldap://localhost -w admin -D 'cn=admin,dc=example,dc=org' -f /ldap/airflow-super-users.txt 
-
-dn: cn=airflow-super-users,dc=example,dc=org
-cn: airflow-super-users
-objectClass: top
-objectClass: groupOfNames
-objectClass: posixGroup
-member: uid=test_user,dc=example,dc=org
-gidNumber: 100
-memberUid: test_user
-
-Add a user
-ldapadd -x -H ldap://localhost -w admin -D 'cn=admin,dc=example,dc=org' -f /ldap/user.ldif.txt
-
-dn: uid=test_user,dc=example,dc=org
-uid: test_user
-sn: User
-cn: Test User
-objectClass: person
-objectClass: organizationalPerson
-objectClass: posixAccount
-objectClass: top
-loginShell: /bin/bash
-homeDirectory: /home/testuser
-uidNumber: 1001
-gidNumber: 1001
-
-Search
+Others: if you want to play around ldapsearch in your command
 ldapsearch -xLLL -H ldap://localhost -w admin -D 'cn=admin,dc=example,dc=org' -b dc=example,dc=org cn=*
 
-Change my test user password
-docker exec -it  my-openldap-container ldappasswd -x -H ldap://localhost -D "cn=admin,dc=example,dc=org" -w admin -S -ZZ uid=test_user,dc=example,dc=org
+
