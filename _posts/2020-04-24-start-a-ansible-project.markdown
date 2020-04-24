@@ -32,7 +32,8 @@ mkdir vars && cd vars
 ansible-vault create vaults.yml 
 touch vars.yml
 ```
-6. Add main.yml
+6. Add main.yml 
+
 ```
 - hosts: all
   vars_files:
