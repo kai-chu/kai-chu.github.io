@@ -3,6 +3,8 @@ let a = []
 let myArr3: boolean[] = new Array();
 let myArr4: boolean[] = Array();
 
+let arry = Array.from(iteratable)
+
 with values 
 [a,b,c]
 
@@ -46,3 +48,9 @@ cloneb = [...b]
 sort 
 var points = [40, 100, 1, 5, 25, 10];
 points.sort(function(a, b){return a - b});
+
+get part of array from index to end -1
+slice(start, end-1)
+
+modify array from start with length deleted, and item added
+splice(start, removedLenght, itemsAdded)
