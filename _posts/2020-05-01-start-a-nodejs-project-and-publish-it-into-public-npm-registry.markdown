@@ -47,7 +47,7 @@ node_starter$ echo 'console.log("hi nodejs")' >> index.js
 ## Login the registry from command
 Looks good enough to try out the publish, before a publish, you need to login the the registy in your local command. Run following command and fill in your username and password you have setup in the Step 1
 ```bash
-$ npm adduser
+$ npm login
 ```
 > which actually create a authToken in your home ~/.npmrc file
 ```
