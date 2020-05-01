@@ -73,3 +73,30 @@ Click your profile pic -> packages, node_starter is ready for you there.
 
 ```
 ![NPM packages](/assets/npm_packages.png)
+
+## Use your package 
+Since the package is published in npm registery, now you can use your `npm i` to install it. 
+```bash
+$ npm i @kaichu/node_starter
+``` 
+
+## Tag your published package
+When publishing a package, npm will add a tag `latest` to your package which can be seen in npmjs as following
+![Latest tag default](/assets/npm_before_tag.png)
+
+When publish packages, we can add extra options --tag to add new tag to a publish. 
+```bash
+npm publish --access=public --tag=dev
+```
+
+However, since we have publihed the package, in default, we cannot publish the same version again. We can use 
+another separate npm cli to add dev tag.
+```
+$ npm dist-tag add @kaichu/node_starter@1.0.0 dev
+$ npm dist-tag ls @kaichu/node_starter@1.0.0
+```
+The result will be shown in npmjs as well.
+![Latest tag default](/assets/npm_after_tag.png)
+
+## References
+1. [my node_starter](https://www.npmjs.com/package/@kaichu/node_starter)
