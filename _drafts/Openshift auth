@@ -1,0 +1,24 @@
+1. cluster authentication operator
+The Operator is a piece of software running in a Pod on the cluster, interacting with the Kubernetes API server. It is deployed by k8s api and run to manage k8s objects. 
+```
+oc get clusteroperator authentication -o yaml
+```
+
+2. CustomResourceDefinition 
+```
+oc get crd authentications.operator.openshift.io -o yaml
+```
+
+3. Get the auth operator deployment 
+```
+oc get deployments authentication-operator -n openshift-authentication-operator -o yaml
+```
+
+4. Oauth config
+```
+oc describe configmap oauth-openshift -o openshift-config-managed
+```
+
+
+https://www.openshift.com/learn/topics/operators
+https://github.com/openshift/cluster-authentication-operator
