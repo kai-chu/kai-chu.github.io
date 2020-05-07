@@ -1,0 +1,78 @@
+Custom Resource Definition, or KubeletConfig instance
+|
+Machine Config Controller
+|
+MachinePool or Cluster
+
+oc get machineconfigpool  --show-labels
+oc label machineconfigpool worker custom-kubelet=enabled
+oc adm top nodes
+
+Create pem crts in config map
+oc create configmap user-defined-pem-ca -n openshift-config --from-file=ca-bundle.crt=/etc/pki/ca
+
+Config it in Cluster proxy 
+oc edit proxy/cluster
+
+Check machine config operator logs
+oc logs -n openshift-machine-config-operator  machine-config-operator-bd8dd7bfb-fvnzg 
+
+
+
+image build 
+Image
+
+Custom Resource: image.config.openshift.io/cluster
+OpenShift Container Platform applies the changes to this CR to all nodes in the cluster
+
+Machine Config Operator will use above to restart nodes when necessary
+[root@helper ~]# oc rsh -n openshift-machine-config-operator  machine-config-operator-bd8dd7bfb-fvnzg  
+sh-4.2$ ps aux
+USER         PID %CPU %MEM    VSZ   RSS TTY      STAT START   TIME COMMAND
+65534          1  0.1  0.5 142984 47324 ?        Ssl  Apr24  33:05 /usr/bin/machine-config-operator start --images-json=/etc/mco/images/images.json
+65534         18  1.0  0.0  11836  2800 pts/0    Ss   11:59   0:00 /bin/sh
+65534         24  0.0  0.0  51764  3408 pts/0    R+   11:59   0:00 ps aux
+sh-4.2$ cat /etc/mco/images/images.json 
+{
+  "releaseVersion": "4.3.0",
+  "machineConfigOperator": "quay.io/openshift-release-dev/ocp-v4.0-art-dev@sha256:328fe29aa1114807b2b4462488650a23a7dde77f63af0f45e6a2ccaabfb56850",
+  "etcd": "quay.io/openshift-release-dev/ocp-v4.0-art-dev@sha256:7c6de86b5f3140fa33a69477c286afc901b4ecd6e73e82d0ccfc8a0e0fe5e648",
+  "infraImage": "quay.io/openshift-release-dev/ocp-v4.0-art-dev@sha256:2dc3bdcb2b0bf1d6c6ae749be0163e6d7ca813ecfba5e5f5d88970c73a9d12a9",
+  "kubeClientAgentImage": "quay.io/openshift-release-dev/ocp-v4.0-art-dev@sha256:d33c3b37dcaa26cf940b367fca589cc61906de59081154819743087531a42ca6",
+  "keepalivedImage": "quay.io/openshift-release-dev/ocp-v4.0-art-dev@sha256:a60f50e4e62d5908ed9f6f5e58b9e0fb6b0279c77eaa911db309caee1b54eca3",
+  "corednsImage": "quay.io/openshift-release-dev/ocp-v4.0-art-dev@sha256:284195c16a37e10749452904ea6013010e7967e2a3c4b58e7b94665b58f22a7e",
+  "mdnsPublisherImage": "quay.io/openshift-release-dev/ocp-v4.0-art-dev@sha256:096e246b04a436493adf2e1610d5822bd612a3b11c66306df7390f67b94bd43b",
+  "haproxyImage": "quay.io/openshift-release-dev/ocp-v4.0-art-dev@sha256:87c6ad4e9b3111fcd96eaba4857ab3bbed53d8cfda37c86be76ad61e2db4d5f2",
+  "baremetalRuntimeCfgImage": "quay.io/openshift-release-dev/ocp-v4.0-art-dev@sha256:c0eefdbbc5b9198d3e2f720e6e56ec989d938fe688548e8f8f6cb70fc4a0013b",
+  "oauthProxy": "quay.io/openshift-release-dev/ocp-v4.0-art-dev@sha256:13d5837cbf874b3d1a79254456f0a9a67af1f2872b79177b51e3c205a753dce9"
+}
+
+
+Image Registry Operator
+Custom Resource Definition (CRD): configs.imageregistry.operator.openshift.io
+namespace: openshift-image-registry
+
+$ oc patch configs.imageregistry.operator.openshift.io/cluster --type merge -p '{"spec":{"defaultRoute":true}}'
+oc get clusteroperator image-registry
+
+
+The image registry operator
+cluster-image-registry-operator-watch
+https://github.com/openshift/cluster-image-registry-operator
+
+it uses ca in a config map named trusted-ca
+[root@helper ~]# oc get cm -n openshift-image-registry
+NAME                          DATA   AGE
+image-registry-certificates   3      101d
+serviceca                     1      101d
+trusted-ca                    1      104d
+
+Check that ca config
+oc describe cm trusted-ca -n openshift-image-registry
+
+
+oc rsh -n namespace pod
+
+
+
+
