@@ -1,0 +1,3 @@
+Start a process 
+echo $!
+cat pid.pid | xargs kill
