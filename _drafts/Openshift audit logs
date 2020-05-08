@@ -1,0 +1,105 @@
+https://docs.openshift.com/container-platform/4.4/nodes/nodes/nodes-nodes-audit-log.html
+oc get nodes
+oc adm node-logs master-name-here --path=openshift-apiserver/audit.log --tail 200
+
+May 07 12:51:44 worker1.ocp4.ignalina.dk hyperkube[2146]: Flag --minimum-container-ttl-duration has been deprecated, Use --eviction-hard or --eviction-soft instead. Will be removed in a future version.
+May 07 12:51:44 worker1.ocp4.ignalina.dk hyperkube[2146]: I0507 12:51:44.373422    2146 flags.go:33] FLAG: --add-dir-header="false"
+May 07 12:51:44 worker1.ocp4.ignalina.dk hyperkube[2146]: I0507 12:51:44.373630    2146 flags.go:33] FLAG: --address="0.0.0.0"
+May 07 12:51:44 worker1.ocp4.ignalina.dk hyperkube[2146]: I0507 12:51:44.373639    2146 flags.go:33] FLAG: --allowed-unsafe-sysctls="[]"
+May 07 12:51:44 worker1.ocp4.ignalina.dk hyperkube[2146]: I0507 12:51:44.373646    2146 flags.go:33] FLAG: --alsologtostderr="false"
+May 07 12:51:44 worker1.ocp4.ignalina.dk hyperkube[2146]: I0507 12:51:44.373651    2146 flags.go:33] FLAG: --anonymous-auth="true"
+May 07 12:51:44 worker1.ocp4.ignalina.dk hyperkube[2146]: I0507 12:51:44.373656    2146 flags.go:33] FLAG: --application-metrics-count-limit="100"
+May 07 12:51:44 worker1.ocp4.ignalina.dk hyperkube[2146]: I0507 12:51:44.373660    2146 flags.go:33] FLAG: --authentication-token-webhook="false"
+May 07 12:51:44 worker1.ocp4.ignalina.dk hyperkube[2146]: I0507 12:51:44.373664    2146 flags.go:33] FLAG: --authentication-token-webhook-cache-ttl="2m0s"
+May 07 12:51:44 worker1.ocp4.ignalina.dk hyperkube[2146]: I0507 12:51:44.373669    2146 flags.go:33] FLAG: --authorization-mode="AlwaysAllow"
+May 07 12:51:44 worker1.ocp4.ignalina.dk hyperkube[2146]: I0507 12:51:44.373674    2146 flags.go:33] FLAG: --authorization-webhook-cache-authorized-ttl="5m0s"
+May 07 12:51:44 worker1.ocp4.ignalina.dk hyperkube[2146]: I0507 12:51:44.373678    2146 flags.go:33] FLAG: --authorization-webhook-cache-unauthorized-ttl="30s"
+May 07 12:51:44 worker1.ocp4.ignalina.dk hyperkube[2146]: I0507 12:51:44.373682    2146 flags.go:33] FLAG: --azure-container-registry-config=""
+May 07 12:51:44 worker1.ocp4.ignalina.dk hyperkube[2146]: I0507 12:51:44.373686    2146 flags.go:33] FLAG: --boot-id-file="/proc/sys/kernel/random/boot_id"
+May 07 12:51:44 worker1.ocp4.ignalina.dk hyperkube[2146]: I0507 12:51:44.373690    2146 flags.go:33] FLAG: --bootstrap-checkpoint-path=""
+May 07 12:51:44 worker1.ocp4.ignalina.dk hyperkube[2146]: I0507 12:51:44.373694    2146 flags.go:33] FLAG: --bootstrap-kubeconfig="/etc/kubernetes/kubeconfig"
+May 07 12:51:44 worker1.ocp4.ignalina.dk hyperkube[2146]: I0507 12:51:44.373698    2146 flags.go:33] FLAG: --cert-dir="/var/lib/kubelet/pki"
+May 07 12:51:44 worker1.ocp4.ignalina.dk hyperkube[2146]: I0507 12:51:44.373702    2146 flags.go:33] FLAG: --cgroup-driver="cgroupfs"
+May 07 12:51:44 worker1.ocp4.ignalina.dk hyperkube[2146]: I0507 12:51:44.373710    2146 flags.go:33] FLAG: --cgroup-root=""
+May 07 12:51:44 worker1.ocp4.ignalina.dk hyperkube[2146]: I0507 12:51:44.373713    2146 flags.go:33] FLAG: --cgroups-per-qos="true"
+May 07 12:51:44 worker1.ocp4.ignalina.dk hyperkube[2146]: I0507 12:51:44.373717    2146 flags.go:33] FLAG: --chaos-chance="0"
+May 07 12:51:44 worker1.ocp4.ignalina.dk hyperkube[2146]: I0507 12:51:44.373722    2146 flags.go:33] FLAG: --client-ca-file=""
+May 07 12:51:44 worker1.ocp4.ignalina.dk hyperkube[2146]: I0507 12:51:44.373726    2146 flags.go:33] FLAG: --cloud-config=""
+May 07 12:51:44 worker1.ocp4.ignalina.dk hyperkube[2146]: I0507 12:51:44.373729    2146 flags.go:33] FLAG: --cloud-provider=""
+May 07 12:51:44 worker1.ocp4.ignalina.dk hyperkube[2146]: I0507 12:51:44.373733    2146 flags.go:33] FLAG: --cluster-dns="[]"
+May 07 12:51:44 worker1.ocp4.ignalina.dk hyperkube[2146]: I0507 12:51:44.373737    2146 flags.go:33] FLAG: --cluster-domain=""
+May 07 12:51:44 worker1.ocp4.ignalina.dk hyperkube[2146]: I0507 12:51:44.373741    2146 flags.go:33] FLAG: --cni-bin-dir="/opt/cni/bin"
+May 07 12:51:44 worker1.ocp4.ignalina.dk hyperkube[2146]: I0507 12:51:44.373745    2146 flags.go:33] FLAG: --cni-cache-dir="/var/lib/cni/cache"
+May 07 12:51:44 worker1.ocp4.ignalina.dk hyperkube[2146]: I0507 12:51:44.373748    2146 flags.go:33] FLAG: --cni-conf-dir="/etc/cni/net.d"
+May 07 12:51:44 worker1.ocp4.ignalina.dk hyperkube[2146]: I0507 12:51:44.373752    2146 flags.go:33] FLAG: --config="/etc/kubernetes/kubelet.conf"
+May 07 12:51:44 worker1.ocp4.ignalina.dk hyperkube[2146]: I0507 12:51:44.373756    2146 flags.go:33] FLAG: --container-hints="/etc/cadvisor/container_hints.json"
+May 07 12:51:44 worker1.ocp4.ignalina.dk hyperkube[2146]: I0507 12:51:44.373761    2146 flags.go:33] FLAG: --container-log-max-files="5"
+May 07 12:51:44 worker1.ocp4.ignalina.dk hyperkube[2146]: I0507 12:51:44.373766    2146 flags.go:33] FLAG: --container-log-max-size="10Mi"
+May 07 12:51:44 worker1.ocp4.ignalina.dk hyperkube[2146]: I0507 12:51:44.373770    2146 flags.go:33] FLAG: --container-runtime="remote"
+May 07 12:51:44 worker1.ocp4.ignalina.dk hyperkube[2146]: I0507 12:51:44.373776    2146 flags.go:33] FLAG: --container-runtime-endpoint="/var/run/crio/crio.sock"
+May 07 12:51:44 worker1.ocp4.ignalina.dk hyperkube[2146]: I0507 12:51:44.373780    2146 flags.go:33] FLAG: --containerd="/run/containerd/containerd.sock"
+May 07 12:51:44 worker1.ocp4.ignalina.dk hyperkube[2146]: I0507 12:51:44.373784    2146 flags.go:33] FLAG: --contention-profiling="false"
+May 07 12:51:44 worker1.ocp4.ignalina.dk hyperkube[2146]: I0507 12:51:44.373787    2146 flags.go:33] FLAG: --cpu-cfs-quota="true"
+May 07 12:51:44 worker1.ocp4.ignalina.dk hyperkube[2146]: I0507 12:51:44.373791    2146 flags.go:33] FLAG: --cpu-cfs-quota-period="100ms"
+May 07 12:51:44 worker1.ocp4.ignalina.dk hyperkube[2146]: I0507 12:51:44.373795    2146 flags.go:33] FLAG: --cpu-manager-policy="none"
+May 07 12:51:44 worker1.ocp4.ignalina.dk hyperkube[2146]: I0507 12:51:44.373798    2146 flags.go:33] FLAG: --cpu-manager-reconcile-period="10s"
+May 07 12:51:44 worker1.ocp4.ignalina.dk hyperkube[2146]: I0507 12:51:44.373802    2146 flags.go:33] FLAG: --docker="unix:///var/run/docker.sock"
+May 07 12:51:44 worker1.ocp4.ignalina.dk hyperkube[2146]: I0507 12:51:44.373806    2146 flags.go:33] FLAG: --docker-endpoint="unix:///var/run/docker.sock"
+May 07 12:51:44 worker1.ocp4.ignalina.dk hyperkube[2146]: I0507 12:51:44.373810    2146 flags.go:33] FLAG: --docker-env-metadata-whitelist=""
+May 07 12:51:44 worker1.ocp4.ignalina.dk hyperkube[2146]: I0507 12:51:44.373813    2146 flags.go:33] FLAG: --docker-only="false"
+May 07 12:51:44 worker1.ocp4.ignalina.dk hyperkube[2146]: I0507 12:51:44.373817    2146 flags.go:33] FLAG: --docker-root="/var/lib/docker"
+May 07 12:51:44 worker1.ocp4.ignalina.dk hyperkube[2146]: I0507 12:51:44.373821    2146 flags.go:33] FLAG: --docker-tls="false"
+May 07 12:51:44 worker1.ocp4.ignalina.dk hyperkube[2146]: I0507 12:51:44.373824    2146 flags.go:33] FLAG: --docker-tls-ca="ca.pem"
+May 07 12:51:44 worker1.ocp4.ignalina.dk hyperkube[2146]: I0507 12:51:44.373828    2146 flags.go:33] FLAG: --docker-tls-cert="cert.pem"
+May 07 12:51:44 worker1.ocp4.ignalina.dk hyperkube[2146]: I0507 12:51:44.373832    2146 flags.go:33] FLAG: --docker-tls-key="key.pem"
+May 07 12:51:44 worker1.ocp4.ignalina.dk hyperkube[2146]: I0507 12:51:44.373840    2146 flags.go:33] FLAG: --dynamic-config-dir=""
+May 07 12:51:44 worker1.ocp4.ignalina.dk hyperkube[2146]: I0507 12:51:44.373895    2146 flags.go:33] FLAG: --enable-cadvisor-json-endpoints="true"
+May 07 12:51:44 worker1.ocp4.ignalina.dk hyperkube[2146]: I0507 12:51:44.373900    2146 flags.go:33] FLAG: --enable-controller-attach-detach="true"
+May 07 12:51:44 worker1.ocp4.ignalina.dk hyperkube[2146]: I0507 12:51:44.373904    2146 flags.go:33] FLAG: --enable-debugging-handlers="true"
+May 07 12:51:44 worker1.ocp4.ignalina.dk hyperkube[2146]: I0507 12:51:44.373907    2146 flags.go:33] FLAG: --enable-load-reader="false"
+May 07 12:51:44 worker1.ocp4.ignalina.dk hyperkube[2146]: I0507 12:51:44.373911    2146 flags.go:33] FLAG: --enable-server="true"
+May 07 12:51:44 worker1.ocp4.ignalina.dk hyperkube[2146]: I0507 12:51:44.373915    2146 flags.go:33] FLAG: --enforce-node-allocatable="[pods]"
+May 07 12:51:44 worker1.ocp4.ignalina.dk hyperkube[2146]: I0507 12:51:44.373921    2146 flags.go:33] FLAG: --event-burst="10"
+May 07 12:51:44 worker1.ocp4.ignalina.dk hyperkube[2146]: I0507 12:51:44.373969    2146 flags.go:33] FLAG: --event-qps="5"
+May 07 12:51:44 worker1.ocp4.ignalina.dk hyperkube[2146]: I0507 12:51:44.373973    2146 flags.go:33] FLAG: --event-storage-age-limit="default=0"
+May 07 12:51:44 worker1.ocp4.ignalina.dk hyperkube[2146]: I0507 12:51:44.373978    2146 flags.go:33] FLAG: --event-storage-event-limit="default=0"
+May 07 12:51:44 worker1.ocp4.ignalina.dk hyperkube[2146]: I0507 12:51:44.373982    2146 flags.go:33] FLAG: --eviction-hard="imagefs.available<15%,memory.available<100Mi,nodefs.available<10%,nodefs.inodesFree<5%"
+May 07 12:51:44 worker1.ocp4.ignalina.dk hyperkube[2146]: I0507 12:51:44.373995    2146 flags.go:33] FLAG: --eviction-max-pod-grace-period="0"
+May 07 12:51:44 worker1.ocp4.ignalina.dk hyperkube[2146]: I0507 12:51:44.374000    2146 flags.go:33] FLAG: --eviction-minimum-reclaim=""
+May 07 12:51:44 worker1.ocp4.ignalina.dk hyperkube[2146]: I0507 12:51:44.374005    2146 flags.go:33] FLAG: --eviction-pressure-transition-period="5m0s"
+May 07 12:51:44 worker1.ocp4.ignalina.dk hyperkube[2146]: I0507 12:51:44.374009    2146 flags.go:33] FLAG: --eviction-soft=""
+May 07 12:51:44 worker1.ocp4.ignalina.dk hyperkube[2146]: I0507 12:51:44.374018    2146 flags.go:33] FLAG: --eviction-soft-grace-period=""
+May 07 12:51:44 worker1.ocp4.ignalina.dk hyperkube[2146]: I0507 12:51:44.374022    2146 flags.go:33] FLAG: --exit-on-lock-contention="false"
+May 07 12:51:44 worker1.ocp4.ignalina.dk hyperkube[2146]: I0507 12:51:44.374026    2146 flags.go:33] FLAG: --experimental-allocatable-ignore-eviction="false"
+
+machine-config-operator 
+daemon-token
+proxy-tls
+cookie-secret
+
+openshift-dns
+CNI network plugin
+
+openshift-image-registry
+image-registry-certificates
+node-ca-token
+
+openshift-ingress
+router-stats-default
+router-certes-default
+metrics-certs-default
+dockercfg
+token
+
+openshift-monitoring
+
+marketplace-trusted-ca
+telemeter-trusted-ca-bundle
+serving-certs-ca-bundle
+certified-operators
+openshift-cluster-node-tuning-operator
+
+oc adm cordon node 
+oc adm uncordon node
+
+
