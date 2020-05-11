@@ -1,0 +1,88 @@
+YUM (Yellowdog Updater Modified), an open source command-line as well as graphical based package management tool for RPM
+RPM (RedHat Package Manager)
+by Seth Vidal under GPL (General Public License)
+
+System architecture
+... repos setup around the web (url and .repo provided)
+|
+redhat centos repo setup /etc/yum.repo.d/*.repo 
+|
+cache, yum keeps all the repository enabled package data in /var/cache/yum/ with each sub-director
+|
+software installed
+
+Repo management
+Add repo
+1. [repository] section to the /etc/yum.conf file
+2. add a .repo file in the /etc/yum.repos.d/ directory. All files with the .repo file extension in this directory are read by yum, and it is recommended to define your repositories here instead of in /etc/yum.conf
+3. Yum repositories commonly provide their own .repo file.
+yum-config-manager --add-repo https://repository_url.repo
+
+list repo
+yum repolist (only enabled)
+yum repolist all
+
+enable/disable repo
+yum-config-manager --enable/disable repository_id_from_yum_repolist
+yum-config-manager --enable/disable glob_expression…
+
+remove repo
+1 /etc/yum.conf 
+2 remove .repo file 
+3 disable it
+
+Package management
+Install
+yum install package-name
+yum install -y package-name 
+yum install enablerepo=repo-name  package-name(install from target repo)
+
+Uninstall
+yum remove package-name
+yum remove -y package-name
+
+Update
+yum check-updates (check is there're updates available)
+yum update package-name (to actually update)
+yum update (update all)
+
+List
+yum list package-name
+yum list (all)
+yum list installed (all installed)
+
+Search
+yum search word-in-package-name
+
+View 
+yum info package-name
+
+Package group management
+a package group is a bundle of packages
+List
+yum grouplist 
+
+Install
+yum groupinstall 'my group name'
+
+Update 
+yum groupupdate 'my group name'
+
+Remove
+yum groupremove 'my group name'
+
+Cache management
+yum clean all
+
+Interactive
+yum shell
+
+After installation management
+Files track, to check which package a specific file belongs to
+yum provides /path/to/file
+
+History of installations
+yum history
+
+https://access.redhat.com/documentation/en-us/red_hat_enterprise_linux/6/html/deployment_guide/sec-managing_yum_repositories
+https://www.tecmint.com/20-linux-yum-yellowdog-updater-modified-commands-for-package-mangement/
