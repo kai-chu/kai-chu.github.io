@@ -84,5 +84,36 @@ yum provides /path/to/file
 History of installations
 yum history
 
+Redhat subscription 
+Portal  
+|
+Subscription management service 
+|
+managed systems
+
+List pools
+subscription-manager list --available
+subscription-manager list --available --all
+
+Register, tell service who it is
+subscription-manager register
+
+Unregister
+subscription-manager unregister
+
+Attach, tell servic
+subscription-manager attach --auto
+subscription-manager attach --pool=<POOL_ID>
+
+Refresh
+subscription-manager refresh
+
+All in one
+subscription-manager register --username <username> --password <password> --auto-attach
+
+Clean up
+subscription-manager clean
+
+
 https://access.redhat.com/documentation/en-us/red_hat_enterprise_linux/6/html/deployment_guide/sec-managing_yum_repositories
 https://www.tecmint.com/20-linux-yum-yellowdog-updater-modified-commands-for-package-mangement/
