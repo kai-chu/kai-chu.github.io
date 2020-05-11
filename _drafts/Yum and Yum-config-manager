@@ -87,7 +87,7 @@ yum history
 Redhat subscription 
 Portal  
 |
-Subscription management service 
+Subscription management service - pool -> yum repos
 |
 managed systems
 
@@ -105,6 +105,7 @@ Attach, tell servic
 subscription-manager attach --auto
 subscription-manager attach --pool=<POOL_ID>
 
+
 Refresh
 subscription-manager refresh
 
@@ -114,6 +115,14 @@ subscription-manager register --username <username> --password <password> --auto
 Clean up
 subscription-manager clean
 
+Repo management in subscription pool
+List repos in subscription
+subscription-manager repos --list-enabled
+subscription-manager repos --list
+subscription-manager repos --list-disabled
+
+Enable/disable repos in pool
+subscription-manager repos --enable/disable=REPOID
 
 https://access.redhat.com/documentation/en-us/red_hat_enterprise_linux/6/html/deployment_guide/sec-managing_yum_repositories
 https://www.tecmint.com/20-linux-yum-yellowdog-updater-modified-commands-for-package-mangement/
