@@ -34,15 +34,12 @@ scl enable software_collection_1 software_collection_2 bash
 cat cmd | scl enable software_collection_1 - 
 
 
-
-Install
+Install pip
 pip install package
 
 Update
 pip install package-name -U
 pip install package-name -upgrade
 
-Remove
-
-
 https://access.redhat.com/documentation/en-us/red_hat_software_collections/3/html/packaging_guide/sect-enabling_support_for_software_collections
+https://access.redhat.com/solutions/1519803
