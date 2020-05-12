@@ -1,0 +1,13 @@
+oc registry info
+
+oc login -u kubeadmin
+
+oc whoami -t
+
+oc new-project YOUR_PROJECT
+
+podman tag YOUR_BUILD_IMAGE -t default-route-openshift-image-registry.apps.YOUR_DOMAIN/YOUR_PROJECT/hello-world
+
+podman push --tls-verify=false default-route-openshift-image-registry.apps.YOUR_DOMAIN/YOUR_PROJECT/hello-world
+
+
