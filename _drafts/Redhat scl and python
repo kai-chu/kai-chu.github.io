@@ -1,0 +1,48 @@
+Repos 
+|                                        |
+Software collections (scl utils)         yum
+package/v1
+package/v2 <- enabled
+
+Enable a repo which has the yum packages 
+subscription-manager repos --enable rhel-server-rhscl-7-rpms 
+
+Install python 
+yum install rh-python35-python-pip 
+yum install software_collection_1\* 
+
+Remove
+yum remove software_collection_1\* 
+
+Enable scl utils 
+yum install scl-utils
+
+Syntax for scl
+scl action software_collection_1 software_collection_2 command 
+scl action software_collection_1 software_collection_2 'command --args' 
+scl action software_collection_1 software_collection_2 -- command --args
+
+List all software collections
+scl -l 
+List all enabled in current sessions 
+echo $X_SCLS 
+
+Enable a package for running command/ starting bash
+scl enable rh-python36 bash
+scl enable software_collection_1 'perl --version' 
+scl enable software_collection_1 software_collection_2 bash 
+cat cmd | scl enable software_collection_1 - 
+
+
+
+Install
+pip install package
+
+Update
+pip install package-name -U
+pip install package-name -upgrade
+
+Remove
+
+
+https://access.redhat.com/documentation/en-us/red_hat_software_collections/3/html/packaging_guide/sect-enabling_support_for_software_collections
