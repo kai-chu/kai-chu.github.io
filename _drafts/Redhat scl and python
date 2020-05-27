@@ -33,6 +33,10 @@ scl enable software_collection_1 'perl --version'
 scl enable software_collection_1 software_collection_2 bash 
 cat cmd | scl enable software_collection_1 - 
 
+Enable a package forrunning command from shell with persisted source
+$ cat /etc/profile.d/enablepython33.sh
+#!/bin/bash
+source scl_source enable python33
 
 Install pip
 pip install package
