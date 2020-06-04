@@ -1,0 +1,14 @@
+$ oc get scc
+$ oc get scc
+$ oc describe scc restricted
+$ oadm policy add-user-to-scc <scc_name> <user_name>
+
+$ oadm policy add-group-to-scc <scc_name> <group_name>
+This default service account will only have access to all the capabilities defined by the restricted SCC, as out of the box OpenShift will add every authenticated user to the restricted SCC 
+
+$ oc create serviceaccount useroot
+$ oc adm policy add-scc-to-user anyuid -z useroot
+
+
+$ oc patch dc/myAppNeedsRoot --patch '{"spec":{"template":{"spec":{"serviceAccountName": "useroot"}}}}'
+
