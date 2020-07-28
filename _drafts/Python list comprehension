@@ -1,0 +1,22 @@
+an elegant way to create list from another list
+[expression for item in list if condition]
+list.filter().map()
+
+Simple 
+list=[l for l in list]
+
+Condition
+list=[l for l in list if l > 0]
+
+Multiple condition
+list=[l for l in list if l > 0 if l < 100]
+
+Expression condition
+list=[l if l > 0 else 0 for l in list]
+
+Nested 
+matrix = [[1, 2], [3,4], [5,6], [7,8]]
+transpose = [[row[i] for row in matrix] for i in range(2)]
+print (transpose)
+
+for i in range(2) is executed before row[i] for row in matrix
