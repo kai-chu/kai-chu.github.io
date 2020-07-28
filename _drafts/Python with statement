@@ -1,0 +1,34 @@
+With is used to wrap the execution of a block with methods defined by a context manager.
+A context manager is an object that defines the runtime context to be established when executing a with statement. 
+The context manager handles the entry into, and the exit from, the desired runtime context for the execution of the block of code
+
+Simple 
+with EXPRESSION as TARGET:
+    SUITE
+
+Multiple with-items
+with A() as a, B() as b:
+    SUITE
+with A() as a:
+  with B() as b:
+    SUITE
+    
+With and context manager, 
+If the exit method from context manager return value was true, the exception is suppressed.
+If no exception happens, exit with three None parameter 
+manager = (EXPRESSION)
+enter = type(manager).__enter__
+exit = type(manager).__exit__
+value = enter(manager)
+hit_except = False
+
+try:
+    TARGET = value
+    SUITE
+except:
+    hit_except = True
+    if not exit(manager, *sys.exc_info()):
+        raise
+finally:
+    if not hit_except:
+        exit(manager, None, None, None)
