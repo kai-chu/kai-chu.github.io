@@ -5,3 +5,7 @@ format % value
 "my name is %s" % 'kai'
 
 https://docs.python.org/3/library/stdtypes.html#printf-style-string-formatting
+
+format with {}
+>>> '{}//:{}/abc.com'.format('https','8080')
+'https//:8080/abc.com'
