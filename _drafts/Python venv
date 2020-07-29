@@ -1,0 +1,15 @@
+Virtual environment
+A way to separate different python environment installation.
+
+Create
+The module venv is used to create a virtual environment, it usually creates a folder which contains Python interpreter, the standard library, and various supporting files
+```
+python -m venv VirtualName
+```
+
+Activate
+A python interpreter installed in a venv cannot be realized by shell directly, if you want to use it as a default python, you can activate it
+```
+$ source ./venv/virtualname/activate
+$ python -v
+```
