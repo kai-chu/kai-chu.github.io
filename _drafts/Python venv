@@ -11,5 +11,20 @@ Activate
 A python interpreter installed in a venv cannot be realized by shell directly, if you want to use it as a default python, you can activate it
 ```
 $ source ./venv/virtualname/activate
-$ python -v
+(virtuanlName) $ python -v
 ```
+
+Pip package management
+Search
+pip search packageName
+
+Add
+pip install packageName
+pip install packageName=version
+
+Update
+pip install packageName=version
+pip upgrade packageName
+
+Delete
+pip uninstall packageName
