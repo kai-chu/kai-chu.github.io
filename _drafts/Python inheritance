@@ -1,0 +1,26 @@
+Inheritance allows us to define a class that inherits all the methods and properties from another class.
+
+Class A:
+  def __init__(self, prop1):
+    self.prop1 = prop1
+
+Class B(A):
+  pass
+  
+Class C(A):
+  def __init__:
+    pass
+
+Override bound method
+The same method defined in derived class will override base class method, such as __init__ in class C. 
+Since derived class C wants to inherit all properties from base class and __init__ defined properties in base class is override.
+Either we define the property in C
+Class C(A):
+  def __init__(self, prop1):
+    self.prop1 = prop1;
+Or we use the base class 
+  def __init__(self, prop1, prop2):
+    self.prop2 = prop2
+    A.__init__(self, prop1), use Class A method __init__ to add prop1 to class instance self(C instance) 
+    = bounded method C().__init__(prop1), how everver, C() will trigger __init__, this is infinite loop
+    = super().__init__(prop1) saves your world. 
