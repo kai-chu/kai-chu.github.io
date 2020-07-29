@@ -39,3 +39,7 @@ NOTE: Directory containing the symlink is not added to the module search path.
 __pycache__ directory 
 To speed up loading modules, Python caches the compiled version of each module in the __pycache__ directory under the name module.version.pyc,
 where the version encodes the format of the compiled file; it generally contains the Python version number
+
+Module in advance
+Dictionary __dict__ is maintained by a module to manage its properties and members.
+a.__dict__['a'] = a is equivlent to a.a = a
