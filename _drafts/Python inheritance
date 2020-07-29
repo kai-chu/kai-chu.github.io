@@ -24,3 +24,5 @@ Or we use the base class
     A.__init__(self, prop1), use Class A method __init__ to add prop1 to class instance self(C instance) 
     = bounded method C().__init__(prop1), how everver, C() will trigger __init__, this is infinite loop
     = super().__init__(prop1) saves your world. 
+    
+The super() method return a object which contains the child class and object which has been added all the bounded methods from super classes. 
