@@ -1,0 +1,48 @@
+Python package is just a system directory hierachy structure to organise files.
+
+To create a package for a few modules
+package
+  mod1.py
+  mod2.py
+
+or
+package
+  package-sub1
+    mod1.py
+    mod2.py
+
+Import module in a package
+```
+from package import mod1
+```
+Import function from package module
+```
+import package.mod1
+from package.mod1 import functionName
+```
+
+Import all from a package
+
+The following won't load any modules in it
+```
+import package
+```
+
+Add __init__.py initialization to the package, so that python will automatically load all modules in that folder
+package
+  __init__.py
+  mod1.py
+  mod2.py
+__init__.py will be executed 
+
+import * and __all__
+from module import * will import all objects defined in the module
+from package import * will import all modules defined in __all__ dictionary
+```
+__all__ = [
+        'mod1',
+        'mod2',
+        'mod3',
+        'mod4'
+        ]
+```
