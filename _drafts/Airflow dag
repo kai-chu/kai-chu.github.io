@@ -1,0 +1,13 @@
+Dag define
+Dag Context
+```
+With dag:
+  task1 = Task(task_id='', ...)
+```
+Instance args
+```
+task1 = Task(task_id='', dag = dag, ...)
+```
+
+Dependency Define
+task1 >> task2
