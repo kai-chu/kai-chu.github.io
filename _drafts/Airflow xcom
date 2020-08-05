@@ -10,3 +10,22 @@ Get xcom varaibles from context by
 - If xcom_pull is passed a single string for task_ids, then the most recent XCom value from that task is returned; 
   if a list of task_ids is passed, then a corresponding list of XCom values is returned.
 2. from jinja template {{ task_instance.xcom_pull(task_ids='foo', key='table_name') }}
+
+
+```
+class ExampleOperate(BaseOperator):
+  def execute(self, context):
+    return [1, 2, 3]
+ 
+//dag
+def _print_xcom(**context):
+  ti = context['ti']
+  example_return = xcom.pull(Key=None, task_ids='example')
+  for l in example_return 
+    print(l) // 1, 2, 3
+    
+with dag:
+  example = ExampleOperate(task_id = 'example')
+  print_xcom = PythonOperator(python_callable=_print_xcom, ...)
+
+```
