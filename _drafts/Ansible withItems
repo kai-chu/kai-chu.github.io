@@ -1,0 +1,52 @@
+1. list of string
+```
+- name: "loop through list"
+  debug:
+    msg: "An item: {{ item }}"
+  with_items:
+    - 1
+    - 2
+    - 3
+    
+- name: Ensure service config dir exist
+  file:
+    state: directory
+    path: "/etc/systemd/system/airflow-{{item}}.service.d"
+  with_items: "{{ airflow_services }}"
+```
+
+2. list of key-values
+- name: more complex items to add several users
+  user:
+    name: "{{ item.name }}"
+    uid: "{{ item.uid }}"
+    groups: "{{ item.groups }}"
+    state: present
+  with_items:
+     - { name: testuser1, uid: 1002, groups: "wheel, staff" }
+     - { name: testuser2, uid: 1003, groups: staff }
+
+
+2. list a variable
+```
+//role/example/default/main.yaml
+users:
+- name: testuser1
+  uid: 1002
+  groups: "wheel, staff"
+- name: testuser2
+  uid: 1003
+  groups: staff
+
+//role/example/default/main.yaml
+- name: more complex items to add several users
+  user:
+    name: "{{ item.name }}"
+    uid: "{{ item.uid }}"
+    groups: "{{ item.groups }}"
+    state: present
+  with_items: "{{ users }}"
+  
+```
+
+
