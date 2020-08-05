@@ -26,6 +26,6 @@ def _print_xcom(**context):
     
 with dag:
   example = ExampleOperate(task_id = 'example')
-  print_xcom = PythonOperator(python_callable=_print_xcom, ...)
+  print_xcom = PythonOperator(python_callable=_print_xcom, provide_context = True, ...)
 
 ```
