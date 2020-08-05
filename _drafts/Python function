@@ -42,3 +42,16 @@ Special in Python
 pass statement is used for empty body function
 def myfunction():
   pass
+
+
+Situations when call a function with fixed number of args with keyword arguments
+```
+def hello(a,b,c,**kwargs):
+  print(c)
+hello(1,2) /Not OK, takes exactly 3 arguments (2 given)
+hello(1,2,3) /OK
+hello(1,2, c = 3), OK
+hello(1,2,3, c=4), not OK,  got multiple values for keyword argument 'c'
+hello(1,2,3, d=4), OK
+```
+
