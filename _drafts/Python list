@@ -33,6 +33,8 @@ list[start:end] = [list,items]
 
 Concat list
 extend([list,items])
+extend will add all items into the list, list.extend([a,b,c]) [..., a, b, c]
+append will add any arg into the list as a whole list.append([a,b,c]) [..., [a,b,c]]
 
 Delete element by index
 del (access elemnt)
