@@ -119,7 +119,7 @@ positional arguments:
                         given, it will onlysearch for all the dagruns with the
                         given state. If no_backfill option is given, it will
                         filter outall backfill dagruns for given dag id.
-    list_tasks          List the tasks within a DAG
+  
     clear               Clear a set of task instance, as if they never ran
     pause               Pause a DAG
     unpause             Resume a paused DAG
@@ -133,12 +133,35 @@ positional arguments:
     run                 Run a single task instance
     initdb              Initialize the metadata database
     list_dags           List all the DAGs
+    ```
+    airflow list_dags
+    
+    ```
+    list_tasks          List the tasks within a DAG
+    ```
+    airflow list_tasks dag_id
+    ```
+    
+    task_state          Get the status of a task instance
+    ```
+    $ airflow task_state dag_id task_id 2020-08-05
+    [2020-08-05 10:50:40,438] {__init__.py:51} INFO - Using executor CeleryExecutor
+    [2020-08-05 10:50:40,439] {dagbag.py:396} INFO - Filling up the DagBag from /usr/share/airflow/dags
+    success
+    ```
+    
     dag_state           Get the status of a dag run
+    ```
+    $ airflow dag_state shb-ls-hh 2020-08-05
+    [2020-08-05 10:50:10,098] {__init__.py:51} INFO - Using executor CeleryExecutor
+    [2020-08-05 10:50:10,099] {dagbag.py:396} INFO - Filling up the DagBag from /usr/share/airflow/dags
+    success
+    ```
+    
     task_failed_deps    Returns the unmet dependencies for a task instance
                         from the perspective of the scheduler. In other words,
                         why a task instance doesn't get scheduled and then
                         queued by the scheduler, and then run by an executor).
-    task_state          Get the status of a task instance
     serve_logs          Serve logs generate by worker
     test                Test a task instance. This will run a task without
                         checking for dependencies or recording its state in
