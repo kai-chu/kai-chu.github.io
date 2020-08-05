@@ -1,0 +1,12 @@
+A way to commnicate between operators
+
+Set xcom variables in task_instance context by
+1. xcom_push
+2. return value from operator execute()
+3. return value from python_callable 
+
+Get xcom varaibles from context by 
+1. xcom_pull
+- If xcom_pull is passed a single string for task_ids, then the most recent XCom value from that task is returned; 
+  if a list of task_ids is passed, then a corresponding list of XCom values is returned.
+2. from jinja template {{ task_instance.xcom_pull(task_ids='foo', key='table_name') }}
