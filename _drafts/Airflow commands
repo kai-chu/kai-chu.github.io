@@ -1,72 +1,3 @@
-1. What is airflow
-Airflow is an 
-2. Quick run
-3. Archtecture
-Executor
-Dag
-Directed Acyclic Graph – is a workflow of all the tasks you want to run, organized in a way that reflects their relationships and dependencies In general, each one should correspond to a single logical workflow
-Dagbag
-- default dags
--- /usr/local/airflow/dags
-Task
-A work unit in a DAG, it is an implementation of an Operator. for example a PythonOperator to execute some Python code, or a BashOperator to run a Bash command
-Task instance
-A runtime exection of a task, It should be a combination of a DAG, a task, and a point in time (execution_date)
-Job
-UI
-command line tools
-webserver 
-scheduler
-Sqlite
-
-Dag folder
-A folder where airflow is searching DAG definition python files, execute and build DAG objects into airflow system. 
-When searching for DAGs, Airflow only considers python files that contain the strings “airflow” and “DAG” by default. 
-To consider all python files instead, disable the DAG_DISCOVERY_SAFE_MODE configuration flag.
-
-Dag definition
-Airflow use python file to declare dag objects, a DAG function is provided to accept configurations. e.g. dag=DAG('dag_name', default_args=default_args)
-Dag arguments
-The arguments provided for the dag object when the dag is run
-Dag default arguments
-The default dag argument, which is provided when defining the dag in dag definition python file
-
-Context manager
-airflow will find a dag definition in a python and assign that dat to operators defined in that definition file
-
-Dag objects build
-Airflow will find and run dag definition python files to create dags
-
-Task relationship
-Tasks a a dag can has dependencies by using task_1 >> task_2
-Upstream
-if we have a taskA, then the task running before it is the upstream of taskA, task A need to wait until upstream has completed successfully.
-Downsteam
-if we have a taskA, then the task after it is the downstream of taskA
-
-Task lifecycle
-A task goes through various stages from start to completion
-https://airflow.apache.org/docs/stable/_images/task_lifecycle_diagram.png
-
-Operators
-Operators is specific implementations of tasks. It defines what the task does and are only loaded by Airflow if they are assigned to a DAG.
-BashOperator - executes a bash command
-PythonOperator - calls an arbitrary Python function
-EmailOperator - sends an email
-SimpleHttpOperator - sends an HTTP request
-
-Bitshift Composition
-A convinient way to define relationships between tasks.
-
-Pool
-A named of list of workers which can be refered by a task to manually balance airflow workload.
-
-Queue
-Queue for a executor to cache tasks
-
-Worker
-Processes to get tasks out from queue and run it, workers can listen to one or multiple queues of tasks. 
-
 
 4. Basic usage
 airflow@7feed34ba9f5:~/dags$ airflow list_dags
@@ -199,8 +130,4 @@ e.g.
 postgres://user:password@localhost:5432/master
 
 connection to hdfs namenode 
-
-
-
-
 
