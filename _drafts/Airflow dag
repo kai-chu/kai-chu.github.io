@@ -1,25 +1,23 @@
-A dag (directed acyclic graph) is a collection of tasks with directional dependencies. A dag also has a schedule, a start date and an end date (optional). For each schedule, (say daily or hourly), the DAG needs to run each individual tasks as their dependencies are met. Certain tasks have the property of depending on their own past, meaning that they can’t run until their previous schedule (and upstream tasks) are completed.
+A dag (directed acyclic graph) is a collection of tasks with directional dependencies. A dag also has a schedule, a start date and an end date (optional). 
+For each schedule, (say daily or hourly), the DAG needs to run each individual tasks as their dependencies are met. 
+Certain tasks have the property of depending on their own past, meaning that they can’t run until their previous schedule (and upstream tasks) are completed.
 
 A task is unit of work in airflow which runs some python code for some works for an execution_date
 
-
-
-Execution_date, in airflow, each dag is running for a specific date to handle some data for that date. The execution_date is the logical date and time which the DAG Run, and its task instances, are running for. While a task_instance or DAG run might have a physical start date of now, their logical date might be 3 months ago because we are busy reloading something.
+Execution_date, in airflow, each dag is running for a specific date to handle some data for that date. 
+The execution_date is the logical date and time which the DAG Run, and its task instances, are running for. 
+While a task_instance or DAG run might have a physical start date of now, their logical date might be 3 months ago because we are busy reloading something.
 
 A DAG run and all task instances created within it are instanced with the same execution_date
 
 Basically, a dag consists of following 3 things and working as an airflow DAG developer, you need to define it in a DAG file.
 
-schedule, how often we run this DAG
-tasks or operators, what to do in this DAG
-dependency condition (upstream tasks)
-own past condition (previous scheduled task)
-dependencies, how tasks are depending on each other
-
+- schedule, how often we run this DAG
+- tasks or operators, what to do in this DAG
+- own past condition (previous scheduled task)
+- dependencies, how tasks are depending on each other 
 
 Note: a pipeline definition and a dag definition are the same in the context of airflow
-
-
 
 DAG definition file or pipeline definition
 
