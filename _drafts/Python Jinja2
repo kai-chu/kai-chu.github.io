@@ -73,13 +73,59 @@ Delimiters is used by jinja engine to look up variables, expressions, statements
 In Jinja2, it's those special delimiters that the engine understands intially, and then the engine will try to understand the words between those delimiters.
 
 There are a few kinds of delimiters. The default Jinja delimiters are configured as follows.
-{% ... %} for Statements
 {{ ... }} for Expressions and variables to print to the template output
+{% ... %} for Statements
 {# ... #} for Comments not included in the template output
 #  ... ## for Line Statements
 
->> The advanced users can choose different delimiters when using Jinja2
+- The advanced users can choose different delimiters when using Jinja2
 
+# Expressions
+## Math 
+```
+{{ XX + - * / // % ** YY }}
+```
+## String plus 
+We can concatenate string
+```
+{{ 'name' ~ name }}
+```
+## Comparisons
+```
+{{ XX == != >= <= < > YY }}
+```
+## Logic
+```
+{{ XX and or YY }}
+{{ not XX}}
+{{ not (XX and YY) }}
+```
+## Test 
+A test expression is used against the is operator, a test expression is a function such as `defined(value)`.
+[Full list of tests expression](https://jinja.palletsprojects.com/en/2.11.x/templates/#list-of-builtin-tests)
+```
+{{ XX in [YY,ZZ]}}
+{{ XX is test expression }}
+```
+When using a test expression in jinja template, we can ignore the only value parameter as following
+```
+{{ XX is defined }}
+```
+Some expressions have extra parameters, e.g. [divisibleby(value, num)](https://jinja.palletsprojects.com/en/2.11.x/templates/#divisibleby)
+```
+{{ XX is divisibleby(3) }}
+```
+
+## Object 
+We can use python method or attribute or items in a var object
+```
+{{ XX.method() XX.YY XX[YY] }}
+```
+## Filter 
+We can alter a value using filter, or I think mapper is more suitable name, it's similar as XX.map(mapper1).map(mapper2). [Full list of filters](https://jinja.palletsprojects.com/en/2.11.x/templates/#list-of-builtin-filters)
+```
+{{ XX | filter1 | fitler2 }}
+```
 # Statements
 ## Control statement
 In a template, we can use for, if to control simple logic.
