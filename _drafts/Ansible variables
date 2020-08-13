@@ -14,6 +14,19 @@ Clear text can be created by vi or any text editor
 1.2 Encrypted var file which is called vault file
 ansible-vault create foo.yml
 
-2. host_vars
+# The vars defined in special folder
+The `ansible-playbook` command looks for these directories in the current working directory by default
+playbook
+- host_vars
+  - all files will be read in lexicographical order
+- group_vars
+  - all files will be read in lexicographical order
 
-3. group_vars
+The `ansible` and `ansible-console` commands look for directories in the inventory. 
+Provide `--playbook-dir` to make them load vars from playbook directory and those in playbook will override the ones in inventory
+inventory
+- host_vars
+  - all files will be read in lexicographical order
+- group_vars
+  - all files will be read in lexicographical order
+
