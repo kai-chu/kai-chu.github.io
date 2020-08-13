@@ -17,3 +17,29 @@ from airflow.hooks.base_hook import BaseHook
 connection = BaseHook.get_connection("username_connection")
 password = connection.password # This is a getter that returns the unencrypted password.
 ```
+
+# Render a template by using your own context
+We usually provide operator args with a jinja template, if the args is templated, in the doc or code, you will find `template_fields` defined.
+such as `template_fields= ['bash_command', 'env']` in the [bash_operator](https://airflow.apache.org/docs/stable/_api/airflow/operators/bash_operator/index.html?highlight=operator#module-airflow.operators.bash_operator)
+
+however, if you have a python code where you want to render your own variables, you can using following method from helpers module.
+There is an helper method which is built on top of jinja in airflow, you can import it in your dag file
+```
+from airflow.utils.helpers import parse_template_string
+```
+Suppose you have a template string in your dag definition, however, you only know the context when the dag task is running.
+For example, the execution_date which is provided in context.ds
+Then you can use parse_template_string method to get a template and use the render with context to get your filename as following
+```
+filename_template='abc-{{my_name}}.csv'
+
+def my_sleeping_function(**context):
+  filename_template, filename_jinja_template = parse_template_string(filename_template)
+  filename = filename_jinja_template.render(my_name='Kai')
+
+task = PythonOperator(
+    task_id='sleep'
+    python_callable=my_sleeping_function,
+    dag=dag,
+)
+```
