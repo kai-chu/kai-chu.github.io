@@ -1,0 +1,6 @@
+# Getting connection details in dag
+```
+from airflow.hooks.base_hook import BaseHook
+ connection = BaseHook.get_connection("username_connection")
+ password = connection.password # This is a getter that returns the unencrypted password.
+```
