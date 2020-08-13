@@ -16,17 +16,26 @@ ansible-vault create foo.yml
 
 # The vars defined in special folder
 The `ansible-playbook` command looks for these directories in the current working directory by default
+```
 playbook
 - host_vars
-  - all files will be read in lexicographical order
+  - host_name.yaml, yml, json
+  - host_name_folder
+    - all files will be read in lexicographical order
 - group_vars
-  - all files will be read in lexicographical order
+  - group_name.yaml, yml, json
+  - host_name_folder
+    - all files will be read in lexicographical order
 
 The `ansible` and `ansible-console` commands look for directories in the inventory. 
 Provide `--playbook-dir` to make them load vars from playbook directory and those in playbook will override the ones in inventory
 inventory
 - host_vars
-  - all files will be read in lexicographical order
+  - host_name.yaml, yml, json
+  - host_name_folder
+    - all files will be read in lexicographical order
 - group_vars
-  - all files will be read in lexicographical order
-
+  - group_name.yaml, yml, json
+  - host_name_folder
+    - all files will be read in lexicographical order
+```
