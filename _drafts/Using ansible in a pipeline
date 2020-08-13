@@ -1,4 +1,4 @@
-In DevOps world, people only knows about automate everything. No interaction between human and machines! 
+In DevOps world, the monkeys only know automating everything. No interaction between human and machines! 
 Password prompt is always against the rule, here is a few steps to avoid that for ansible playbook. The solution is based on ssh username/password connection.
 
 In the manual way, we usually run a ansible playbook in the following way, ansible will prompt to ask us to input the password. 
