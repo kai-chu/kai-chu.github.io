@@ -1,3 +1,6 @@
+In DevOps world, people only knows about automate everything. No interaction between human and machines! 
+Password prompt is always against the rule, here is a few steps to avoid that for ansible playbook. The solution is based on ssh username/password connection.
+
 In the manual way, we usually run a ansible playbook in the following way, ansible will prompt to ask us to input the password. 
 - In our situation, we cannot use ssh private key to connect to remote.
 ```
@@ -13,7 +16,7 @@ playbook
 playbook.yml
 ```
 - Config ansible_user, ansible_password, ansible_become_password in your_group_name.yml file, they will be loaded when we run the playbook to avoid --ask-pass and --ask-become-pass
-]More info](https://docs.ansible.com/ansible/latest/user_guide/intro_inventory.html#group-variables)
+[More info](https://docs.ansible.com/ansible/latest/user_guide/intro_inventory.html#group-variables)
 ```
 ansible_user: YOUR_USER_NAME
 ansible_password: YOUR_USER_PASSWORD
