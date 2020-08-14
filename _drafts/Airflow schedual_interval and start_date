@@ -1,0 +1,190 @@
+The cron is used as two ways,
+fixed cron, which mean minute or hour is fixed number.
+
+
+if it's not fixed cron 
+airflow calculate the delta and adding the delta into the start_date
+
+
+1. start_date is calculated when the DAG is parsed
+2. start_date is nomalized be
+start_date = cron_previous == start_date ? cron_previous : cron_next
+
+
+
+start_date is given to the dag object: None
+start_date is given to the dag object in default_args: test-connection-hook 2020-08-12 00:00:00+00:00
+hi this is config...
+
+
+previous_cron = (now - days_ago(2) ) > next_cron  <= end_date(utc_now())
+
+start_date is given to the dag object: None
+start_date is given to the dag object in default_args: test-connection-hook 2020-08-12 00:00:00+00:00
+hi this is config...
+start_date is given to the dag object: None
+start_date is given to the dag object in default_args: shb-dami-fabe-Q63A0800 2020-08-12 00:00:00+00:00
+start_date is given to the dag object: None
+start_date is given to the dag object in default_args: shb-dami-fabe-Q63A0100 2020-08-12 00:00:00+00:00
+start_date is given to the dag object: None
+start_date is given to the dag object in default_args: shb-dami-fabe-Q63A0600 2020-08-12 00:00:00+00:00
+start_date is given to the dag object: None
+start_date is given to the dag object in default_args: shb-dami-notes-suppliers_cffi 2020-08-12 00:00:00+00:00
+start_date is given to the dag object: None
+start_date is given to the dag object in default_args: shb-dami-cglg-e45a0100 2020-08-12 00:00:00+00:00
+start_date is given to the dag object: None
+start_date is given to the dag object in default_args: example_bash_operator 2020-08-12 00:00:00+00:00
+start_date is given to the dag object: None
+start_date is given to the dag object in default_args: example_branch_operator 2020-08-12 00:00:00+00:00
+start_date is given to the dag object: None
+start_date is given to the dag object in default_args: example_branch_dop_operator_v3 2020-08-12 00:00:00+00:00
+start_date is given to the dag object: None
+start_date is given to the dag object in default_args: example_complex 2020-08-13 00:00:00+00:00
+/usr/share/airflow-venv/airflow/lib64/python3.6/site-packages/airflow/models/dag.py:1350: PendingDeprecationWarning: The requested task could not be added to the DAG because a task with task_id create_tag_template_field_result is already in the DAG. Starting in Airflow 2.0, trying to overwrite a task will raise an exception.
+  category=PendingDeprecationWarning)
+start_date is given to the dag object: 2015-01-01T00:00:00+00:00
+start_date is given to the dag object: 2015-01-01T00:00:00+00:00
+start_date is given to the dag object: None
+start_date is given to the dag object in default_args: example_http_operator 2020-08-12 00:00:00+00:00
+start_date is given to the dag object: None
+start_date is given to the dag object in default_args: example_kubernetes_executor_config 2020-08-12 00:00:00+00:00
+start_date is given to the dag object: 2020-08-12 00:00:00+00:00
+start_date is given to the dag object: 2020-08-12 00:00:00+00:00
+start_date is given to the dag object: 2020-08-12 00:00:00+00:00
+start_date is given to the dag object: None
+start_date is given to the dag object in default_args: example_passing_params_via_test_command 2020-08-13 00:00:00+00:00
+start_date is given to the dag object: None
+start_date is given to the dag object in default_args: example_pig_operator 2020-08-12 00:00:00+00:00
+start_date is given to the dag object: None
+start_date is given to the dag object in default_args: example_python_operator 2020-08-12 00:00:00+00:00
+start_date is given to the dag object: None
+start_date is given to the dag object in default_args: example_short_circuit_operator 2020-08-12 00:00:00+00:00
+start_date is given to the dag object: None
+start_date is given to the dag object in default_args: example_skip_dag 2020-08-12 00:00:00+00:00
+start_date is given to the dag object: None
+start_date is given to the dag object in default_args: example_subdag_operator 2020-08-12 00:00:00+00:00
+start_date is given to the dag object: None
+start_date is given to the dag object in default_args: example_subdag_operator.section-1 2020-08-12 00:00:00+00:00
+start_date is given to the dag object: None
+start_date is given to the dag object in default_args: example_subdag_operator.section-2 2020-08-12 00:00:00+00:00
+start_date is given to the dag object: None
+start_date is given to the dag object in default_args: example_trigger_controller_dag 2020-08-12 00:00:00+00:00
+start_date is given to the dag object: None
+start_date is given to the dag object in default_args: example_trigger_target_dag 2020-08-12 00:00:00+00:00
+start_date is given to the dag object: None
+start_date is given to the dag object in default_args: example_xcom 2020-08-12 00:00:00+00:00
+start_date is given to the dag object: None
+start_date is given to the dag object: None
+start_date is given to the dag object in default_args: tutorial 2020-08-12 00:00:00+00:00
+start_date and end_date to calculate run dates 2020-08-14T00:00:00+00:00:2020-08-14T00:00:00+00:00
+is_fixed_time_schedule_checking_cron_minute_hour,1:0, 1:0
+next time for absolute time 2020-08-15 01:00:00
+next time in my time zone <Timezone [UTC]> 2020-08-15 01:00:00+00:00
+is_fixed_time_schedule_checking_cron_minute_hour,1:0, 1:0
+is_fixed_time_schedule_checking_cron_minute_hour,1:0, 1:0
+normalize_schedule date 2020-08-14T00:00:00+00:00 > 2020-08-15 01:00:00+00:00 by checking cron previous 2020-08-13 01:00:00+00:00 and following 2020-08-15 01:00:00+00:00
+start_date must before end_date which is calculated by utcnow() is not given
+[2020-08-14 16:20:25,793] {backfill_job.py:759} INFO - No run dates were found for the given dates and dag interval.
+
+
+(airflow) bash-4.2$ airflow backfill test-connection-hook -s 2020-08-01 -e 2020-08-12
+[2020-08-14 17:14:50,718] {__init__.py:50} INFO - Using executor CeleryExecutor
+[2020-08-14 17:14:50,719] {dagbag.py:396} INFO - Filling up the DagBag from /usr/share/airflow/dags
+start_date is given to the dag object: None
+start_date is given to the dag object in default_args: shb-dami-fabe-Q63A0800 2020-08-12 00:00:00+00:00
+start_date is given to the dag object: None
+start_date is given to the dag object in default_args: shb-dami-fabe-Q63A0100 2020-08-12 00:00:00+00:00
+start_date is given to the dag object: None
+start_date is given to the dag object in default_args: shb-dami-fabe-Q63A0600 2020-08-12 00:00:00+00:00
+start_date is given to the dag object: None
+start_date is given to the dag object in default_args: shb-dami-notes-suppliers_cffi 2020-08-12 00:00:00+00:00
+start_date is given to the dag object: None
+start_date is given to the dag object in default_args: shb-dami-cglg-e45a0100 2020-08-12 00:00:00+00:00
+start_date is given to the dag object: None
+start_date is given to the dag object in default_args: test-connection-hook 2020-08-11 00:00:00+00:00
+hi this is config...
+start_date is given to the dag object: None
+start_date is given to the dag object in default_args: example_bash_operator 2020-08-12 00:00:00+00:00
+start_date is given to the dag object: None
+start_date is given to the dag object in default_args: example_branch_operator 2020-08-12 00:00:00+00:00
+start_date is given to the dag object: None
+start_date is given to the dag object in default_args: example_branch_dop_operator_v3 2020-08-12 00:00:00+00:00
+start_date is given to the dag object: None
+start_date is given to the dag object in default_args: example_complex 2020-08-13 00:00:00+00:00
+/usr/share/airflow-venv/airflow/lib64/python3.6/site-packages/airflow/models/dag.py:1350: PendingDeprecationWarning: The requested task could not be added to the DAG because a task with task_id create_tag_template_field_result is already in the DAG. Starting in Airflow 2.0, trying to overwrite a task will raise an exception.
+  category=PendingDeprecationWarning)
+start_date is given to the dag object: 2015-01-01T00:00:00+00:00
+start_date is given to the dag object: 2015-01-01T00:00:00+00:00
+start_date is given to the dag object: None
+start_date is given to the dag object in default_args: example_http_operator 2020-08-12 00:00:00+00:00
+start_date is given to the dag object: None
+start_date is given to the dag object in default_args: example_kubernetes_executor_config 2020-08-12 00:00:00+00:00
+start_date is given to the dag object: 2020-08-12 00:00:00+00:00
+start_date is given to the dag object: 2020-08-12 00:00:00+00:00
+start_date is given to the dag object: 2020-08-12 00:00:00+00:00
+start_date is given to the dag object: None
+start_date is given to the dag object in default_args: example_passing_params_via_test_command 2020-08-13 00:00:00+00:00
+start_date is given to the dag object: None
+start_date is given to the dag object in default_args: example_pig_operator 2020-08-12 00:00:00+00:00
+start_date is given to the dag object: None
+start_date is given to the dag object in default_args: example_python_operator 2020-08-12 00:00:00+00:00
+start_date is given to the dag object: None
+start_date is given to the dag object in default_args: example_short_circuit_operator 2020-08-12 00:00:00+00:00
+start_date is given to the dag object: None
+start_date is given to the dag object in default_args: example_skip_dag 2020-08-12 00:00:00+00:00
+start_date is given to the dag object: None
+start_date is given to the dag object in default_args: example_subdag_operator 2020-08-12 00:00:00+00:00
+start_date is given to the dag object: None
+start_date is given to the dag object in default_args: example_subdag_operator.section-1 2020-08-12 00:00:00+00:00
+start_date is given to the dag object: None
+start_date is given to the dag object in default_args: example_subdag_operator.section-2 2020-08-12 00:00:00+00:00
+start_date is given to the dag object: None
+start_date is given to the dag object in default_args: example_trigger_controller_dag 2020-08-12 00:00:00+00:00
+start_date is given to the dag object: None
+start_date is given to the dag object in default_args: example_trigger_target_dag 2020-08-12 00:00:00+00:00
+start_date is given to the dag object: None
+start_date is given to the dag object in default_args: example_xcom 2020-08-12 00:00:00+00:00
+start_date is given to the dag object: None
+start_date is given to the dag object: None
+start_date is given to the dag object in default_args: tutorial 2020-08-12 00:00:00+00:00
+start_date and end_date to calculate run dates 2020-08-01T00:00:00+00:00:2020-08-12T00:00:00+00:00
+is_fixed_time_schedule_checking_cron_minute_hour,17:0, 17:0
+next time for absolute time 2020-08-02 17:00:00
+next time in my time zone <Timezone [UTC]> 2020-08-02 17:00:00+00:00
+is_fixed_time_schedule_checking_cron_minute_hour,17:0, 17:0
+is_fixed_time_schedule_checking_cron_minute_hour,17:0, 17:0
+normalize_schedule date 2020-08-01T00:00:00+00:00 > 2020-08-02 17:00:00+00:00 by checking cron previous 2020-07-30 17:00:00+00:00 and following 2020-08-02 17:00:00+00:00
+start_date must before end_date which is calculated by utcnow() is not given
+current_next_run_date is 2020-08-02 17:00:00+00:00
+is_fixed_time_schedule_checking_cron_minute_hour,17:0, 17:0
+next time for absolute time 2020-08-04 17:00:00
+next time in my time zone <Timezone [UTC]> 2020-08-04 17:00:00+00:00
+current_next_run_date is 2020-08-04 17:00:00+00:00
+is_fixed_time_schedule_checking_cron_minute_hour,17:0, 17:0
+next time for absolute time 2020-08-06 17:00:00
+next time in my time zone <Timezone [UTC]> 2020-08-06 17:00:00+00:00
+current_next_run_date is 2020-08-06 17:00:00+00:00
+is_fixed_time_schedule_checking_cron_minute_hour,17:0, 17:0
+next time for absolute time 2020-08-08 17:00:00
+next time in my time zone <Timezone [UTC]> 2020-08-08 17:00:00+00:00
+current_next_run_date is 2020-08-08 17:00:00+00:00
+is_fixed_time_schedule_checking_cron_minute_hour,17:0, 17:0
+next time for absolute time 2020-08-10 17:00:00
+next time in my time zone <Timezone [UTC]> 2020-08-10 17:00:00+00:00
+current_next_run_date is 2020-08-10 17:00:00+00:00
+is_fixed_time_schedule_checking_cron_minute_hour,17:0, 17:0
+next time for absolute time 2020-08-12 17:00:00
+next time in my time zone <Timezone [UTC]> 2020-08-12 17:00:00+00:00
+[2020-08-14 17:14:50,919] {base_executor.py:58} INFO - Adding to queue: ['airflow', 'run', 'test-connection-hook', 'getDetailsFromConnection', '2020-08-02T17:00:00+00:00', '--local', '--pool', 'default_pool', '-sd', 'DAGS_FOLDER/test-connection-hook.py']
+[2020-08-14 17:14:50,932] {base_executor.py:58} INFO - Adding to queue: ['airflow', 'run', 'test-connection-hook', 'getDetailsFromConnection', '2020-08-04T17:00:00+00:00', '--local', '--pool', 'default_pool', '-sd', 'DAGS_FOLDER/test-connection-hook.py']
+[2020-08-14 17:14:50,945] {base_executor.py:58} INFO - Adding to queue: ['airflow', 'run', 'test-connection-hook', 'getDetailsFromConnection', '2020-08-06T17:00:00+00:00', '--local', '--pool', 'default_pool', '-sd', 'DAGS_FOLDER/test-connection-hook.py']
+[2020-08-14 17:14:50,959] {base_executor.py:58} INFO - Adding to queue: ['airflow', 'run', 'test-connection-hook', 'getDetailsFromConnection', '2020-08-08T17:00:00+00:00', '--local', '--pool', 'default_pool', '-sd', 'DAGS_FOLDER/test-connection-hook.py']
+[2020-08-14 17:14:50,972] {base_executor.py:58} INFO - Adding to queue: ['airflow', 'run', 'test-connection-hook', 'getDetailsFromConnection', '2020-08-10T17:00:00+00:00', '--local', '--pool', 'default_pool', '-sd', 'DAGS_FOLDER/test-connection-hook.py']
+[2020-08-14 17:14:56,087] {backfill_job.py:364} INFO - [backfill progress] | finished run 0 of 5 | tasks waiting: 0 | succeeded: 0 | running: 5 | failed: 0 | skipped: 0 | deadlocked: 0 | not ready: 0
+[2020-08-14 17:15:00,927] {dagrun.py:319} INFO - Marking run <DagRun test-connection-hook @ 2020-08-02 17:00:00+00:00: backfill_2020-08-02T17:00:00+00:00, externally triggered: False> successful
+[2020-08-14 17:15:00,936] {dagrun.py:319} INFO - Marking run <DagRun test-connection-hook @ 2020-08-04 17:00:00+00:00: backfill_2020-08-04T17:00:00+00:00, externally triggered: False> successful
+[2020-08-14 17:15:00,942] {dagrun.py:319} INFO - Marking run <DagRun test-connection-hook @ 2020-08-06 17:00:00+00:00: backfill_2020-08-06T17:00:00+00:00, externally triggered: False> successful
+[2020-08-14 17:15:00,948] {dagrun.py:319} INFO - Marking run <DagRun test-connection-hook @ 2020-08-08 17:00:00+00:00: backfill_2020-08-08T17:00:00+00:00, externally triggered: False> successful
+[2020-08-14 17:15:00,954] {dagrun.py:319} INFO - Marking run <DagRun test-connection-hook @ 2020-08-10 17:00:00+00:00: backfill_2020-08-10T17:00:00+00:00, externally triggered: False> successful
+[2020-08-14 17:15:00,957] {backfill_job.py:364} INFO - [backfill progress] | finished run 5 of 5 | tasks waiting: 0 | succeeded: 5 | running: 0 | failed: 0 | skipped: 0 | deadlocked: 0 | not ready: 0
+[2020-08-14 17:15:01,077] {backfill_job.py:813} INFO - Backfill done. Exiting.
