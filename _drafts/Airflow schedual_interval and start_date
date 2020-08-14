@@ -7,7 +7,7 @@ if it's not fixed cron
 airflow calculate the delta and adding the delta into the start_date
 @hourly 
 
-interval -- interval -- now -- interval
+interval - | - interval -- now -- interval
 start_date + interval 
 
 start_date -- interval -- interval
