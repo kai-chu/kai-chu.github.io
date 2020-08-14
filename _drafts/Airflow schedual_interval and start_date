@@ -7,6 +7,41 @@ if it's not fixed cron
 airflow calculate the delta and adding the delta into the start_date
 @hourly 
 
+interval -- interval -- now -- interval
+start_date + interval 
+
+start_date -- interval -- interval
+
+daily 
+dags_ago(1) 
+
+e.g.
+
+start_date = 8/12:00:00:00
+current_time = 8/13 5:00
+pre_cron = 8/11 01:00:00 
+pre_pre_cron = 8/9 01:00:00
+
+  # don't do scheduler catchup for dag's that don't have dag.catchup = True
+            if not (dag.catchup or dag.schedule_interval == '@once'):
+                # The logic is that we move start_date up until
+                # one period before, so that timezone.utcnow() is AFTER
+                # the period end, and the job can be created...
+                now = timezone.utcnow()
+                next_start = dag.following_schedule(now)
+                last_start = dag.previous_schedule(now)
+                if next_start <= now or isinstance(dag.schedule_interval, timedelta):
+                    new_start = last_start
+                else:
+                    new_start = dag.previous_schedule(last_start)
+
+                if dag.start_date:
+                    if new_start >= dag.start_date:
+                        dag.start_date = new_start
+                else:
+                    dag.start_date = new_start
+
+
 
 1. start_date is calculated when the DAG is parsed
 2. start_date is nomalized be
