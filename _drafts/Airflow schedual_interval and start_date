@@ -1,15 +1,31 @@
 The cron is used as two ways,
 fixed cron, which mean minute or hour is fixed number.
+@daily @monthly
 
 
 if it's not fixed cron 
 airflow calculate the delta and adding the delta into the start_date
+@hourly 
 
 
 1. start_date is calculated when the DAG is parsed
 2. start_date is nomalized be
 start_date = cron_previous == start_date ? cron_previous : cron_next
 
+def normalize_schedule(self, dttm):
+    """
+    Returns dttm + interval unless dttm is first interval then it returns dttm
+    """
+    following = self.following_schedule(dttm)
+
+    # in case of @once
+    if not following:
+        return dttm
+    if self.previous_schedule(following) != dttm:
+        print('normalize_schedule date {} > {} by checking cron previous {} and following {}'.format(dttm, following, self.previous_schedule(following), following ))
+        return following
+
+    return dttm
 
 
 start_date is given to the dag object: None
