@@ -36,7 +36,7 @@ Each time when the scheduler is running, it will calculate a start_date dependin
 start_date = utcnow() - 1 day and By default the time is set to midnight, e.g. day-1 00:00:00
 ```
 - DAG start_date adjustment, airflow will start subprocess to create DAG Runs, it first checks the schedule_interval and out the previous_cron_time and next_cron_time
-previous_cron_time0 - previous_cron_time1 - utcnow() - next_cron_time, the start_date of a DAG will be adjusted by the scheduler. In our scope, we can think the start_date will be
+previous_cron_time0 -> previous_cron_time1 -> utcnow() -> next_cron_time, the start_date of a DAG will be adjusted by the scheduler. In our scope, we can think the start_date will be
 adjusted as following rules
 ```
 dag.start_date = max(previous_cron_time0, dag.start_date)
@@ -46,16 +46,50 @@ from [FAQ](https://airflow.apache.org/docs/stable/faq.html), we know that
 *the Airflow scheduler triggers the task soon after the start_date + schedule_interval is passed*, which is named as `normalize_schedule`. Pay attention to 
 the start_date is the adjusted one as above. next_run_date will be run execution_date.
 
-# Analysis cases
+# Figure out when a dag will be scheduled
+To answer the question, we need to do 4 steps to get the result
+- Calculate previous schedule, previous-previous-schedule and next schedule based on the time when the scheduler runs. Since it runs peridically, so those time probably are changing during the day.
+In our case, the time calculation result is as following. 
+| scheduler time| previous cron | previous-pre cron | next cron |
+| -------------- | ------------- | ---------------- | ----------|
+| 08-14 00:30:00 | 08-10 01:00:00 | 08-12 01:00:00 | 08-14 01:00:00 | 
+| 08-14 02:00:00 | 08-12 01:00:00 | 08-14 01:00:00 | 08-16 01:00:00 |
+| 08-15 08:00:00 | 08-12 01:00:00 | 08-14 01:00:00 | 08-16 01:00:00 |
 
+It's very important to know the those 3 cron dates, since they will effect the start_date adjustment
+- Calculate the start_date based on the time when the scheduler runs, it changes as well when given delta, such as days_ago(1)
+We put it into the same table.
+| scheduler time| previous pre cron | previous cron | next cron | start_date
+| -------------- | ------------- | ---------------- | ----------|  -------  |
+| 08-14 00:30:00 | 08-10 01:00:00 | 08-12 01:00:00 | 08-14 01:00:00 | 08-13 00:00:00 |
+| 08-14 02:00:00 | 08-12 01:00:00 | 08-14 01:00:00 | 08-16 01:00:00 | 08-13 00:00:00 |
+| 08-15 08:00:00 | 08-12 01:00:00 | 08-14 01:00:00 | 08-16 01:00:00 | 08-14 00:00:00 |
 
+- Adjust the start_date
+As discussed above, we compare the start_date with previous-pre cron to get the real start_date
+| scheduler time| previous pre cron | previous cron | next cron | start_date | adjusted_start_date
+| -------------- | ------------- | ---------------- | ----------|  -------  | ------------------- |
+| 08-14 00:30:00 | 08-10 01:00:00 | 08-12 01:00:00 | 08-14 01:00:00 | 08-13 00:00:00 | 08-13 00:00:00 |
+| 08-14 02:00:00 | 08-12 01:00:00 | 08-14 01:00:00 | 08-16 01:00:00 | 08-13 00:00:00 | 08-13 00:00:00 |
+| 08-15 08:00:00 | 08-12 01:00:00 | 08-14 01:00:00 | 08-16 01:00:00 | 08-14 00:00:00 | 08-14 00:00:00 |
 
+- Normalize the start_date to find possible execution_date
+Nomalize start_date(execution_date) is calculated by two steps, find the next cron time and pre cron time based on the *adjusted_start_date*
+If adjusted_start_date == pre cron time, then *adjusted_start_date* will be the exection_date 
+Otherwise, *the next_cron* from current adjusted_start_date will be taken as the execution_date of next DAG run. 
+| adjusted_start_date | pre cron time | next cron time | nomalize start_date(execution_date) |
+| -------------- | ------------- | ---------------- | ---------- | 
+| 08-13 00:00:00 | 08-12 01:00:00 | 08-14 01:00:00 | 08-14 01:00:00 |
+| 08-13 00:00:00 | 08-12 01:00:00 | 08-14 01:00:00 | 08-14 01:00:00 |
+| 08-14 00:00:00 | 08-14 01:00:00 | 08-16 01:00:00 | 08-16 01:00:00 |
 
-
-
-
-
-
+- Decide if a run will be started
+We need to compare the execution_date with the current time again, if execution_date is > current_time, then scheduler won't create a DAG Run
+| scheduler time|  adjusted_start_date | pre cron time(start date) | next cron time(start date) | nomalize(start_date) = execution_date) | Run or not |
+| -------------- | -------------- | ------------- | ---------------- | -------------------------------------  | ------ |
+| 08-14 00:30:00 |08-13 00:00:00 | 08-12 01:00:00 | 08-14 01:00:00 | 08-14 01:00:00 | no |
+| 08-14 02:00:00 |08-13 00:00:00 | 08-12 01:00:00 | 08-14 01:00:00 | 08-14 01:00:00 | yes |
+| 08-15 08:00:00 |08-14 00:00:00 | 08-14 01:00:00 | 08-16 01:00:00 | 08-16 01:00:00 | no |
 
 The start_date is only used to decide when the first dag shall be created, and then the following DAG run will be decided by the schedule_interval
 
