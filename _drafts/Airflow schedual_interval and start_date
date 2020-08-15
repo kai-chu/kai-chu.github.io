@@ -85,11 +85,12 @@ Otherwise, *the next_cron* from current adjusted_start_date will be taken as the
 
 - Decide if a run will be started
 We need to compare the execution_date with the current time again, if execution_date is > current_time, then scheduler won't create a DAG Run
-| scheduler time|  adjusted_start_date | pre cron time(start date) | next cron time(start date) | nomalize(start_date) = execution_date) | Run or not |
-| -------------- | -------------- | ------------- | ---------------- | -------------------------------------  | ------ |
-| 08-14 00:30:00 |08-13 00:00:00 | 08-12 01:00:00 | 08-14 01:00:00 | 08-14 01:00:00 | no |
-| 08-14 02:00:00 |08-13 00:00:00 | 08-12 01:00:00 | 08-14 01:00:00 | 08-14 01:00:00 | yes |
-| 08-15 08:00:00 |08-14 00:00:00 | 08-14 01:00:00 | 08-16 01:00:00 | 08-16 01:00:00 | no |
+We need to compare the period_end which is next_cron_from(execution_date), if period_end > current_time, then scheduler won't create a DAG Run
+| scheduler time|  adjusted_start_date | pre cron time(start date) | next cron time(start date) | nomalize(start_date) = execution_date) | Period end | Run or not |
+| -------------- | -------------- | ------------- | ---------------- | -------------------------------------  | ------ | ------ |
+| 08-14 00:30:00 |08-13 00:00:00 | 08-12 01:00:00 | 08-14 01:00:00 | 08-14 01:00:00 | 08-16 01:00:00 |no | 
+| 08-14 02:00:00 |08-13 00:00:00 | 08-12 01:00:00 | 08-14 01:00:00 | 08-14 01:00:00 | 08-16 01:00:00 |no |
+| 08-15 08:00:00 |08-14 00:00:00 | 08-14 01:00:00 | 08-16 01:00:00 | 08-16 01:00:00 | 08-18 01:00:00 |no |
 
 The start_date is only used to decide when the first dag shall be created, and then the following DAG run will be decided by the schedule_interval
 
