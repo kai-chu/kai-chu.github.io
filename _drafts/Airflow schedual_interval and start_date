@@ -77,7 +77,7 @@ As discussed above, we compare the start_date with previous-pre cron to get the 
 Nomalize start_date(execution_date) is calculated by two steps, find the next cron time and pre cron time based on the *adjusted_start_date*
 If adjusted_start_date == pre cron time, then *adjusted_start_date* will be the exection_date 
 Otherwise, *the next_cron* from current adjusted_start_date will be taken as the execution_date of next DAG run. 
-| adjusted_start_date | pre cron time | next cron time | nomalize start_date(execution_date) |
+| adjusted_start_date | pre cron time(start date) | next cron time(start date) | nomalize(start_date) = execution_date) | 
 | -------------- | ------------- | ---------------- | ---------- | 
 | 08-13 00:00:00 | 08-12 01:00:00 | 08-14 01:00:00 | 08-14 01:00:00 |
 | 08-13 00:00:00 | 08-12 01:00:00 | 08-14 01:00:00 | 08-14 01:00:00 |
@@ -88,9 +88,20 @@ We need to compare the execution_date with the current time again, if execution_
 We need to compare the period_end which is next_cron_from(execution_date), if period_end > current_time, then scheduler won't create a DAG Run
 | scheduler time|  adjusted_start_date | pre cron time(start date) | next cron time(start date) | nomalize(start_date) = execution_date) | Period end | Run or not |
 | -------------- | -------------- | ------------- | ---------------- | -------------------------------------  | ------ | ------ |
-| 08-14 00:30:00 |08-13 00:00:00 | 08-12 01:00:00 | 08-14 01:00:00 | 08-14 01:00:00 | 08-16 01:00:00 |no | 
-| 08-14 02:00:00 |08-13 00:00:00 | 08-12 01:00:00 | 08-14 01:00:00 | 08-14 01:00:00 | 08-16 01:00:00 |no |
-| 08-15 08:00:00 |08-14 00:00:00 | 08-14 01:00:00 | 08-16 01:00:00 | 08-16 01:00:00 | 08-18 01:00:00 |no |
+| 08-14 00:30:00 |08-13 00:00:00 | 08-12 01:00:00 | 08-14 01:00:00 | 08-14 01:00:00 | 08-16 01:00:00 | no | 
+| 08-14 02:00:00 |08-13 00:00:00 | 08-12 01:00:00 | 08-14 01:00:00 | 08-14 01:00:00 | 08-16 01:00:00 | no |
+| 08-15 08:00:00 |08-14 00:00:00 | 08-14 01:00:00 | 08-16 01:00:00 | 08-16 01:00:00 | 08-18 01:00:00 | no |
+
+Let's take the same example above, however, change the start_date to days_ago(2)
+| scheduler time| previous pre cron | previous cron | next cron | start_date | adjusted_start_date |
+| -------------- | -------------- | -------------- | ---------------| -------------- | -------------- |
+| 08-14 00:30:00 | 08-10 01:00:00 | 08-12 01:00:00 | 08-14 01:00:00 | 08-12 00:00:00 | 08-12 00:00:00 | 
+| 08-14 02:00:00 | 08-12 01:00:00 | 08-14 01:00:00 | 08-16 01:00:00 | 08-12 00:00:00 | 08-12 01:00:00 | 
+
+| scheduler time | adjusted_start_date | pre cron time(start date) | next cron time(start date) | nomalize(start_date) = execution_date) | Period end | Run or not | 
+| -------------- | -------------- | -------------- | -------------- | -------------- | -------------- | --- |
+| 08-14 00:30:00 | 08-12 00:00:00 | 08-10 01:00:00 | 08-12 01:00:00 | 08-12 01:00:00 | 08-14 01:00:00 | no  |
+| 08-14 02:00:00 | 08-12 01:00:00 | 08-12 01:00:00 | 08-14 01:00:00 | 08-12 01:00:00 | 08-14 01:00:00 | yes |
 
 The start_date is only used to decide when the first dag shall be created, and then the following DAG run will be decided by the schedule_interval
 
