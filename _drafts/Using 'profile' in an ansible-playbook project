@@ -1,0 +1,100 @@
+Usually, I prefer to start a project from the recommended [best practice layout](https://docs.ansible.com/ansible/latest/user_guide/playbooks_best_practices.html#alternative-directory-layout) in ansible official website.
+```
+inventories/
+   production/
+      hosts               # inventory file for production servers
+      group_vars/
+         group1.yml       # here we assign variables to particular groups
+         group2.yml
+      host_vars/
+         hostname1.yml    # here we assign variables to particular systems
+         hostname2.yml
+
+   staging/
+      hosts               # inventory file for staging environment
+      group_vars/
+         group1.yml       # here we assign variables to particular groups
+         group2.yml
+      host_vars/
+         stagehost1.yml   # here we assign variables to particular systems
+         stagehost2.yml
+
+library/
+module_utils/
+filter_plugins/
+
+site.yml
+webservers.yml
+dbservers.yml
+
+roles/
+    common/
+    webtier/
+    monitoring/
+    fooapp/
+```
+
+It covers the essential mulitple environments deployment so that we can run following command in production
+```
+$ ansible-playbook -i inventories/production webservers.yml -k -K --ask-vault-pass
+$ ansible-playbook -i inventories/staging webservers.yml -k -K --ask-vault-pass
+```
+As I mentioned in my previous post about preventing from the interactive password input, so that we can [run ansible-playbook in a CI/CD](https://kaichu.se/Ansible/2020/08/13/using-ansible-playbook-in-a-devops-pipeline.html) pipeline without user input.
+We can add an all.yml file in the inventory group_vars to provide following information to ansible-playbook 
+```
+ansible_user: YOUR_USER_NAME
+ansible_password: YOUR_USER_PASSWORD
+ansible_become_password: YOUR_BECOME_PASSWORD
+```
+The group_vars in the root of the playbook is called playbook group_vars
+```
+inventories/
+group_vars
+     all.yml
+webservers.yml
+```
+
+I feel an inconvienient problem when I'm using my own user password instead of a shared service account between team members. 
+I don't want tell others my vault password, in that case others can know my `ansible_password` and `ansible_become_password`. 
+Initially, I think I can create a template and everyone who wants to use the playbook shall copy the template and create all.yml locally when they use it. 
+```
+inventories/
+group_vars
+     .gitignore -> all.yml
+     all.yml.cfg
+     all.yml (Anyone who doesnt' want to use -k -K --ask-vault-password options can create this in this local machine)
+webservers.yml
+```
+Which turns out it's even more cumbersome, obviously. 
+
+I decide to test another solution out, where we can use the --extra-vars options to achieve my goal without constraints. 
+I decide to use the profile concept which I've learnt from ant build scripts in my previous company.
+Here we don't use playbook group_vars, instead, we create a profiles folder and add the vars for each profile, such as kai, chu
+```
+inventories/
+    production/
+    staging/
+profiles/
+    template/
+        all.yml
+    kai/
+        all.yml
+    chu/
+        all.yml
+webservers.yml
+```
+
+I have put `ansible_user`, `ansible_password` and `ansible_become_password` in the all.yml in folder `kai`
+Now I gain the benefit of the profile by running following command
+```
+$ ansible-playbook -i inventories/production --extra-vars @profiles/kai/all.yml webservers.yml --vault-password-file ~/.ansible-vault-pass
+```
+It is an env/profile matrix solution, it gives the flexibility to test our ansible-playbook with any favourate vars
+Let's run the playbook with chu's profile in staging before finish this posts
+```
+$ ansible-playbook -i inventories/staging --extra-vars @profiles/chu/all.yml webservers.yml --vault-password-file ~/.ansible-vault-pass
+```
+
+# Conclusion
+It's good to use --extra-vars in my case, because I have some variables setup which is usually different for different ansible user. 
+It would be more appropriate to add one more inventories/test if there are a lot environment related differences.
