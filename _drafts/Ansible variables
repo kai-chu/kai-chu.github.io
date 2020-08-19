@@ -23,6 +23,7 @@ playbook
   - host_name_folder
     - all files will be read in lexicographical order
 - group_vars
+  - main.yml, will be read by all hosts
   - group_name.yaml, yml, json
   - host_name_folder
     - all files will be read in lexicographical order
