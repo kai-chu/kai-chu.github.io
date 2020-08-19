@@ -27,7 +27,11 @@ playbook
   - group_name.yaml, yml, json
   - host_name_folder
     - all files will be read in lexicographical order
-
+inventories
+- production
+  - group_vars
+    - all.yml
+    
 The `ansible` and `ansible-console` commands look for directories in the inventory. 
 Provide `--playbook-dir` to make them load vars from playbook directory and those in playbook will override the ones in inventory
 inventory
@@ -40,3 +44,12 @@ inventory
   - host_name_folder
     - all files will be read in lexicographical order
 ```
+
+
+--extra-vars @filename in cli
+ansible-playbook --extra-vars @profiles/kai/all.yml playbook.yml
+inventory
+- profiles
+  - kai
+    - all.yml
+- playbook.yml
