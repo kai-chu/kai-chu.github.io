@@ -8,3 +8,24 @@ Loop
 ## Index
 ## Add
 ## Iterator
+
+
+
+[root@VM_0_8_centos ~]# cat /proc/1/ns/
+ipc   mnt   net   pid   user  uts 
+
+
+1 kind namespace has multiple processes, 1 proc belongs to 1 kind namespace, there are 6 kinds of namespaces
+
+file descriptor -> inode number -> inode -> description
+
+To control limits of namespaces 
+[root@VM_0_8_centos ~]# cat /proc/sys/user/max_
+max_ipc_namespaces   max_mnt_namespaces   max_net_namespaces   max_pid_namespaces   max_user_namespaces  max_uts_namespaces
+
+Compare user space, the kernel limit config is here
+[root@VM_0_8_centos ~]# cat /proc/sys/kernel/threads-max
+14532
+
+Mount namespaces, All of the processes that reside in the same mount namespace will see the same view in these files
+/proc/[pid]/mounts, /proc/[pid]/mountinfo, and /proc/[pid]/mountstats 
