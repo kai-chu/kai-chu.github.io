@@ -1,4 +1,4 @@
 import json
 
 json.dumps(json)
-json.load(dumpsJson)
+json.loads(dumpsJson)
