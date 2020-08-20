@@ -1,0 +1,15 @@
+Create set
+set={a,b,c}
+
+add one
+set.add(a)
+
+Loop 
+for s in set
+  print(s)
+
+add with list
+set.update([a,b,c])
+
+set -> list
+list(set_name)
