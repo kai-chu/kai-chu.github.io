@@ -29,3 +29,5 @@ with dag:
   print_xcom = PythonOperator(python_callable=_print_xcom, provide_context = True, ...)
 
 ```
+
+https://github.com/apache/airflow/blob/master/airflow/example_dags/example_xcom.py
