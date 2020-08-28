@@ -23,3 +23,13 @@ return_value = self.execute_callable()
 File "/usr/share/airflow-venv/airflow/lib64/python3.6/site-packages/airflow/operators/python_operator.py", line 118, in execute_callable
 return self.python_callable(*self.op_args, **self.op_kwargs)
 ```
+
+
+my_function(a, b, **c)
+
+c= {'b':'xxxxxx'}
+
+my_function('a', 'bbb', **c) will fail since c contains keyword b which will duplicated with positional argument b. which means when calling this funciton, python doesn't know which 
+b.
+Under the hook, no matter positional args or keyword arguments, they will converted into some fixed type of function definitions.
+
