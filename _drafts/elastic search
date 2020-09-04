@@ -8,6 +8,13 @@ PUT coop
   "index" : "coop"
 }
 
+POST ica/_mapping
+POST ica 
+{
+  "mapping": {
+  } 
+}
+
 Version
 ?version=7&version_type=external
 avoid overriding
@@ -17,30 +24,10 @@ auto id generation
 1.2 Delete index
 
 1.3 Query index 
-Comma Separated Notation
-POST /index1,index2,index3/_search
-_all Keyword for All Indices
-POST /_all/_search
-Wildcards ( * , + , –)
-POST /school*/_search (all prefix with school)
-POST /school*,-schools_gov /_search (all, except)
-1.3.1 Query index parameters 
-ignore_unavailable
-POST /school*,book_shops/_search?ignore_unavailable = true
-allow_no_indices
-POST /schools_pri*/_search?allow_no_indices = true
-expand_wildcards
-POST ic*/_search?expand_wildcards=open
-{
-   "query":{
-      "match_all":{}
-   }
-}
-pretty 
-POST ic*/_search?pretty=true
-human
-filter_path = hits.total
+GET /_cat/indices
 
+1.4 Delete
+delete schools
 
 3. open or close index
 POST /schools/_close
@@ -77,12 +64,107 @@ POST hemkop/_doc
 
 2.2 Get document
 GET hemkop/_doc/1
+https://www.elastic.co/guide/en/elasticsearch/reference/current/docs-get.html
+_source_includes
+_source_excludes
+_source
+
+2.3 Search document in index
+Comma Separated Notation
+POST /index1,index2,index3/_search
+_all Keyword for All Indices
+POST /_all/_search
+Wildcards ( * , + , –)
+POST /school*/_search (all prefix with school)
+POST /school*,-schools_gov /_search (all, except)
+1.3.1 Query index parameters 
+A user can search by sending a get request with query string as a parameter or they can post a query in the message body of post request
+GET /_all/_search?q=city:paprola 
+
+ignore_unavailable
+POST /school*,book_shops/_search?ignore_unavailable = true
+allow_no_indices
+POST /schools_pri*/_search?allow_no_indices = true
+expand_wildcards
+POST ic*/_search?expand_wildcards=open
+{
+   "query":{
+      "match_all":{}
+   }
+}
+
+GET /_all/_search?q=product:banana
+
+
+
+pretty 
+POST ic*/_search?pretty=true
+human
+filter_path = hits.total
+
+
+2.3 delete document
+delete hemkop/_doc/1
+
+2.4 update document 
+POST schools/_update/4
+
+
 
 3. ES conf
 3.1 ES auto create index for non-existing index and doc maps
 action.auto_create_index:false | action.auto_create_index:+acc*,-bank*
 index.mapper.dynamic:false
 
+Search Query 
+"query":{
+   "match_all":{}
+   
+   "match" : {
+         "rating":"4.5"
+   }
+   
+   "multi_match" : {
+         "query": "paprola",
+         "fields": [ "city", "state" ]
+      }
+   "query_string":{
+         "query":"beautiful"
+      }
+   "term":{"zip":"176115"}
+   
+   "range":{
+         "rating":{
+            "gte":3.5
+         }
+      }
+   
+    "bool" : {
+         "must" : {
+            "term" : { "state" : "UP" }
+         },
+         "filter": {
+            "term" : { "fees" : "2200" }
+         },
+         "minimum_should_match" : 1,
+         "boost" : 1.0
+      }
+}
+   
+
+Search Aggregation
+
+Cluster 
+GET /_cat/nodes?h=ip,port
+GET /_cat/count?v
+GET /_cat/indices?v
+
+GET /_nodes/_local
+GET /_cluster/health
+GET /_cluster/state
+GET /_cluster/stats
+GET /_nodes/stats
+GET /_nodes/hot_threads
 
 
 
