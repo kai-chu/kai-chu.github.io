@@ -1,0 +1,89 @@
+1. Index management 
+Index is similar as a table in a relational database
+1.1 Create index
+PUT coop 
+{
+  "acknowledged" : true,
+  "shards_acknowledged" : true,
+  "index" : "coop"
+}
+
+Version
+?version=7&version_type=external
+avoid overriding
+?op_type=create
+auto id generation
+
+1.2 Delete index
+
+1.3 Query index 
+Comma Separated Notation
+POST /index1,index2,index3/_search
+_all Keyword for All Indices
+POST /_all/_search
+Wildcards ( * , + , –)
+POST /school*/_search (all prefix with school)
+POST /school*,-schools_gov /_search (all, except)
+1.3.1 Query index parameters 
+ignore_unavailable
+POST /school*,book_shops/_search?ignore_unavailable = true
+allow_no_indices
+POST /schools_pri*/_search?allow_no_indices = true
+expand_wildcards
+POST ic*/_search?expand_wildcards=open
+{
+   "query":{
+      "match_all":{}
+   }
+}
+pretty 
+POST ic*/_search?pretty=true
+human
+filter_path = hits.total
+
+
+3. open or close index
+POST /schools/_close
+
+
+
+2. Document management
+2.1 Add document 1 to hemkop index
+POST/PUT hemkop/_doc/1 
+{
+  "product": "banana", "price": 23.0
+}
+{
+  "_index" : "hemkop",
+  "_type" : "_doc",
+  "_id" : "1",
+  "_version" : 1,
+  "result" : "created",
+  "_shards" : {
+    "total" : 2,
+    "successful" : 2,
+    "failed" : 0
+  },
+  "_seq_no" : 0,
+  "_primary_term" : 1
+}
+
+Version
+?version=7&version_type=external
+avoid overriding
+?op_type=create
+auto id generation
+POST hemkop/_doc
+
+2.2 Get document
+GET hemkop/_doc/1
+
+3. ES conf
+3.1 ES auto create index for non-existing index and doc maps
+action.auto_create_index:false | action.auto_create_index:+acc*,-bank*
+index.mapper.dynamic:false
+
+
+
+
+
