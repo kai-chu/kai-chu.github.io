@@ -28,3 +28,8 @@ Bourne shell(sh)
 C shell(csh)
 Korn shell(ksh)
 Bourne again shell(bash)
+
+User and Group
+user, uid, groups, home directoy, shell /etc/passwd
+group, gid, user list
+super user, 0, no file permission, no process signal permission.
