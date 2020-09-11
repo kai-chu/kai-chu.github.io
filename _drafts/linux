@@ -1,0 +1,30 @@
+What is operating system
+An OS is an software which provides symentic view of compute resources, such as cpu, memory, network, i/o devices. 
+it also provides central managemnt software such as editors, command line interpreter, graphical user interface.
+
+What is kernel
+A kernel is narrow part of os, which gives a common implementaion for managing compute resources. 
+it's possible to run software without kernel, however, it's gonna be daim hard to write software.
+
+What does kernel do
+Process scheduling
+Memory management
+Provision of file system
+Creation and termination of process
+Access to devices
+Networking
+Provision of a system call
+
+user mode/kernel mode
+Process is mananged and controlled by kernel
+Process can do nothing outside itself, it needs to tell the kernel to do what it wants
+
+Concepts
+shell, login shell
+a shell is a program to execute other program in respond to user input or running commands in a script
+a login shell is the process that runs a shell when a user first logs in.
+I/O redirection, pipelines, commandline substitution, background command execution, functions.
+Bourne shell(sh) 
+C shell(csh)
+Korn shell(ksh)
+Bourne again shell(bash)
