@@ -38,4 +38,45 @@ A policy between a user/group/serviceaccount and a scc is similar as a role betw
 when running `oc adm policy add-scc-to-user` commands, we change the yaml fields users/groups in the scc, which turns out to be a challenges when upgrading.
 Instead, it's now recommended to use RBAC to manage scc policies from Openshift4.
 
-A cluster role use the resource api security.openshift.io and resources name securitycontextconstraints to refer to a scc
+A cluster role use the resource api security.openshift.io and resources name securitycontextconstraints to refer to a scc, the verb `use` is utilized to say if a role can access a scc.
+```
+$ oc create clusterrole allow-anyuid-scc --verb=use --resource=securitycontextconstraints.security.openshift.io --resource-name=anyuid
+$ oc get clusterrole allow-anyuid-scc -o yaml
+
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  name: allow-anyuid-scc
+rules:
+- apiGroups:
+    - security.openshift.io
+  resourceNames:
+    - anyuid
+  resources:
+    - securitycontextconstraints
+  verbs:
+    - use
+```
+Once we have a cluster role in place, we can use the RBAC way to recreate the policy above
+user/group/serviceaccount -> cluster rolebinding -> cluster role -> Security context contraints
+
+$ oc create rolebinding anyuid-scc --clusterrole=allow-anyuid-scc --serviceaccount=my-special-pod-service-account
+$ oc get rolebinding anyuid-scc -o yaml
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRoleBinding
+metadata:
+  name: anyuid-scc
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: ClusterRole
+  name: allow-anyuid-scc
+subjects:
+- kind: ServiceAccount
+  name: my-special-pod-service-account
+  namespace: example
+  
+
+References:
+http://blog.andyserver.com/2020/08/declarative-security-context-contraints-using-rbac/
+https://docs.openshift.com/dedicated/3/admin_guide/manage_scc.html
+https://docs.openshift.com/dedicated/3/architecture/additional_concepts/authorization.html#security-context-constraints
