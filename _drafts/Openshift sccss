@@ -1,0 +1,16 @@
+Security Context Constraints
+Official definition: control the actions that a pod can perform and what it has the ability to access.
+
+Explaination:
+It's not the pod to be restricted, it is a dedicated service account which is associated with the pod. 
+By default, there are 3 service accounts created by openshift, 
+* builder, to manage images
+* default, default service account for any object created 
+* deployer, deploy pods
+all pod use the default service account in the namespace. 
+```
+oc get serviceaccount
+```
+
+1. A user/serviceaccount can access resource list
+2. A user/serviceaccount can take action list
