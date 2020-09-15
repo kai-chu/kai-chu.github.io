@@ -1,7 +1,7 @@
 Security Context Constraints
 Official definition: control the actions that a pod can perform and what it has the ability to access.
 
-Explaination:
+# Explaination:
 It's not the pod to be restricted, it is a dedicated service account which is associated with the pod. 
 By default, there are 3 service accounts created by openshift, 
 * builder, to manage images
@@ -12,5 +12,30 @@ all pod use the default service account in the namespace.
 oc get serviceaccount
 ```
 
-1. A user/serviceaccount can access resource list
-2. A user/serviceaccount can take action list
+1. A authenticated-user/serviceaccount can access resource list
+2. A authenticated-user/serviceaccount can take action list
+* Resources:
+
+
+* Actions:
+
+# Security Context Constraints
+where is it used? 
+As a developer, we add our own requirements in the yaml files to state that we want to 
+* run as root user, 
+* access host network
+However, as a system admin in openshift, we want to restrict what a user can do, we don't want a developer to do whatever he wants.
+So we prepare the different scc and add the service accounts to those constraints. 
+```
+oc adm policy add-scc-to-user system-admin-prepared-scc-based-on-company-policies system:serviceaccount:company-project-namespace:service-acount-assigned-to-the-project
+```
+> groups/users -> system admin will add this relations based on companies' policies ->security context constrains 
+
+Notes: scc is cluster wide object, which is shared by all the projects
+
+# RBAC for scc
+A policy between a user/group/serviceaccount and a scc is similar as a role between a user/group/serviceaccount and a resource
+when running `oc adm policy add-scc-to-user` commands, we change the yaml fields users/groups in the scc, which turns out to be a challenges when upgrading.
+Instead, it's now recommended to use RBAC to manage scc policies from Openshift4.
+
+A cluster role use the resource api security.openshift.io and resources name securitycontextconstraints to refer to a scc
