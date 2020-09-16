@@ -1,0 +1,18 @@
+Volume from pvc by name
+
+```
+volumes:
+- name: postgres-persistent-storage
+  persistentVolumeClaim:
+    claimName: starburstdata-mc-pvc
+```
+
+
+volume from secret
+volumes:
+- name: configs
+  secret:
+    secretName: mission-control-config
+    
+    
+volume from configmap
