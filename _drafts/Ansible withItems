@@ -1,52 +1,134 @@
-1. list of string
+Introduction to ansible built-in items, with_items
+
+Before the topic, I want to remind of the [yaml basic syntax](https://docs.ansible.com/ansible/latest/reference_appendices/YAMLSyntax.html#yaml-basics) about list and dictionary.
+To create a list, in yaml, there are two forms(yaml or ) which are equivalent, and we can write both of those in the yaml file
 ```
-- name: "loop through list"
-  debug:
-    msg: "An item: {{ item }}"
-  with_items:
-    - 1
-    - 2
-    - 3
+listName:
+- 1
+- 2
+- 3
+//// which is the same as the abbreviated form
+listName: [1,2,3]
+```
+And it's the same for dictionary
+```
+- firstName: kai
+  lastName: chu
+  age: 29
+  phone: 888888
+//// which is the same as the abbreviated form 
+{firstName: kai, lastName: chu, age: 29, phone: 888888}
+```
+
+After knowing that, it's easier to understand different usages in different project, since it's sometimes mixed by the devops who has written a playbook.
+
+The following explainations will be similar as what has been given by the (offical examples)[https://docs.ansible.com/ansible/latest/collections/ansible/builtin/items_lookup.html]
+If you have clearly understood the examples, then you don't have to go further with this post.
+
+This post give examples about *list of values* and *list of dictionaries*
+
+In ansible playbook, we can use with_items with a list of values or a variables, it can either yaml syntax or in a abbreviated form.
+
+## 4 forms of using list of values
+```
+---
+- name: >- 
+  Demo ansible build-in withItems with list, 
+  this lookup returns a list of items given to it, 
+  if any of the top level items is also a list it will flatten it, 
+  but it will not recurse
+  hosts: localhost
+  connection: local
+  vars:
+    list_in_var: 
+    - green
+    - red
+    - blue
     
-- name: Ensure service config dir exist
-  file:
-    state: directory
-    path: "/etc/systemd/system/airflow-{{item}}.service.d"
-  with_items: "{{ airflow_services }}"
+    list_in_var_as_abbreviated_form: [green, red, blue]
+
+  tasks:
+  - name: "[List of items - 01] items defined in the same playbook"
+    debug:
+      msg: "An item: {{ item }}"
+    with_items:
+    - green
+    - red
+    - blue
+
+  - name: "[List of items - 02] items defined in a variable"
+    debug:
+      msg: "An item: {{ item }}"
+    with_items: "{{ list_in_var }}"
+
+  - name: "[List of items - 03] items in a abbreviated form defined in the same playbook"
+    debug:
+      msg: "An item: {{ item }}"
+    with_items: [green, red, blue]
+
+  - name: "[List of items - 04] items in a abbreviated form variable"
+    debug:
+      msg: "An item: {{ item }}"
+    with_items: "{{list_in_var_as_abbreviated_form}}"
 ```
 
-2. list of key-values
-- name: more complex items to add several users
-  user:
-    name: "{{ item.name }}"
-    uid: "{{ item.uid }}"
-    groups: "{{ item.groups }}"
-    state: present
-  with_items:
-     - { name: testuser1, uid: 1002, groups: "wheel, staff" }
-     - { name: testuser2, uid: 1003, groups: staff }
+## 4 forms of using list of dictionaries
+There is nothing special for dictionaries compared with list of values. The *item* will be a dictionary in this case and we can use item.key to access the value. 
 
-
-2. list a variable
 ```
-//role/example/default/main.yaml
-users:
-- name: testuser1
-  uid: 1002
-  groups: "wheel, staff"
-- name: testuser2
-  uid: 1003
-  groups: staff
+---
+- name: >- 
+    Demo ansible build-in with_items with list of dictionaries, 
+    this lookup returns a list of items given to it, 
+    if any of the top level items is also a list it will flatten it, 
+    but it will not recurse
+  hosts: localhost
+  connection: local
+  vars:
+    list_of_dictionaries_in_var:
+    - name: Green
+      color: green
+    - name: Red
+      color: red
+    - name: Blue
+      color: blue
 
-//role/example/default/main.yaml
-- name: more complex items to add several users
-  user:
-    name: "{{ item.name }}"
-    uid: "{{ item.uid }}"
-    groups: "{{ item.groups }}"
-    state: present
-  with_items: "{{ users }}"
-  
+    list_of_dictionaries_in_var_as_abbreviated_form:
+    - {name: Green, color: green}
+    - {name: Red, color: red}
+    - {name: Blue, color: blue}
+
+  tasks:
+  - name: "[list of dict items - 01] items defined in the same playbook"
+    debug:
+      msg: "An item name: {{ item.name }}, color: {{ item.color }}"
+    with_items:
+    - name: Green
+      color: green
+    - name: Red
+      color: red
+    - name: Blue
+      color: blue
+
+  - name: "[list of dict items - 01] items defined in the same playbook"
+    debug:
+      msg: "An item name: {{ item.name }}, color: {{ item.color }}"
+    with_items: 
+    - { name: Green, color: green },
+    - { name: Red, color: red },
+    - { name: Blue, color: blue }
+
+  - name: "[List of dict items - 02] items defined in a variable"
+    debug:
+      msg: "An item name: {{ item.name }}, color: {{ item.color }}"
+    with_items: "{{ list_of_dictionaries_in_var }}"
+
+  - name: "[List of dict items - 03] items defined in a abbreviated form variable"
+    debug:
+      msg: "An item name: {{ item.name }}, color: {{ item.color }}"
+    with_items: "{{list_of_dictionaries_in_var_as_abbreviated_form}}"
 ```
 
+## Summary
+I found with_items is really useful when it comes to add configurations for provisions. It is much flexible when we put configurations as key values in a variable file.
 
