@@ -1,0 +1,352 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+<!-- Google Analytics -->
+<script type="text/javascript">
+(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+ga('create', 'UA-128479674-2', 'auto');
+ga('send', 'pageview');
+
+</script>
+<!-- End Google Analytics -->
+
+
+  
+  <title>Python template engine - Jinja2 | Kai ｜ 凯</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="Programmers usually want to use variables in their program to create different results dynamically from the same program. e.g. The first program for a newbie is usually  123print(&quot;Hello World&amp;quo">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Python template engine - Jinja2">
+<meta property="og:url" content="https://kaichu.se/Python/2020/08/12/Python-template-engine-Jinja2.html">
+<meta property="og:site_name" content="Kai ｜ 凯">
+<meta property="og:description" content="Programmers usually want to use variables in their program to create different results dynamically from the same program. e.g. The first program for a newbie is usually  123print(&quot;Hello World&amp;quo">
+<meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2020-08-12T18:31:28.000Z">
+<meta property="article:modified_time" content="2021-10-05T21:33:55.400Z">
+<meta property="article:author" content="Kai Chu">
+<meta property="article:tag" content="Jinja2">
+<meta property="article:tag" content="Python">
+<meta property="article:tag" content="Template">
+<meta name="twitter:card" content="summary">
+  
+    <link rel="alternate" href="/atom.xml" title="Kai ｜ 凯" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.ico">
+  
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+<meta name="generator" content="Hexo 5.0.0"></head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">Kai ｜ 凯</a>
+      </h1>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="Search"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="https://kaichu.se"></form>
+      </div>
+    </div>
+  </div>
+</header>
+      <div class="outer">
+        <section id="main"><article id="post-Python-template-engine-Jinja2" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/Python/2020/08/12/Python-template-engine-Jinja2.html" class="article-date">
+  <time datetime="2020-08-12T18:31:28.000Z" itemprop="datePublished">2020-08-12</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/Python/">Python</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      Python template engine - Jinja2
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>Programmers usually want to use variables in their program to create different results dynamically from the same program. e.g. The first program for a newbie is usually </p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">print(&quot;Hello World&quot;)</span><br><span class="line">print(&quot;Hello Python&quot;)</span><br><span class="line">print(&quot;Hello Kai&quot;)</span><br></pre></td></tr></table></figure>
+<p>The second program will teach us how to get an input from keyboard and print it out.</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">myinput &#x3D; # get input from keyboard</span><br><span class="line">print(&quot;Hello &#123;&#125;&quot;.format(myinput))</span><br></pre></td></tr></table></figure>
+<p>In a template engine, it does similar but much more powful thing. Usually, we call it a template language since it gives simple program capabilities, such as variables, loop and conditions.</p>
+<p>Jinja2 is a template engine in python to combine a model(object values), expressions and statement tags with a template.<br>To understand what Jinja2 does, there are a few thing we need to understand firstly.</p>
+<ul>
+<li>Template, a predefined the file or string aligned to Jinja2 syntax or senmantic</li>
+<li>Model or variable, the variable used to replace the placeholder in your template</li>
+<li>Expression, a function used to change value of the variable</li>
+<li>Statement tags, logic control statements such as loop or if condition</li>
+<li>Commnent, description about a template which will be ignored by the engine when rendering</li>
+<li>Render, the procedure to replace variable or model in a template while following the statement controls</li>
+</ul>
+<h1 id="Initial-look"><a href="#Initial-look" class="headerlink" title="Initial look"></a>Initial look</h1><p>Here is a simple tempalte from <a target="_blank" rel="noopener" href="https://jinja.palletsprojects.com/en/2.11.x/templates/">Jinja2</a></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">&lt;!DOCTYPE html&gt;</span><br><span class="line">&lt;html lang&#x3D;&quot;en&quot;&gt;</span><br><span class="line">&lt;head&gt;</span><br><span class="line">    &lt;title&gt;My Webpage&lt;&#x2F;title&gt;</span><br><span class="line">&lt;&#x2F;head&gt;</span><br><span class="line">&lt;body&gt;</span><br><span class="line">    &lt;ul id&#x3D;&quot;navigation&quot;&gt;</span><br><span class="line">    &#123;% for item in navigation %&#125; &lt;- statement to loop through navigation</span><br><span class="line">        &lt;li&gt;&lt;a href&#x3D;&quot;&#123;&#123; item.href &#125;&#125;&quot;&gt;&#123;&#123; item.caption &#125;&#125;&lt;&#x2F;a&gt;&lt;&#x2F;li&gt; &lt;- use the variable &#39;item&#39; created by statement</span><br><span class="line">    &#123;% endfor %&#125;</span><br><span class="line">    &lt;&#x2F;ul&gt;</span><br><span class="line"></span><br><span class="line">    &lt;h1&gt;My Webpage&lt;&#x2F;h1&gt;</span><br><span class="line">    &#123;&#123; my_name &#125;&#125;  &lt;- will be replaced as Kai</span><br><span class="line"></span><br><span class="line">    &#123;# a comment is ignored #&#125;   &lt;- will be ignored</span><br><span class="line">&lt;&#x2F;body&gt;</span><br><span class="line">&lt;&#x2F;html&gt;</span><br></pre></td></tr></table></figure>
+<p>Let’s look at how jinja will render this template out when given variables. It’s better than just read the explanations.</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">navigation &#x3D; [&#123;href&#x3D;&#39;&#x2F;&#39;, caption&#x3D;&#39;Home&#39;&#125;]</span><br><span class="line">my_name&#x3D;&#39;Kai&#39;</span><br><span class="line">Template(template).render(navigation&#x3D;navigation, my_name&#x3D;my_name) </span><br><span class="line">&#x2F;&#x2F;&#x2F;</span><br><span class="line">&lt;!DOCTYPE html&gt;</span><br><span class="line">&lt;html lang&#x3D;&quot;en&quot;&gt;</span><br><span class="line">&lt;head&gt;</span><br><span class="line">    &lt;title&gt;My Webpage&lt;&#x2F;title&gt;</span><br><span class="line">&lt;&#x2F;head&gt;</span><br><span class="line">&lt;body&gt;</span><br><span class="line">    &lt;ul id&#x3D;&quot;navigation&quot;&gt;</span><br><span class="line">        &lt;li&gt;&lt;a href&#x3D;&quot;&#x2F;&quot;&gt;Home&lt;&#x2F;a&gt;&lt;&#x2F;li&gt; &lt;- Loop is executed and value is replace</span><br><span class="line">    &lt;&#x2F;ul&gt;</span><br><span class="line"></span><br><span class="line">    &lt;h1&gt;My Webpage&lt;&#x2F;h1&gt;</span><br><span class="line">    Kai &lt;- my_name is replaced</span><br><span class="line">    </span><br><span class="line">&lt;&#x2F;body&gt;</span><br><span class="line">&lt;&#x2F;html&gt;</span><br></pre></td></tr></table></figure>
+
+<h1 id="Delimiters"><a href="#Delimiters" class="headerlink" title="Delimiters"></a>Delimiters</h1><p>Delimiters is used by jinja engine to look up variables, expressions, statements and comments in a Template, Jinja runs different renders logic depending on the delimiters. </p>
+<blockquote>
+<p>In a programmming language, the compiler or interpreter runs codes line by line, and understands our commands by keywords.<br>In Jinja2, it’s those special delimiters that the engine understands intially, and then the engine will try to understand the words between those delimiters.</p>
+</blockquote>
+<p>There are a few kinds of delimiters. The default Jinja delimiters are configured as follows.</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">&#123;&#123; ... &#125;&#125; for Expressions and variables to print to the template output</span><br><span class="line">&#123;% ... %&#125; for Statements</span><br><span class="line">&#123;# ... #&#125; for Comments not included in the template output</span><br><span class="line">#  ... ## for Line Statements</span><br></pre></td></tr></table></figure>
+<ul>
+<li>The advanced users can choose different delimiters when using Jinja2</li>
+</ul>
+<h1 id="Expressions"><a href="#Expressions" class="headerlink" title="Expressions"></a>Expressions</h1><h2 id="Math"><a href="#Math" class="headerlink" title="Math"></a>Math</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&#123;&#123; XX + - * &#x2F; &#x2F;&#x2F; % ** YY &#125;&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="String-plus"><a href="#String-plus" class="headerlink" title="String plus"></a>String plus</h2><p>We can concatenate string</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&#123;&#123; &#39;name&#39; ~ name &#125;&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="Comparisons"><a href="#Comparisons" class="headerlink" title="Comparisons"></a>Comparisons</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&#123;&#123; XX &#x3D;&#x3D; !&#x3D; &gt;&#x3D; &lt;&#x3D; &lt; &gt; YY &#125;&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="Logic"><a href="#Logic" class="headerlink" title="Logic"></a>Logic</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">&#123;&#123; XX and or YY &#125;&#125;</span><br><span class="line">&#123;&#123; not XX&#125;&#125;</span><br><span class="line">&#123;&#123; not (XX and YY) &#125;&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="Test"><a href="#Test" class="headerlink" title="Test"></a>Test</h2><p>A test expression is used against the is operator, a test expression is a function such as <code>defined(value)</code>.<br><a target="_blank" rel="noopener" href="https://jinja.palletsprojects.com/en/2.11.x/templates/#list-of-builtin-tests">Full list of tests expression</a></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">&#123;&#123; XX in [YY,ZZ]&#125;&#125;</span><br><span class="line">&#123;&#123; XX is test expression &#125;&#125;</span><br></pre></td></tr></table></figure>
+<p>When using a test expression in jinja template, we can ignore the only value parameter as following</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&#123;&#123; XX is defined &#125;&#125;</span><br></pre></td></tr></table></figure>
+<p>Some expressions have extra parameters, e.g. <a target="_blank" rel="noopener" href="https://jinja.palletsprojects.com/en/2.11.x/templates/#divisibleby">divisibleby(value, num)</a></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&#123;&#123; XX is divisibleby(3) &#125;&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="Object"><a href="#Object" class="headerlink" title="Object"></a>Object</h2><p>We can use python method or attribute or items in a var object</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&#123;&#123; XX.method() XX.YY XX[YY] &#125;&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="Filter"><a href="#Filter" class="headerlink" title="Filter"></a>Filter</h2><p>We can alter a value using filter, or I think mapper is more suitable name, it’s similar as XX.map(mapper1).map(mapper2). <a target="_blank" rel="noopener" href="https://jinja.palletsprojects.com/en/2.11.x/templates/#list-of-builtin-filters">Full list of filters</a></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&#123;&#123; XX | filter1 | fitler2 &#125;&#125;</span><br></pre></td></tr></table></figure>
+<h1 id="Statements"><a href="#Statements" class="headerlink" title="Statements"></a>Statements</h1><h2 id="Control-statement"><a href="#Control-statement" class="headerlink" title="Control statement"></a>Control statement</h2><p>In a template, we can use for, if to control simple logic.</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">&lt;ul&gt;</span><br><span class="line">&#123;% for user in users %&#125;</span><br><span class="line">  &lt;li&gt;&#123;&#123; user.username &#125;&#125;&lt;&#x2F;li&gt;</span><br><span class="line">&#123;% endfor %&#125;</span><br><span class="line">&lt;&#x2F;ul&gt;</span><br><span class="line"></span><br><span class="line">&#123;% if login %&#125; &lt;- test if login is defined, not empty and not false </span><br><span class="line">  &lt;div&gt;Home&lt;&#x2F;div&gt;</span><br><span class="line">&#123;% endif %&#125;</span><br></pre></td></tr></table></figure>
+<p><a target="_blank" rel="noopener" href="https://jinja.palletsprojects.com/en/2.11.x/templates/#list-of-control-structures">https://jinja.palletsprojects.com/en/2.11.x/templates/#list-of-control-structures</a></p>
+<h2 id="Define-macros"><a href="#Define-macros" class="headerlink" title="Define macros"></a>Define macros</h2><p>A macro is used to defined command used piece of codes and used in the template as a function.</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">&#123;% macro input(name, value&#x3D;&#39;&#39;, type&#x3D;&#39;text&#39;, size&#x3D;20) -%&#125;</span><br><span class="line">    &lt;input type&#x3D;&quot;&#123;&#123; type &#125;&#125;&quot; name&#x3D;&quot;&#123;&#123; name &#125;&#125;&quot; value&#x3D;&quot;&#123;&#123;</span><br><span class="line">        value|e &#125;&#125;&quot; size&#x3D;&quot;&#123;&#123; size &#125;&#125;&quot;&gt;</span><br><span class="line">&#123;%- endmacro %&#125;</span><br><span class="line"></span><br><span class="line">&lt;p&gt;&#123;&#123; input(&#39;username&#39;) &#125;&#125;&lt;&#x2F;p&gt;</span><br><span class="line">&lt;p&gt;&#123;&#123; input(&#39;password&#39;, type&#x3D;&#39;password&#39;) &#125;&#125;&lt;&#x2F;p&gt;</span><br></pre></td></tr></table></figure>
+<p><a target="_blank" rel="noopener" href="https://jinja.palletsprojects.com/en/2.11.x/templates/#macros">https://jinja.palletsprojects.com/en/2.11.x/templates/#macros</a><br><a target="_blank" rel="noopener" href="https://jinja.palletsprojects.com/en/2.11.x/templates/#call">https://jinja.palletsprojects.com/en/2.11.x/templates/#call</a></p>
+<h2 id="Filters"><a href="#Filters" class="headerlink" title="Filters"></a>Filters</h2><p>There are built-in filters in Jinja2, such as upper, it can used by statements to make a block of contents to be uppcase</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">&#123;% filter upper %&#125;</span><br><span class="line">    This text becomes uppercase</span><br><span class="line">&#123;% endfilter %&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="Assignment"><a href="#Assignment" class="headerlink" title="Assignment"></a>Assignment</h2><p>Some times we can to setup some variables in the template, the assginment statement fits in</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">&#123;% set navigation &#x3D; [(&#39;index.html&#39;, &#39;Index&#39;), (&#39;about.html&#39;, &#39;About&#39;)] %&#125;</span><br><span class="line">&#123;% set key, value &#x3D; call_something() %&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="Block-Assignments"><a href="#Block-Assignments" class="headerlink" title="Block Assignments"></a>Block Assignments</h2><p>Similar to assignment, we can capture the context in a block to a variable</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">&#123;% set navigation %&#125;</span><br><span class="line">my name is kai</span><br><span class="line">&#123;% endset %&#125;</span><br><span class="line"></span><br><span class="line">Same as</span><br><span class="line">&#123;% set navigation &#x3D; &#39;my name is kai&#39; %&#125;</span><br></pre></td></tr></table></figure>
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://kaichu.se/Python/2020/08/12/Python-template-engine-Jinja2.html" data-id="ckuelnhpb0017exojb2su9p7w" class="article-share-link">Share</a>
+      
+        <a href="https://kaichu.se/Python/2020/08/12/Python-template-engine-Jinja2.html#disqus_thread" class="article-comment-link">Comments</a>
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Jinja2/" rel="tag">Jinja2</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Python/" rel="tag">Python</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Template/" rel="tag">Template</a></li></ul>
+
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/Ansible/2020/08/13/using-ansible-playbook-in-a-devops-pipeline.html" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Newer</strong>
+      <div class="article-nav-title">
+        
+          Using ansible playbook in a DevOps pipeline
+        
+      </div>
+    </a>
+  
+  
+    <a href="/Airflow/2020/08/11/understand-some-details-about-airflow-dags.html" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">Understand some details about airflow dags</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+
+<section id="comments">
+  <div id="disqus_thread">
+    <noscript>Please enable JavaScript to view the <a target="_blank" rel="noopener" href="//disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+  </div>
+  
+  <script>
+
+  /**
+  *  RECOMMENDED CONFIGURATION VARIABLES: EDIT AND UNCOMMENT THE SECTION BELOW TO INSERT DYNAMIC VALUES FROM YOUR PLATFORM OR CMS.
+  *  LEARN WHY DEFINING THESE VARIABLES IS IMPORTANT: https://disqus.com/admin/universalcode/#configuration-variables*/
+
+  var disqus_config = function () {
+      this.page.url = 'https://kaichu.se/Python/2020/08/12/Python-template-engine-Jinja2.html';
+      this.page.identifier = 'Python/2020/08/12/Python-template-engine-Jinja2.html';
+      this.page.title = 'Python template engine - Jinja2';
+  };
+
+  (function() { // DON'T EDIT BELOW THIS LINE
+  var d = document, s = d.createElement('script');
+  s.src = 'https://kaichu-se.disqus.com/embed.js';
+  s.setAttribute('data-timestamp', +new Date());
+  (d.head || d.body).appendChild(s);
+  })();
+  </script>
+  <noscript>Please enable JavaScript to view the <a target="_blank" rel="noopener" href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</section>
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Recent Posts</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/Gatling/2021/10/05/How-to-save-variables-in-session-or-query-results-into-files-in-gatling.html">- How to save variables in gatling session or query results into files</a>
+          </li>
+        
+          <li>
+            <a href="/Docker/2021/04/18/Setup-two-stages-of-Dockerfile-to-build-a-nodejs-app.html">- Setup two stages of Dockerfile to build a nodejs app</a>
+          </li>
+        
+          <li>
+            <a href="/Ansible/2020/09/23/Ansible-built-in-module-with-items.html">- Ansible built-in module - with_items</a>
+          </li>
+        
+          <li>
+            <a href="/Kubernetes/2020/09/21/Kubernetes-02-the-3-practical-ways-to-use-k8s-secret.html">- Kubernetes - 02 - the 3 practical ways to use k8s secret</a>
+          </li>
+        
+          <li>
+            <a href="/Kubernetes/2020/09/19/kubernetes-01-the-3-practical-ways-to-create-k8s-secret.html">- Kubernetes - 01 - the 3 practical ways to create k8s secret</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Categories</h3>
+    <div class="widget">
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/Airflow/">Airflow</a><span class="category-list-count">8</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Ansible/">Ansible</a><span class="category-list-count">6</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Docker/">Docker</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Gatling/">Gatling</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Kubernetes/">Kubernetes</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Nodejs/">Nodejs</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/OS/">OS</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Python/">Python</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Rancher/">Rancher</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Reactjs/">Reactjs</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Site/">Site</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Web/">Web</a><span class="category-list-count">1</span></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archives</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/10/">October 2021</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/04/">April 2021</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/09/">September 2020</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/08/">August 2020</a><span class="archive-list-count">8</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/05/">May 2020</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/04/">April 2020</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/12/">December 2019</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/11/">November 2019</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/10/">October 2019</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/09/">September 2019</a><span class="archive-list-count">2</span></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tag Cloud</h3>
+    <div class="widget tagcloud">
+      <a href="/tags/Airflow/" style="font-size: 20px;">Airflow</a> <a href="/tags/Ansible/" style="font-size: 12.5px;">Ansible</a> <a href="/tags/Architecture/" style="font-size: 12.5px;">Architecture</a> <a href="/tags/Authentication/" style="font-size: 10px;">Authentication</a> <a href="/tags/Bigdata/" style="font-size: 17.5px;">Bigdata</a> <a href="/tags/Datalake/" style="font-size: 12.5px;">Datalake</a> <a href="/tags/DevOps/" style="font-size: 12.5px;">DevOps</a> <a href="/tags/Docker/" style="font-size: 12.5px;">Docker</a> <a href="/tags/Gatling/" style="font-size: 10px;">Gatling</a> <a href="/tags/Isomorphic/" style="font-size: 10px;">Isomorphic</a> <a href="/tags/Jinja2/" style="font-size: 12.5px;">Jinja2</a> <a href="/tags/Loadtest/" style="font-size: 10px;">Loadtest</a> <a href="/tags/Nodejs/" style="font-size: 10px;">Nodejs</a> <a href="/tags/Openldap/" style="font-size: 10px;">Openldap</a> <a href="/tags/Promise/" style="font-size: 10px;">Promise</a> <a href="/tags/Python/" style="font-size: 10px;">Python</a> <a href="/tags/SPA/" style="font-size: 10px;">SPA</a> <a href="/tags/Template/" style="font-size: 10px;">Template</a> <a href="/tags/ansible/" style="font-size: 15px;">ansible</a> <a href="/tags/ansible-playbook/" style="font-size: 10px;">ansible-playbook</a> <a href="/tags/ansible-roles/" style="font-size: 10px;">ansible-roles</a> <a href="/tags/ansible-tasks/" style="font-size: 10px;">ansible-tasks</a> <a href="/tags/backup/" style="font-size: 10px;">backup</a> <a href="/tags/bash/" style="font-size: 10px;">bash</a> <a href="/tags/bigdata/" style="font-size: 12.5px;">bigdata</a> <a href="/tags/blog/" style="font-size: 12.5px;">blog</a> <a href="/tags/cloud/" style="font-size: 10px;">cloud</a> <a href="/tags/component/" style="font-size: 10px;">component</a> <a href="/tags/datalake/" style="font-size: 10px;">datalake</a> <a href="/tags/devops/" style="font-size: 12.5px;">devops</a> <a href="/tags/event-loop/" style="font-size: 10px;">event loop</a> <a href="/tags/frontend/" style="font-size: 12.5px;">frontend</a> <a href="/tags/html/" style="font-size: 10px;">html</a> <a href="/tags/hypervisors/" style="font-size: 10px;">hypervisors</a> <a href="/tags/javascript/" style="font-size: 10px;">javascript</a> <a href="/tags/jinja/" style="font-size: 10px;">jinja</a> <a href="/tags/k8s/" style="font-size: 12.5px;">k8s</a> <a href="/tags/kvm/" style="font-size: 10px;">kvm</a> <a href="/tags/nodejs/" style="font-size: 12.5px;">nodejs</a> <a href="/tags/python/" style="font-size: 10px;">python</a> <a href="/tags/qemu/" style="font-size: 10px;">qemu</a> <a href="/tags/rancher/" style="font-size: 10px;">rancher</a> <a href="/tags/react/" style="font-size: 10px;">react</a> <a href="/tags/reactjs/" style="font-size: 10px;">reactjs</a> <a href="/tags/scheduler/" style="font-size: 10px;">scheduler</a> <a href="/tags/secret/" style="font-size: 12.5px;">secret</a> <a href="/tags/setImmediate/" style="font-size: 10px;">setImmediate</a> <a href="/tags/setTimeout/" style="font-size: 10px;">setTimeout</a> <a href="/tags/site/" style="font-size: 10px;">site</a> <a href="/tags/starter/" style="font-size: 10px;">starter</a> <a href="/tags/tools/" style="font-size: 10px;">tools</a> <a href="/tags/virtulization/" style="font-size: 10px;">virtulization</a>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2021 Kai Chu<br>
+      Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+<script>
+  var disqus_shortname = 'kaichu-se';
+  
+  var disqus_url = 'https://kaichu.se/Python/2020/08/12/Python-template-engine-Jinja2.html';
+  
+  (function(){
+    var dsq = document.createElement('script');
+    dsq.type = 'text/javascript';
+    dsq.async = true;
+    dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+    (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+  })();
+</script>
+
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+
+
+  
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+
+  
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+
+
+<script src="/js/script.js"></script>
+
+
+
+
+  </div>
+</body>
+</html>

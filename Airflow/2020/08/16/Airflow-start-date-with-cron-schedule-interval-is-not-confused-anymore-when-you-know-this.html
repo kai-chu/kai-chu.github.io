@@ -1,0 +1,628 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+<!-- Google Analytics -->
+<script type="text/javascript">
+(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+ga('create', 'UA-128479674-2', 'auto');
+ga('send', 'pageview');
+
+</script>
+<!-- End Google Analytics -->
+
+
+  
+  <title>Airflow start_date with cron schedule_interval is not confused anymore when you know this | Kai ｜ 凯</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="Airflow DAG start_date with days_ago is making us confused all the time. When a dag will be kick off? Will it be started?  The first DAG Run is created based on the minimum start_date for the tasks in">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Airflow start_date with cron schedule_interval is not confused anymore when you know this">
+<meta property="og:url" content="https://kaichu.se/Airflow/2020/08/16/Airflow-start-date-with-cron-schedule-interval-is-not-confused-anymore-when-you-know-this.html">
+<meta property="og:site_name" content="Kai ｜ 凯">
+<meta property="og:description" content="Airflow DAG start_date with days_ago is making us confused all the time. When a dag will be kick off? Will it be started?  The first DAG Run is created based on the minimum start_date for the tasks in">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://kaichu.se/assets/airflow/start_date1.jpg">
+<meta property="og:image" content="https://kaichu.se/assets/airflow/airflow_start_date_duration.jpg">
+<meta property="article:published_time" content="2020-08-16T10:29:55.000Z">
+<meta property="article:modified_time" content="2021-10-05T21:33:55.400Z">
+<meta property="article:author" content="Kai Chu">
+<meta property="article:tag" content="Airflow">
+<meta property="article:tag" content="Bigdata">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://kaichu.se/assets/airflow/start_date1.jpg">
+  
+    <link rel="alternate" href="/atom.xml" title="Kai ｜ 凯" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.ico">
+  
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+<meta name="generator" content="Hexo 5.0.0"></head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">Kai ｜ 凯</a>
+      </h1>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="Search"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="https://kaichu.se"></form>
+      </div>
+    </div>
+  </div>
+</header>
+      <div class="outer">
+        <section id="main"><article id="post-Airflow-start-date-with-cron-schedule-interval-is-not-confused-anymore-when-you-know-this" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/Airflow/2020/08/16/Airflow-start-date-with-cron-schedule-interval-is-not-confused-anymore-when-you-know-this.html" class="article-date">
+  <time datetime="2020-08-16T10:29:55.000Z" itemprop="datePublished">2020-08-16</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/Airflow/">Airflow</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      Airflow start_date with cron schedule_interval is not confused anymore when you know this
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>Airflow DAG start_date with days_ago is making us confused all the time. When a dag will be kick off? Will it be started?</p>
+<blockquote>
+<p>The first DAG Run is created based on the minimum start_date for the tasks in your DAG.<br>Subsequent DAG Runs are created by the scheduler process, based on your DAG’s schedule_interval, sequentially.</p>
+</blockquote>
+<p>The notes from airflow official website makes sense when you look at it in the first look, however, when you try to create you airflow DAG with a cron string, you never know what it means.<br>When my friend Yuxia comes to discuss about her case about running a dag every even day at 1 a.m., I thought it was so easy to do that.</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">default_args &#x3D; &#123;</span><br><span class="line">  start_date &#x3D; days_ago(1)</span><br><span class="line">&#125;</span><br><span class="line">dag &#x3D; DAG(&#39;demo-cron-schedule-interval&#39;, default_args &#x3D; default_args, schedule_interval&#x3D;&#39;0 1 2-30&#x2F;2 * *&#39;, ...)</span><br></pre></td></tr></table></figure>
+<ul>
+<li>I can check the correctness with (Crontab guru)[<a target="_blank" rel="noopener" href="https://crontab.guru/#0_1_1-31/2_*_*]">https://crontab.guru/#0_1_1-31/2_*_*]</a><br>Today is 2020-08-14, initially from above quote, the start_date will be 2020-08-13 and the first DAG Run shall be created, but my cron says it shouldn’t create a DAG Run yesterday since it’s odd day. </li>
+</ul>
+<p>In fact, when she checked the system, there was not DAG Run started at 2020-08-14 01:00:00.</p>
+<p>So what’s wrong with the quote? Why Yuxia’s DAG was not running?</p>
+<p>Curiously, I checked the code logic in the <a target="_blank" rel="noopener" href="https://github.com/apache/airflow/blob/514eb6d1e350818b31dca5adeaec2d7fd32b23ee/airflow/jobs/scheduler_job.py#L537">scheduler_job</a><br>In this post, I’ll try to explain the outcome.</p>
+<h1 id="What-scope"><a href="#What-scope" class="headerlink" title="What scope"></a>What scope</h1><p>A DAG has start_date <em>not set</em> as datetiem.timedelta, it could e.g. <code>dags_ago(1)</code><br>The start_date is set in default args <em>ONLY</em><br>A DAG is using cron string or preset as schedule_interval, <code>0 1 2-30/2 * *</code></p>
+<h1 id="Issue-to-explain"><a href="#Issue-to-explain" class="headerlink" title="Issue to explain"></a>Issue to explain</h1><p>Will the first DAG Run be kicked off by airflow scheduler?</p>
+<h1 id="Concepts-from-code"><a href="#Concepts-from-code" class="headerlink" title="Concepts from code"></a>Concepts from code</h1><ul>
+<li><p>DAG start_date resolve, the scheduler is parsing the DAGs every 5 seconds (depending on setup).<br>Each time when the scheduler is running, it will calculate a start_date depending on current time(utcnow()).<br>days_ago(1) will be resolved as following. </p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">start_date &#x3D; utcnow() - (1 day) and By default the time is set to midnight, e.g. day - 1 00:00:00</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>It’s very important to realise that <code>start_date + (1 day) != utcnow()</code></p>
+</blockquote>
+</li>
+<li><p>DAG start_date adjustment, airflow will start subprocesses to create DAG Runs, it firstly checks the schedule_interval and calculate previous cron time(previous_cron), the further previous time(previous_pre_cron) and next cron time(next_cron) based on current time.<br>previous_pre_cron -&gt; previous_cron -&gt; utcnow() -&gt; next_cron.<br><img src="/assets/airflow/start_date1.jpg" alt="The cron times"><br>The start_date of a DAG will be adjusted by the scheduler. In our scope, we can think the start_date will be adjusted as following rules.<br>It picks the later one from previous_pre_cron and the resolved start_date and update dag.start_date</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">dag.start_date &#x3D; max(previous_pre_cron, dag.start_date)</span><br></pre></td></tr></table></figure></li>
+<li><p>Normalize_schedule to next_run_date which is the execution date, which is named as <code>normalize_schedule</code> in the code logic. It is the adjusted start_date that will be normalized. The next_run_date will be DAG Run execution_date. It will try to align the start_date to one of the cron times.<br>For examples, cron times is <code>08-14 01:00:00</code> and <code>08-16 01:00:00</code>, any start_time in between, e.g. <code>08-15 00:00:00</code> shall be aligned to <code>08-16 01:00:00</code>. which means next cron time from the start date. If a start_time equals to a cron time, then the result will be the same. e.g. <code>normalize_schedule(08-14 01:00:00)=08-14 01:00:00</code></p>
+</li>
+<li><p>Period end<br>From <a target="_blank" rel="noopener" href="https://airflow.apache.org/docs/stable/faq.html">FAQ</a>, we know that <strong>Airflow scheduler triggers the task soon after the start_date + schedule_interval is passed</strong>, which I doult it results in confusion when it comes to cron schedule_interval context. </p>
+<blockquote>
+<p>From the code logic, I think it means the execution_date + schedule_interval. If you cron means every 2 days, then the schedule_interval shall be 2 day.</p>
+</blockquote>
+</li>
+</ul>
+<h1 id="Figure-out-when-a-dag-will-be-scheduled"><a href="#Figure-out-when-a-dag-will-be-scheduled" class="headerlink" title="Figure out when a dag will be scheduled"></a>Figure out when a dag will be scheduled</h1><p>To answer the question, we need to do 4 steps to get the result</p>
+<ul>
+<li>Cron time calculation, previous_pre_cron, previous_cron, next_cron</li>
+<li>Resolve start_date</li>
+<li>Adjust start_date to align with schedule_interval</li>
+<li>Normalize adjusted start_date</li>
+<li>Calcurate Period</li>
+<li>Decide a DAG run</li>
+</ul>
+<p>Let’s assume some facts to continue a calculation example.</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">cron is set: &#96;0 1 2-30&#x2F;2 * *&#96; </span><br><span class="line">start_date: days_ago(1)</span><br><span class="line">today: 2020-08-14 </span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>Calculate previous_pre_cron, previous_cron and next_cron time based on the time when the scheduler runs. Since it runs peridically, so those times probably are changing during the day. We can take 3 examples as following. </li>
+</ul>
+<table>
+<thead>
+<tr>
+<th>scheduler time</th>
+<th>previous_pre_cron</th>
+<th>previous_cron</th>
+<th>next_cron</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>08-14 00:30:00</td>
+<td>08-10 01:00:00</td>
+<td>08-12 01:00:00</td>
+<td>08-14 01:00:00</td>
+</tr>
+<tr>
+<td>08-14 02:00:00</td>
+<td>08-12 01:00:00</td>
+<td>08-14 01:00:00</td>
+<td>08-16 01:00:00</td>
+</tr>
+<tr>
+<td>08-15 08:00:00</td>
+<td>08-12 01:00:00</td>
+<td>08-14 01:00:00</td>
+<td>08-16 01:00:00</td>
+</tr>
+</tbody></table>
+<ul>
+<li><p>Resolve start_date<br>Calculate the start_date based on the time when the scheduler runs, it changes as well when given config such as days_ago(1).<br>It will have the same start_date during different scheduler times in a day. They all have the mid night of previous day as you can see as folowing.</p>
+<table>
+<thead>
+<tr>
+<th>scheduler time</th>
+<th>start_date</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>08-14 00:30:00</td>
+<td>08-13 00:00:00</td>
+</tr>
+<tr>
+<td>08-14 02:00:00</td>
+<td>08-13 00:00:00</td>
+</tr>
+<tr>
+<td>08-15 08:00:00</td>
+<td>08-14 00:00:00</td>
+</tr>
+</tbody></table>
+</li>
+<li><p>Adjust start_date to align with schedule_interval<br>As discussed above, we compare the start_date with previous-pre cron to get the real start_date. The bigger one wins!</p>
+<table>
+<thead>
+<tr>
+<th>scheduler time</th>
+<th><strong>previous_pre_cron</strong></th>
+<th>previous_cron</th>
+<th>next_cron</th>
+<th><strong>start_date</strong></th>
+<th>adjusted_start</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>08-14 00:30:00</td>
+<td><strong>08-10 01:00:00</strong></td>
+<td>08-12 01:00:00</td>
+<td>08-14 01:00:00</td>
+<td><span style="color:green"><strong>08-13 00:00:00</strong></span></td>
+<td><span style="color:green">08-13 00:00:00</span></td>
+</tr>
+<tr>
+<td>08-14 02:00:00</td>
+<td><strong>08-12 01:00:00</strong></td>
+<td>08-14 01:00:00</td>
+<td>08-16 01:00:00</td>
+<td><span style="color:green"><strong>08-13 00:00:00</strong></span></td>
+<td><span style="color:green">08-13 00:00:00</span></td>
+</tr>
+<tr>
+<td>08-15 08:00:00</td>
+<td><strong>08-12 01:00:00</strong></td>
+<td>08-14 01:00:00</td>
+<td>08-16 01:00:00</td>
+<td><span style="color:green"><strong>08-14 00:00:00</strong></span></td>
+<td><span style="color:green">08-14 00:00:00</span></td>
+</tr>
+</tbody></table>
+</li>
+<li><p>Normalize the adjusted start_date to find possible execution_date.<br>Nomalize start_date(execution_date) is calculated by two steps, </p>
+<ul>
+<li>Find the next cron time (next_cron(adjusted_start)) and pre cron time (pre_cron(adjusted_start)) based on the <em>adjusted_start_date</em>. (which is different from now())</li>
+<li>Compare to normalize</li>
+</ul>
+</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">nomalize(adjusted_start) &#x3D; adjusted_start &#x3D;&#x3D; pre_cron(adjusted_start) ? pre_cron(adjusted_start) : next_cron(adjusted_start)&#96;</span><br></pre></td></tr></table></figure>
+<table>
+<thead>
+<tr>
+<th>adjusted_start</th>
+<th>pre_cron(adjusted_start)</th>
+<th>next_cron(adjusted_start)</th>
+<th>nomalize(adjusted_start)</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>08-13 00:00:00</td>
+<td>08-12 01:00:00</td>
+<td><span style="color:green">08-14 01:00:00</span></td>
+<td><span style="color:green">08-14 01:00:00</span></td>
+</tr>
+<tr>
+<td>08-13 00:00:00</td>
+<td>08-12 01:00:00</td>
+<td><span style="color:green">08-14 01:00:00</span></td>
+<td><span style="color:green">08-14 01:00:00</span></td>
+</tr>
+<tr>
+<td>08-14 00:00:00</td>
+<td>08-14 01:00:00</td>
+<td><span style="color:green">08-16 01:00:00</span></td>
+<td><span style="color:green">08-16 01:00:00</span></td>
+</tr>
+</tbody></table>
+<ul>
+<li><p>Period end<br>It’s easier to get period end from the normalized start date</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Period end &#x3D; nomalize(adjusted_start) + schedule_interval</span><br></pre></td></tr></table></figure>
+<table>
+<thead>
+<tr>
+<th>adjusted_start</th>
+<th>nomalize(adjusted_start)</th>
+<th>Period end</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>08-13 00:00:00</td>
+<td><strong>08-14 01:00:00</strong></td>
+<td><strong>08-16 01:00:00</strong></td>
+</tr>
+<tr>
+<td>08-13 00:00:00</td>
+<td><strong>08-14 01:00:00</strong></td>
+<td><strong>08-16 01:00:00</strong></td>
+</tr>
+<tr>
+<td>08-14 00:00:00</td>
+<td><strong>08-16 01:00:00</strong></td>
+<td><strong>08-18 01:00:00</strong></td>
+</tr>
+</tbody></table>
+</li>
+<li><p>Decide if a run will be started<br>We need to compare the normalized start date and period end with the current time again, if either one is later then now(), then scheduler won’t create a DAG Run</p>
+<table>
+<thead>
+<tr>
+<th>scheduler time</th>
+<th>adjusted_start</th>
+<th>nomalize(adjusted_start)</th>
+<th>Period end</th>
+<th>DAG Run?</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>08-14 00:30:00</td>
+<td>08-13 00:00:00</td>
+<td><span style="color:red">08-14 01:00:00</span></td>
+<td>08-16 01:00:00</td>
+<td>no</td>
+</tr>
+<tr>
+<td>08-14 02:00:00</td>
+<td>08-13 00:00:00</td>
+<td>08-14 01:00:00</td>
+<td><span style="color:red">08-16 01:00:00</span></td>
+<td>no</td>
+</tr>
+<tr>
+<td>08-15 08:00:00</td>
+<td>08-14 00:00:00</td>
+<td><span style="color:red">08-16 01:00:00</span></td>
+<td>08-18 01:00:00</td>
+<td>no</td>
+</tr>
+</tbody></table>
+</li>
+</ul>
+<p>Let’s take the same example above, however, change the start_date to <code>days_ago(2)</code></p>
+<ul>
+<li><p>Cron times and adjusted_start</p>
+<table>
+<thead>
+<tr>
+<th>scheduler time</th>
+<th>previous_pre_cron</th>
+<th>previous_cron</th>
+<th>next_cron</th>
+<th>start_date</th>
+<th>adjusted_start</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>08-14 00:30:00</td>
+<td>08-10 01:00:00</td>
+<td><strong>08-12 01:00:00</strong></td>
+<td>08-14 01:00:00</td>
+<td>08-12 00:00:00</td>
+<td><strong>08-12 00:00:00</strong></td>
+</tr>
+<tr>
+<td>08-14 02:00:00</td>
+<td><strong>08-12 01:00:00</strong></td>
+<td>08-14 01:00:00</td>
+<td>08-16 01:00:00</td>
+<td>08-12 00:00:00</td>
+<td><strong>08-12 01:00:00</strong></td>
+</tr>
+</tbody></table>
+</li>
+<li><p>normalize</p>
+<table>
+<thead>
+<tr>
+<th>scheduler time</th>
+<th>adjusted_start</th>
+<th>pre_cron(adjusted_start)</th>
+<th>next_cron(adjusted_start)</th>
+<th>nomalize(adjusted_start)</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>08-14 00:30:00</td>
+<td>08-12 00:00:00</td>
+<td>08-10 01:00:00</td>
+<td>08-12 01:00:00</td>
+<td>08-12 01:00:00</td>
+</tr>
+<tr>
+<td>08-14 02:00:00</td>
+<td>08-12 01:00:00</td>
+<td>08-12 01:00:00</td>
+<td>08-14 01:00:00</td>
+<td>08-12 01:00:00</td>
+</tr>
+</tbody></table>
+</li>
+<li><p>Period end and decision </p>
+<table>
+<thead>
+<tr>
+<th>scheduler time</th>
+<th>nomalize(adjusted_start)</th>
+<th>Period end</th>
+<th>Dag Run?</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>08-14 00:30:00</td>
+<td>08-12 01:00:00</td>
+<td><span style="color:red">08-14 01:00:00</span></td>
+<td><span style="color:red">no</span></td>
+</tr>
+<tr>
+<td>08-14 02:00:00</td>
+<td>08-12 01:00:00</td>
+<td><span style="color:green">08-14 01:00:00</span></td>
+<td><span style="color:green">yes</span></td>
+</tr>
+</tbody></table>
+</li>
+</ul>
+<h1 id="Summary"><a href="#Summary" class="headerlink" title="Summary"></a>Summary</h1><ul>
+<li><p>The first DAG Run is created based on the minimum start_date for the tasks in your DAG.<br>It says <em>based on</em>, which doesn’t mean it will run the DAG at start_date.</p>
+</li>
+<li><p>Airflow scheduler triggers the task soon after the start_date + schedule_interval is passed<br>The start_date doesn’t mean the start_date you put in the default_args, In fact, it doesn’t mean any start_date, when the schedule interval is cron job.<br>It means the normalized-adjusted-and-resolved start_date that you give.</p>
+</li>
+<li><p>Will a DAG Run be started?<br>If we want to make sure a DAG Run started in a specific day(2020-08-14). When we think about airflow scheduler is runing for that day from (08-14 00:00:00 to 08-14 23:59:59), the start_date resolved from days_ago(2) is actually fixed (2020-08-12 00:00:00). It makes things easier to make sure a DAG Run triggered.<br><img src="/assets/airflow/airflow_start_date_duration.jpg" alt="The start_date"></p>
+</li>
+</ul>
+<p><strong>The simple rules</strong> is to setup the number in days_ago(number_of_days) the same as or larger than your interval in your cron. e.g. if cron is saying every 2 days, then start_date is days_ago(2).</p>
+<ul>
+<li>More<br>Once a DAG Run is triggered, the start date is not that important anymore. The sub sequential run will be calculated from previous DAG Run execution date, which is already normalized and fixed date. </li>
+</ul>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://kaichu.se/Airflow/2020/08/16/Airflow-start-date-with-cron-schedule-interval-is-not-confused-anymore-when-you-know-this.html" data-id="ckuelnhph001eexoj51dicory" class="article-share-link">Share</a>
+      
+        <a href="https://kaichu.se/Airflow/2020/08/16/Airflow-start-date-with-cron-schedule-interval-is-not-confused-anymore-when-you-know-this.html#disqus_thread" class="article-comment-link">Comments</a>
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Airflow/" rel="tag">Airflow</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Bigdata/" rel="tag">Bigdata</a></li></ul>
+
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/Ansible/2020/08/19/Another-recommended-layout-to-use-profiles-in-an-ansible-playbook-project.html" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Newer</strong>
+      <div class="article-nav-title">
+        
+          Another recommended layout to use profiles in an ansible-playbook project
+        
+      </div>
+    </a>
+  
+  
+    <a href="/Airflow/2020/08/13/Advanced-utils-you-would-love-in-Airflow.html" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">Advanced utils you would love in Airflow</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+
+<section id="comments">
+  <div id="disqus_thread">
+    <noscript>Please enable JavaScript to view the <a target="_blank" rel="noopener" href="//disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+  </div>
+  
+  <script>
+
+  /**
+  *  RECOMMENDED CONFIGURATION VARIABLES: EDIT AND UNCOMMENT THE SECTION BELOW TO INSERT DYNAMIC VALUES FROM YOUR PLATFORM OR CMS.
+  *  LEARN WHY DEFINING THESE VARIABLES IS IMPORTANT: https://disqus.com/admin/universalcode/#configuration-variables*/
+
+  var disqus_config = function () {
+      this.page.url = 'https://kaichu.se/Airflow/2020/08/16/Airflow-start-date-with-cron-schedule-interval-is-not-confused-anymore-when-you-know-this.html';
+      this.page.identifier = 'Airflow/2020/08/16/Airflow-start-date-with-cron-schedule-interval-is-not-confused-anymore-when-you-know-this.html';
+      this.page.title = 'Airflow start_date with cron schedule_interval is not confused anymore when you know this';
+  };
+
+  (function() { // DON'T EDIT BELOW THIS LINE
+  var d = document, s = d.createElement('script');
+  s.src = 'https://kaichu-se.disqus.com/embed.js';
+  s.setAttribute('data-timestamp', +new Date());
+  (d.head || d.body).appendChild(s);
+  })();
+  </script>
+  <noscript>Please enable JavaScript to view the <a target="_blank" rel="noopener" href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</section>
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Recent Posts</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/Gatling/2021/10/05/How-to-save-variables-in-session-or-query-results-into-files-in-gatling.html">- How to save variables in gatling session or query results into files</a>
+          </li>
+        
+          <li>
+            <a href="/Docker/2021/04/18/Setup-two-stages-of-Dockerfile-to-build-a-nodejs-app.html">- Setup two stages of Dockerfile to build a nodejs app</a>
+          </li>
+        
+          <li>
+            <a href="/Ansible/2020/09/23/Ansible-built-in-module-with-items.html">- Ansible built-in module - with_items</a>
+          </li>
+        
+          <li>
+            <a href="/Kubernetes/2020/09/21/Kubernetes-02-the-3-practical-ways-to-use-k8s-secret.html">- Kubernetes - 02 - the 3 practical ways to use k8s secret</a>
+          </li>
+        
+          <li>
+            <a href="/Kubernetes/2020/09/19/kubernetes-01-the-3-practical-ways-to-create-k8s-secret.html">- Kubernetes - 01 - the 3 practical ways to create k8s secret</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Categories</h3>
+    <div class="widget">
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/Airflow/">Airflow</a><span class="category-list-count">8</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Ansible/">Ansible</a><span class="category-list-count">6</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Docker/">Docker</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Gatling/">Gatling</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Kubernetes/">Kubernetes</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Nodejs/">Nodejs</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/OS/">OS</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Python/">Python</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Rancher/">Rancher</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Reactjs/">Reactjs</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Site/">Site</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Web/">Web</a><span class="category-list-count">1</span></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archives</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/10/">October 2021</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/04/">April 2021</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/09/">September 2020</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/08/">August 2020</a><span class="archive-list-count">8</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/05/">May 2020</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/04/">April 2020</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/12/">December 2019</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/11/">November 2019</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/10/">October 2019</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/09/">September 2019</a><span class="archive-list-count">2</span></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tag Cloud</h3>
+    <div class="widget tagcloud">
+      <a href="/tags/Airflow/" style="font-size: 20px;">Airflow</a> <a href="/tags/Ansible/" style="font-size: 12.5px;">Ansible</a> <a href="/tags/Architecture/" style="font-size: 12.5px;">Architecture</a> <a href="/tags/Authentication/" style="font-size: 10px;">Authentication</a> <a href="/tags/Bigdata/" style="font-size: 17.5px;">Bigdata</a> <a href="/tags/Datalake/" style="font-size: 12.5px;">Datalake</a> <a href="/tags/DevOps/" style="font-size: 12.5px;">DevOps</a> <a href="/tags/Docker/" style="font-size: 12.5px;">Docker</a> <a href="/tags/Gatling/" style="font-size: 10px;">Gatling</a> <a href="/tags/Isomorphic/" style="font-size: 10px;">Isomorphic</a> <a href="/tags/Jinja2/" style="font-size: 12.5px;">Jinja2</a> <a href="/tags/Loadtest/" style="font-size: 10px;">Loadtest</a> <a href="/tags/Nodejs/" style="font-size: 10px;">Nodejs</a> <a href="/tags/Openldap/" style="font-size: 10px;">Openldap</a> <a href="/tags/Promise/" style="font-size: 10px;">Promise</a> <a href="/tags/Python/" style="font-size: 10px;">Python</a> <a href="/tags/SPA/" style="font-size: 10px;">SPA</a> <a href="/tags/Template/" style="font-size: 10px;">Template</a> <a href="/tags/ansible/" style="font-size: 15px;">ansible</a> <a href="/tags/ansible-playbook/" style="font-size: 10px;">ansible-playbook</a> <a href="/tags/ansible-roles/" style="font-size: 10px;">ansible-roles</a> <a href="/tags/ansible-tasks/" style="font-size: 10px;">ansible-tasks</a> <a href="/tags/backup/" style="font-size: 10px;">backup</a> <a href="/tags/bash/" style="font-size: 10px;">bash</a> <a href="/tags/bigdata/" style="font-size: 12.5px;">bigdata</a> <a href="/tags/blog/" style="font-size: 12.5px;">blog</a> <a href="/tags/cloud/" style="font-size: 10px;">cloud</a> <a href="/tags/component/" style="font-size: 10px;">component</a> <a href="/tags/datalake/" style="font-size: 10px;">datalake</a> <a href="/tags/devops/" style="font-size: 12.5px;">devops</a> <a href="/tags/event-loop/" style="font-size: 10px;">event loop</a> <a href="/tags/frontend/" style="font-size: 12.5px;">frontend</a> <a href="/tags/html/" style="font-size: 10px;">html</a> <a href="/tags/hypervisors/" style="font-size: 10px;">hypervisors</a> <a href="/tags/javascript/" style="font-size: 10px;">javascript</a> <a href="/tags/jinja/" style="font-size: 10px;">jinja</a> <a href="/tags/k8s/" style="font-size: 12.5px;">k8s</a> <a href="/tags/kvm/" style="font-size: 10px;">kvm</a> <a href="/tags/nodejs/" style="font-size: 12.5px;">nodejs</a> <a href="/tags/python/" style="font-size: 10px;">python</a> <a href="/tags/qemu/" style="font-size: 10px;">qemu</a> <a href="/tags/rancher/" style="font-size: 10px;">rancher</a> <a href="/tags/react/" style="font-size: 10px;">react</a> <a href="/tags/reactjs/" style="font-size: 10px;">reactjs</a> <a href="/tags/scheduler/" style="font-size: 10px;">scheduler</a> <a href="/tags/secret/" style="font-size: 12.5px;">secret</a> <a href="/tags/setImmediate/" style="font-size: 10px;">setImmediate</a> <a href="/tags/setTimeout/" style="font-size: 10px;">setTimeout</a> <a href="/tags/site/" style="font-size: 10px;">site</a> <a href="/tags/starter/" style="font-size: 10px;">starter</a> <a href="/tags/tools/" style="font-size: 10px;">tools</a> <a href="/tags/virtulization/" style="font-size: 10px;">virtulization</a>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2021 Kai Chu<br>
+      Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+<script>
+  var disqus_shortname = 'kaichu-se';
+  
+  var disqus_url = 'https://kaichu.se/Airflow/2020/08/16/Airflow-start-date-with-cron-schedule-interval-is-not-confused-anymore-when-you-know-this.html';
+  
+  (function(){
+    var dsq = document.createElement('script');
+    dsq.type = 'text/javascript';
+    dsq.async = true;
+    dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+    (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+  })();
+</script>
+
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+
+
+  
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+
+  
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+
+
+<script src="/js/script.js"></script>
+
+
+
+
+  </div>
+</body>
+</html>

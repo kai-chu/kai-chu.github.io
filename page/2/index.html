@@ -1,0 +1,905 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+<!-- Google Analytics -->
+<script type="text/javascript">
+(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+ga('create', 'UA-128479674-2', 'auto');
+ga('send', 'pageview');
+
+</script>
+<!-- End Google Analytics -->
+
+
+  
+  <title>Kai ｜ 凯</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta property="og:type" content="website">
+<meta property="og:title" content="Kai ｜ 凯">
+<meta property="og:url" content="https://kaichu.se/page/2/index.html">
+<meta property="og:site_name" content="Kai ｜ 凯">
+<meta property="og:locale" content="en_US">
+<meta property="article:author" content="Kai Chu">
+<meta name="twitter:card" content="summary">
+  
+    <link rel="alternate" href="/atom.xml" title="Kai ｜ 凯" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.ico">
+  
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+<meta name="generator" content="Hexo 5.0.0"></head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">Kai ｜ 凯</a>
+      </h1>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="Search"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="https://kaichu.se"></form>
+      </div>
+    </div>
+  </div>
+</header>
+      <div class="outer">
+        <section id="main">
+  
+    <article id="post-Python-template-engine-Jinja2" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/Python/2020/08/12/Python-template-engine-Jinja2.html" class="article-date">
+  <time datetime="2020-08-12T18:31:28.000Z" itemprop="datePublished">2020-08-12</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/Python/">Python</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/Python/2020/08/12/Python-template-engine-Jinja2.html">Python template engine - Jinja2</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>Programmers usually want to use variables in their program to create different results dynamically from the same program. e.g. The first program for a newbie is usually </p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">print(&quot;Hello World&quot;)</span><br><span class="line">print(&quot;Hello Python&quot;)</span><br><span class="line">print(&quot;Hello Kai&quot;)</span><br></pre></td></tr></table></figure>
+<p>The second program will teach us how to get an input from keyboard and print it out.</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">myinput &#x3D; # get input from keyboard</span><br><span class="line">print(&quot;Hello &#123;&#125;&quot;.format(myinput))</span><br></pre></td></tr></table></figure>
+<p>In a template engine, it does similar but much more powful thing. Usually, we call it a template language since it gives simple program capabilities, such as variables, loop and conditions.</p>
+<p>Jinja2 is a template engine in python to combine a model(object values), expressions and statement tags with a template.<br>To understand what Jinja2 does, there are a few thing we need to understand firstly.</p>
+<ul>
+<li>Template, a predefined the file or string aligned to Jinja2 syntax or senmantic</li>
+<li>Model or variable, the variable used to replace the placeholder in your template</li>
+<li>Expression, a function used to change value of the variable</li>
+<li>Statement tags, logic control statements such as loop or if condition</li>
+<li>Commnent, description about a template which will be ignored by the engine when rendering</li>
+<li>Render, the procedure to replace variable or model in a template while following the statement controls</li>
+</ul>
+<h1 id="Initial-look"><a href="#Initial-look" class="headerlink" title="Initial look"></a>Initial look</h1><p>Here is a simple tempalte from <a target="_blank" rel="noopener" href="https://jinja.palletsprojects.com/en/2.11.x/templates/">Jinja2</a></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">&lt;!DOCTYPE html&gt;</span><br><span class="line">&lt;html lang&#x3D;&quot;en&quot;&gt;</span><br><span class="line">&lt;head&gt;</span><br><span class="line">    &lt;title&gt;My Webpage&lt;&#x2F;title&gt;</span><br><span class="line">&lt;&#x2F;head&gt;</span><br><span class="line">&lt;body&gt;</span><br><span class="line">    &lt;ul id&#x3D;&quot;navigation&quot;&gt;</span><br><span class="line">    &#123;% for item in navigation %&#125; &lt;- statement to loop through navigation</span><br><span class="line">        &lt;li&gt;&lt;a href&#x3D;&quot;&#123;&#123; item.href &#125;&#125;&quot;&gt;&#123;&#123; item.caption &#125;&#125;&lt;&#x2F;a&gt;&lt;&#x2F;li&gt; &lt;- use the variable &#39;item&#39; created by statement</span><br><span class="line">    &#123;% endfor %&#125;</span><br><span class="line">    &lt;&#x2F;ul&gt;</span><br><span class="line"></span><br><span class="line">    &lt;h1&gt;My Webpage&lt;&#x2F;h1&gt;</span><br><span class="line">    &#123;&#123; my_name &#125;&#125;  &lt;- will be replaced as Kai</span><br><span class="line"></span><br><span class="line">    &#123;# a comment is ignored #&#125;   &lt;- will be ignored</span><br><span class="line">&lt;&#x2F;body&gt;</span><br><span class="line">&lt;&#x2F;html&gt;</span><br></pre></td></tr></table></figure>
+<p>Let’s look at how jinja will render this template out when given variables. It’s better than just read the explanations.</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">navigation &#x3D; [&#123;href&#x3D;&#39;&#x2F;&#39;, caption&#x3D;&#39;Home&#39;&#125;]</span><br><span class="line">my_name&#x3D;&#39;Kai&#39;</span><br><span class="line">Template(template).render(navigation&#x3D;navigation, my_name&#x3D;my_name) </span><br><span class="line">&#x2F;&#x2F;&#x2F;</span><br><span class="line">&lt;!DOCTYPE html&gt;</span><br><span class="line">&lt;html lang&#x3D;&quot;en&quot;&gt;</span><br><span class="line">&lt;head&gt;</span><br><span class="line">    &lt;title&gt;My Webpage&lt;&#x2F;title&gt;</span><br><span class="line">&lt;&#x2F;head&gt;</span><br><span class="line">&lt;body&gt;</span><br><span class="line">    &lt;ul id&#x3D;&quot;navigation&quot;&gt;</span><br><span class="line">        &lt;li&gt;&lt;a href&#x3D;&quot;&#x2F;&quot;&gt;Home&lt;&#x2F;a&gt;&lt;&#x2F;li&gt; &lt;- Loop is executed and value is replace</span><br><span class="line">    &lt;&#x2F;ul&gt;</span><br><span class="line"></span><br><span class="line">    &lt;h1&gt;My Webpage&lt;&#x2F;h1&gt;</span><br><span class="line">    Kai &lt;- my_name is replaced</span><br><span class="line">    </span><br><span class="line">&lt;&#x2F;body&gt;</span><br><span class="line">&lt;&#x2F;html&gt;</span><br></pre></td></tr></table></figure>
+
+<h1 id="Delimiters"><a href="#Delimiters" class="headerlink" title="Delimiters"></a>Delimiters</h1><p>Delimiters is used by jinja engine to look up variables, expressions, statements and comments in a Template, Jinja runs different renders logic depending on the delimiters. </p>
+<blockquote>
+<p>In a programmming language, the compiler or interpreter runs codes line by line, and understands our commands by keywords.<br>In Jinja2, it’s those special delimiters that the engine understands intially, and then the engine will try to understand the words between those delimiters.</p>
+</blockquote>
+<p>There are a few kinds of delimiters. The default Jinja delimiters are configured as follows.</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">&#123;&#123; ... &#125;&#125; for Expressions and variables to print to the template output</span><br><span class="line">&#123;% ... %&#125; for Statements</span><br><span class="line">&#123;# ... #&#125; for Comments not included in the template output</span><br><span class="line">#  ... ## for Line Statements</span><br></pre></td></tr></table></figure>
+<ul>
+<li>The advanced users can choose different delimiters when using Jinja2</li>
+</ul>
+<h1 id="Expressions"><a href="#Expressions" class="headerlink" title="Expressions"></a>Expressions</h1><h2 id="Math"><a href="#Math" class="headerlink" title="Math"></a>Math</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&#123;&#123; XX + - * &#x2F; &#x2F;&#x2F; % ** YY &#125;&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="String-plus"><a href="#String-plus" class="headerlink" title="String plus"></a>String plus</h2><p>We can concatenate string</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&#123;&#123; &#39;name&#39; ~ name &#125;&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="Comparisons"><a href="#Comparisons" class="headerlink" title="Comparisons"></a>Comparisons</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&#123;&#123; XX &#x3D;&#x3D; !&#x3D; &gt;&#x3D; &lt;&#x3D; &lt; &gt; YY &#125;&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="Logic"><a href="#Logic" class="headerlink" title="Logic"></a>Logic</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">&#123;&#123; XX and or YY &#125;&#125;</span><br><span class="line">&#123;&#123; not XX&#125;&#125;</span><br><span class="line">&#123;&#123; not (XX and YY) &#125;&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="Test"><a href="#Test" class="headerlink" title="Test"></a>Test</h2><p>A test expression is used against the is operator, a test expression is a function such as <code>defined(value)</code>.<br><a target="_blank" rel="noopener" href="https://jinja.palletsprojects.com/en/2.11.x/templates/#list-of-builtin-tests">Full list of tests expression</a></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">&#123;&#123; XX in [YY,ZZ]&#125;&#125;</span><br><span class="line">&#123;&#123; XX is test expression &#125;&#125;</span><br></pre></td></tr></table></figure>
+<p>When using a test expression in jinja template, we can ignore the only value parameter as following</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&#123;&#123; XX is defined &#125;&#125;</span><br></pre></td></tr></table></figure>
+<p>Some expressions have extra parameters, e.g. <a target="_blank" rel="noopener" href="https://jinja.palletsprojects.com/en/2.11.x/templates/#divisibleby">divisibleby(value, num)</a></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&#123;&#123; XX is divisibleby(3) &#125;&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="Object"><a href="#Object" class="headerlink" title="Object"></a>Object</h2><p>We can use python method or attribute or items in a var object</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&#123;&#123; XX.method() XX.YY XX[YY] &#125;&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="Filter"><a href="#Filter" class="headerlink" title="Filter"></a>Filter</h2><p>We can alter a value using filter, or I think mapper is more suitable name, it’s similar as XX.map(mapper1).map(mapper2). <a target="_blank" rel="noopener" href="https://jinja.palletsprojects.com/en/2.11.x/templates/#list-of-builtin-filters">Full list of filters</a></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&#123;&#123; XX | filter1 | fitler2 &#125;&#125;</span><br></pre></td></tr></table></figure>
+<h1 id="Statements"><a href="#Statements" class="headerlink" title="Statements"></a>Statements</h1><h2 id="Control-statement"><a href="#Control-statement" class="headerlink" title="Control statement"></a>Control statement</h2><p>In a template, we can use for, if to control simple logic.</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">&lt;ul&gt;</span><br><span class="line">&#123;% for user in users %&#125;</span><br><span class="line">  &lt;li&gt;&#123;&#123; user.username &#125;&#125;&lt;&#x2F;li&gt;</span><br><span class="line">&#123;% endfor %&#125;</span><br><span class="line">&lt;&#x2F;ul&gt;</span><br><span class="line"></span><br><span class="line">&#123;% if login %&#125; &lt;- test if login is defined, not empty and not false </span><br><span class="line">  &lt;div&gt;Home&lt;&#x2F;div&gt;</span><br><span class="line">&#123;% endif %&#125;</span><br></pre></td></tr></table></figure>
+<p><a target="_blank" rel="noopener" href="https://jinja.palletsprojects.com/en/2.11.x/templates/#list-of-control-structures">https://jinja.palletsprojects.com/en/2.11.x/templates/#list-of-control-structures</a></p>
+<h2 id="Define-macros"><a href="#Define-macros" class="headerlink" title="Define macros"></a>Define macros</h2><p>A macro is used to defined command used piece of codes and used in the template as a function.</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">&#123;% macro input(name, value&#x3D;&#39;&#39;, type&#x3D;&#39;text&#39;, size&#x3D;20) -%&#125;</span><br><span class="line">    &lt;input type&#x3D;&quot;&#123;&#123; type &#125;&#125;&quot; name&#x3D;&quot;&#123;&#123; name &#125;&#125;&quot; value&#x3D;&quot;&#123;&#123;</span><br><span class="line">        value|e &#125;&#125;&quot; size&#x3D;&quot;&#123;&#123; size &#125;&#125;&quot;&gt;</span><br><span class="line">&#123;%- endmacro %&#125;</span><br><span class="line"></span><br><span class="line">&lt;p&gt;&#123;&#123; input(&#39;username&#39;) &#125;&#125;&lt;&#x2F;p&gt;</span><br><span class="line">&lt;p&gt;&#123;&#123; input(&#39;password&#39;, type&#x3D;&#39;password&#39;) &#125;&#125;&lt;&#x2F;p&gt;</span><br></pre></td></tr></table></figure>
+<p><a target="_blank" rel="noopener" href="https://jinja.palletsprojects.com/en/2.11.x/templates/#macros">https://jinja.palletsprojects.com/en/2.11.x/templates/#macros</a><br><a target="_blank" rel="noopener" href="https://jinja.palletsprojects.com/en/2.11.x/templates/#call">https://jinja.palletsprojects.com/en/2.11.x/templates/#call</a></p>
+<h2 id="Filters"><a href="#Filters" class="headerlink" title="Filters"></a>Filters</h2><p>There are built-in filters in Jinja2, such as upper, it can used by statements to make a block of contents to be uppcase</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">&#123;% filter upper %&#125;</span><br><span class="line">    This text becomes uppercase</span><br><span class="line">&#123;% endfilter %&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="Assignment"><a href="#Assignment" class="headerlink" title="Assignment"></a>Assignment</h2><p>Some times we can to setup some variables in the template, the assginment statement fits in</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">&#123;% set navigation &#x3D; [(&#39;index.html&#39;, &#39;Index&#39;), (&#39;about.html&#39;, &#39;About&#39;)] %&#125;</span><br><span class="line">&#123;% set key, value &#x3D; call_something() %&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="Block-Assignments"><a href="#Block-Assignments" class="headerlink" title="Block Assignments"></a>Block Assignments</h2><p>Similar to assignment, we can capture the context in a block to a variable</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">&#123;% set navigation %&#125;</span><br><span class="line">my name is kai</span><br><span class="line">&#123;% endset %&#125;</span><br><span class="line"></span><br><span class="line">Same as</span><br><span class="line">&#123;% set navigation &#x3D; &#39;my name is kai&#39; %&#125;</span><br></pre></td></tr></table></figure>
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://kaichu.se/Python/2020/08/12/Python-template-engine-Jinja2.html" data-id="ckuelnhpb0017exojb2su9p7w" class="article-share-link">Share</a>
+      
+        <a href="https://kaichu.se/Python/2020/08/12/Python-template-engine-Jinja2.html#disqus_thread" class="article-comment-link">Comments</a>
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Jinja2/" rel="tag">Jinja2</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Python/" rel="tag">Python</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Template/" rel="tag">Template</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-understand-some-details-about-airflow-dags" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/Airflow/2020/08/11/understand-some-details-about-airflow-dags.html" class="article-date">
+  <time datetime="2020-08-11T22:46:25.000Z" itemprop="datePublished">2020-08-11</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/Airflow/">Airflow</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/Airflow/2020/08/11/understand-some-details-about-airflow-dags.html">Understand some details about airflow dags</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>A DAG (directed acyclic graph) is a collection of tasks with directional dependencies. A dag also has a schedule time, a start date and an end date (optional).<br>For each schedule, (say daily or hourly), the DAG needs to run each individual tasks as their dependencies are met.<br>Certain tasks have the property of depending on their own past, meaning that they can’t run until their previous schedule (and upstream tasks) are completed.<br>A task is unit of work in airflow which runs some python code for some works for an execution_date</p>
+<p>Execution_date, in airflow, each dag is running for a specific date to handle some data for that date.<br>The execution_date is the logical date and time which the DAG Run, and its task instances, are running for.<br>While a task_instance or DAG run might have a physical start date of now, their logical date might be 3 months ago because we are busy reloading something.</p>
+<p>A DAG run and all task instances created within it are instanced with the same execution_date</p>
+<p>Basically, a dag consists of following 3 things and working as an airflow DAG developer, you need to define it in a DAG file.</p>
+<ul>
+<li>schedule, how often we run this DAG</li>
+<li>tasks or operators, what to do in this DAG</li>
+<li>own past condition (previous scheduled task)</li>
+<li>dependencies, how tasks are depending on each other </li>
+</ul>
+<p>Note: a pipeline definition and a dag definition are the same in the context of airflow</p>
+<h1 id="DAG-definition-file-or-pipeline-definition"><a href="#DAG-definition-file-or-pipeline-definition" class="headerlink" title="DAG definition file or pipeline definition"></a>DAG definition file or pipeline definition</h1><p>A DAG definition file is an python file where we defines all 3 elements above, it will be picked by airflow server, parsed and persisted into an database.<br>When airflow server parses the DAG definition, it will get the meta information from the python file, however it won’t execute the tasks defined in the file.<br>The actual tasks defined will be run in a different context  when the scheduled time is met from the context where the script is parsed.<br>Different tasks run on different workers at different points in time, which means that this script cannot be used to cross communicate between tasks. </p>
+<h1 id="To-define-a-DAG"><a href="#To-define-a-DAG" class="headerlink" title="To define a DAG"></a>To define a DAG</h1><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">from airflow import DAG</span><br><span class="line">from airflow.utils.dates import days_ago </span><br><span class="line"></span><br><span class="line">default_args &#x3D; &#123;</span><br><span class="line">    &#39;start_date&#39;: days_ago(2), </span><br><span class="line">    &#39;schedule_interval&#39;: timedelta(seconds&#x3D;5)</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">dag &#x3D; DAG(&#39;dag-id-data&#39;, default_args&#x3D;default_args)</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>Explain:<br>DAGs essentially act as namespaces for tasks. A task_id can only be added once to a DAG.<br>If a dictionary of default_args is passed to a DAG, it will apply them to any of its operators. This makes it easy to apply a common parameter to many operators without having to type it many times. (Code 1)</li>
+</ul>
+<h2 id="Args-to-DAG"><a href="#Args-to-DAG" class="headerlink" title="Args to DAG:"></a>Args to DAG:</h2><p>dag_id, the id of the DAG, developer defined when creating the dag in python file.<br>description, the description for the DAG to e.g. be shown on the webserver<br>schedule_interval,  defines how often that DAG runs</p>
+<h2 id="Values-meaning"><a href="#Values-meaning" class="headerlink" title="Values meaning"></a>Values meaning</h2><p>datetime.timedelta, will be added to your latest task instance’s execution_date to figure out the next schedule<br>dateutil.relativedelta.relativedelta<br>str that acts as a cron expression<br>start_date (datetime.datetime) – The timestamp from which the scheduler will attempt to backfill, e.g. das_ago(2)</p>
+<h1 id="To-define-a-Task"><a href="#To-define-a-Task" class="headerlink" title="To define a Task"></a>To define a Task</h1><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">from airflow.operators.bash_operator import BashOperator</span><br><span class="line">op_print_date &#x3D; BashOperator(</span><br><span class="line">    task_id&#x3D;&#39;print_date&#39;,</span><br><span class="line">    bash_command&#x3D;&#39;date&#39;,</span><br><span class="line">    dag&#x3D;dag,</span><br><span class="line">)</span><br></pre></td></tr></table></figure>
+<ul>
+<li>Explain:<br>task_id is defined by DAG developer<br>BashOperator is used to run command ‘date’<br>the task is assgined to the dag defined above</li>
+</ul>
+<h1 id="Dag-Context-with-task-define"><a href="#Dag-Context-with-task-define" class="headerlink" title="Dag Context with task define"></a>Dag Context with task define</h1><h2 id="Add-keyword-arguments-when-creating-dag"><a href="#Add-keyword-arguments-when-creating-dag" class="headerlink" title="Add keyword arguments when creating dag"></a>Add keyword arguments when creating dag</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">task1 &#x3D; Task(task_id&#x3D;&#39;&#39;, dag &#x3D; dag, ...)</span><br></pre></td></tr></table></figure>
+
+<h2 id="Using-python-DAG-context-manager"><a href="#Using-python-DAG-context-manager" class="headerlink" title="Using python DAG context manager"></a>Using python DAG context manager</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">With dag:</span><br><span class="line">  task1 &#x3D; Task(task_id&#x3D;&#39;&#39;, ...)</span><br></pre></td></tr></table></figure>
+
+<h1 id="Dependency-Define"><a href="#Dependency-Define" class="headerlink" title="Dependency Define"></a>Dependency Define</h1><h2 id="Method-call"><a href="#Method-call" class="headerlink" title="Method call"></a>Method call</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">task1.set_downstream(task2)</span><br></pre></td></tr></table></figure>
+<h2 id="Bitshift-Composition"><a href="#Bitshift-Composition" class="headerlink" title="Bitshift Composition"></a>Bitshift Composition</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">task1 &gt;&gt; task2</span><br></pre></td></tr></table></figure>
+
+<h1 id="Code-Examples"><a href="#Code-Examples" class="headerlink" title="Code Examples:"></a>Code Examples:</h1><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">default_args &#x3D; &#123;</span><br><span class="line">    &#39;start_date&#39;: datetime(2016, 1, 1),</span><br><span class="line">    &#39;owner&#39;: &#39;airflow&#39;</span><br><span class="line">&#125;</span><br><span class="line">dag &#x3D; DAG(&#39;dummy-dag&#39;, default_args)</span><br><span class="line">op &#x3D; DummyOperator(task_id&#x3D;&#39;dummy&#39;, dag&#x3D;dag)</span><br><span class="line">print(op.owner) # Airflow the task will have the owner props inherited from the dag default args</span><br></pre></td></tr></table></figure>
+
+<h1 id="Code-2-A-simple-DAG-definition"><a href="#Code-2-A-simple-DAG-definition" class="headerlink" title="Code 2: A simple DAG definition"></a>Code 2: A simple DAG definition</h1><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line">from airflow import DAG</span><br><span class="line">from airflow.operators.bash_operator import BashOperator</span><br><span class="line">from airflow.utils.dates import days_ago</span><br><span class="line">from datetime import timedelta</span><br><span class="line"></span><br><span class="line">default_args &#x3D; &#123;</span><br><span class="line">    &#39;depends_on_past&#39;: False,</span><br><span class="line">    &#39;start_date&#39;: days_ago(2),</span><br><span class="line">    &#39;schedule_interval&#39;: timedelta(seconds&#x3D;5)</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">dag &#x3D; DAG(</span><br><span class="line">    &#39;dag-data-id&#39;,</span><br><span class="line">    default_args&#x3D;default_args,</span><br><span class="line">    description&#x3D;&#39;Data pipeline for data&#39;,</span><br><span class="line">)</span><br><span class="line"></span><br><span class="line">op_print_date &#x3D; BashOperator(</span><br><span class="line">    task_id&#x3D;&#39;print_date&#39;,</span><br><span class="line">    bash_command&#x3D;&#39;date&#39;,</span><br><span class="line">    dag&#x3D;dag,</span><br><span class="line">)</span><br></pre></td></tr></table></figure>
+
+<h1 id="References"><a href="#References" class="headerlink" title="References"></a>References</h1><p><a target="_blank" rel="noopener" href="https://airflow.apache.org/docs/stable/_api/airflow/models/dag/index.html">Airflow official website</a><br><a target="_blank" rel="noopener" href="https://docs.python.org/3/library/datetime.html#datetime.timedelta">Python datetime delta</a></p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://kaichu.se/Airflow/2020/08/11/understand-some-details-about-airflow-dags.html" data-id="ckuelnhpa0013exoj4q1ue3w7" class="article-share-link">Share</a>
+      
+        <a href="https://kaichu.se/Airflow/2020/08/11/understand-some-details-about-airflow-dags.html#disqus_thread" class="article-comment-link">Comments</a>
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Airflow/" rel="tag">Airflow</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Architecture/" rel="tag">Architecture</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Bigdata/" rel="tag">Bigdata</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Datalake/" rel="tag">Datalake</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-what-is-apache-airflow" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/Airflow/2020/08/06/what-is-apache-airflow.html" class="article-date">
+  <time datetime="2020-08-06T22:06:06.000Z" itemprop="datePublished">2020-08-06</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/Airflow/">Airflow</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/Airflow/2020/08/06/what-is-apache-airflow.html">What is apache airflow</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h2 id="What-is-airflow"><a href="#What-is-airflow" class="headerlink" title="What is airflow"></a>What is airflow</h2><p>Airflow is an clustered platform to schedule, run-through and monitor a series of tasks in a directed acyclic graph (DAGs).<br>It gives better management capabilities to create, log and link jobs what would be done by cron jobs.</p>
+<h2 id="Architecture"><a href="#Architecture" class="headerlink" title="Architecture"></a>Architecture</h2><p>Airflow cluster setup will have webserver, scheduler, message broker and worker components as following.<br><img src="/assets/airflow/airflow_arc.jpg" alt="Airflow arc"><br>Webserver serves UI and scheduler will parse tasks defintion, the DAGs from Airflow Home folder, usually airflow maintainer<br>will deploy their DAGs definition there and scheduler will parse them and add meta data in to the meta DB.<br>Each DAG will be given a trigger time, which is similar as cron, then it’s met, scheduler will put the task into broker and one of the workers<br>will pick up that task and run it. Workers will work on tasks while following the dependencies defined in the DAG. </p>
+<h2 id="Concepts-to-understand-before-start"><a href="#Concepts-to-understand-before-start" class="headerlink" title="Concepts to understand before start"></a>Concepts to understand before start</h2><h3 id="DAG"><a href="#DAG" class="headerlink" title="DAG"></a>DAG</h3><p>Directed Acyclic Graph – is a workflow of all the tasks you want to run, organized in a way that reflects their relationships and dependencies In general, each one should correspond to a single logical workflow</p>
+<h3 id="DAG-definition"><a href="#DAG-definition" class="headerlink" title="DAG definition"></a>DAG definition</h3><p>Airflow use python file to declare dag objects, a DAG function is provided to accept configurations. e.g. dag=DAG(‘dag_name’, default_args=default_args)</p>
+<ul>
+<li>Dag arguments<br>The arguments provided for the dag object when the dag is run</li>
+<li>Dag default arguments<br>The default dag argument, which is provided when defining the dag in dag definition python file</li>
+<li>Context manager<br>airflow will find a dag definition in a python and assign that dat to operators defined in that definition file</li>
+<li>Dag objects build<br>Airflow will find and run dag definition python files to create dags</li>
+<li>Task relationship<br>Tasks a a dag can has dependencies by using task_1 &gt;&gt; task_2, the same as task_1.set_downstream(task_2)</li>
+<li>Bitshift Composition<br>A convinient way to define relationships between tasks. &gt;&gt;</li>
+<li>Upstream<br>if we have a taskA, then the task running before it is the upstream of taskA, task A need to wait until upstream has completed successfully.</li>
+<li>Downsteam<br>if we have a taskA, then the task after it is the downstream of taskA</li>
+</ul>
+<h3 id="Dagbag"><a href="#Dagbag" class="headerlink" title="Dagbag"></a>Dagbag</h3><p>A folder where airflow is searching DAG definition python files, execute and build DAG objects into airflow system.<br>When searching for DAGs, Airflow only considers python files that contain the strings “airflow” and “DAG” by default.<br>To consider all python files instead, disable the DAG_DISCOVERY_SAFE_MODE configuration flag.</p>
+<h3 id="Task"><a href="#Task" class="headerlink" title="Task"></a>Task</h3><p>A work unit in a DAG, it is an implementation of an Operator. for example a PythonOperator to execute some Python code, or a BashOperator to run a Bash command</p>
+<h3 id="Task-instance"><a href="#Task-instance" class="headerlink" title="Task instance"></a>Task instance</h3><p>A runtime exection of a task, It should be a combination of a DAG, a task, and a point in time (execution_date)</p>
+<h3 id="Task-lifecycle"><a href="#Task-lifecycle" class="headerlink" title="Task lifecycle"></a>Task lifecycle</h3><p>A task goes through various stages from start to completion<br><img src="https://airflow.apache.org/docs/stable/_images/task_lifecycle_diagram.png" alt="Airflow lifecycle"></p>
+<h3 id="Operators"><a href="#Operators" class="headerlink" title="Operators"></a>Operators</h3><p>Operators is specific implementations of tasks. It defines what the task does and are only loaded by Airflow if they are assigned to a DAG.<br>e.g.<br>BashOperator - executes a bash command<br>PythonOperator - calls an arbitrary Python function<br>EmailOperator - sends an email<br>SimpleHttpOperator - sends an HTTP request</p>
+<h3 id="Pool"><a href="#Pool" class="headerlink" title="Pool"></a>Pool</h3><p>A named of list of workers which can be refered by a task to manually balance airflow workload.</p>
+<h3 id="Queue"><a href="#Queue" class="headerlink" title="Queue"></a>Queue</h3><p>Queue for a executor to cache tasks</p>
+<h3 id="Worker"><a href="#Worker" class="headerlink" title="Worker"></a>Worker</h3><p>Processes to get tasks out from queue and run it, workers can listen to one or multiple queues of tasks. </p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://kaichu.se/Airflow/2020/08/06/what-is-apache-airflow.html" data-id="ckuelnhp90010exoj51rh5t6m" class="article-share-link">Share</a>
+      
+        <a href="https://kaichu.se/Airflow/2020/08/06/what-is-apache-airflow.html#disqus_thread" class="article-comment-link">Comments</a>
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Airflow/" rel="tag">Airflow</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Architecture/" rel="tag">Architecture</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Bigdata/" rel="tag">Bigdata</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Datalake/" rel="tag">Datalake</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-understand-different-levels-of-hypervisors-beneath-os" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/OS/2020/05/11/understand-different-levels-of-hypervisors-beneath-os.html" class="article-date">
+  <time datetime="2020-05-11T22:18:36.000Z" itemprop="datePublished">2020-05-11</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/OS/">OS</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/OS/2020/05/11/understand-different-levels-of-hypervisors-beneath-os.html">Understand different levels of hypervisors beneath os</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>I have chosen the word ‘beneath os’ instead of ‘on top of hardware’ for describing hypervisors. It will remind of me that hypervisors were born as an abstraction level between an os and the actual hardware devices. A notice of qemu in kvm leads me to try to understand the differences in bewtween.</p>
+<p><img src="/assets/hypervisors.jpg" alt="hypervisor diagram"></p>
+<h1 id="Hosted-hypervisor-type-2"><a href="#Hosted-hypervisor-type-2" class="headerlink" title="Hosted hypervisor(type 2)"></a>Hosted hypervisor(type 2)</h1><p>It is an application running on top of another os(named host os), it runs as a process on the host.<br>It’s kind of os software to emulate other system commands and translate or adapte them into host os commands, utilizing host os drivers to communicate with hardwares. (No hardware involved)</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">guest os -&gt; type2 hypervisor -&gt; host os -&gt; hardware</span><br></pre></td></tr></table></figure>
+
+<h1 id="Native-Hypervisor-type-1"><a href="#Native-Hypervisor-type-1" class="headerlink" title="Native Hypervisor(type 1)"></a>Native Hypervisor(type 1)</h1><p>Also called native or bare-metal hypervisor, is <em>virtualization software</em> that is installed on hardware directly.<br>It requires a processor with hardware virtualization extensions, such as Intel VT or AMD-V, to help to translate or map instructions to hardware cpu</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">guest os -&gt; type1 hypervisor -&gt; hardware</span><br></pre></td></tr></table></figure>
+
+<p>KVM is a type 1 hypervisor and Qemu is a Type 2 hypervisor. </p>
+<p>Type 1 hypervisor comes installed with the hardware system like KVM in Linux. KVM provides hardware acceleration for virtual machines but it need Qemu to emulate any operating system.</p>
+<p>Qemu is a Type 2 hypverisor, it can be installed on an operating system and it runs as an indepent process and the instructions we give in Quemu will be executed on the host machine. Qemu can run independently without KVM as its a emulator however the performance will be poor as Qemu doesnt do any hardware acceleration</p>
+<p>There is a project that is on-going to integrate Qemu and KVM. This will be a type 1 hypervisor. So we will have all the benefits of Qemu as an emulator and KVM hardware acceleration for better performance.</p>
+<h1 id="References"><a href="#References" class="headerlink" title="References"></a>References</h1><ol>
+<li><a target="_blank" rel="noopener" href="https://en.wikipedia.org/wiki/Hypervisor">Wiki hypervisor</a></li>
+<li><a target="_blank" rel="noopener" href="https://en.wikipedia.org/wiki/Kernel-based_Virtual_Machine">Kernel based virtual machine</a></li>
+<li><a target="_blank" rel="noopener" href="http://www.linux-kvm.org/page/FAQ#General_KVM_information">linux-kvm org</a></li>
+<li><a target="_blank" rel="noopener" href="https://www.quora.com/Virtualization-What-is-the-difference-between-KVM-and-QEMU">Quora difference between kvm and qemu</a></li>
+<li><a target="_blank" rel="noopener" href="http://cseweb.ucsd.edu/~jfisherogden/hardwareVirt.pdf">UCSD hardwareVirt paper</a></li>
+</ol>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://kaichu.se/OS/2020/05/11/understand-different-levels-of-hypervisors-beneath-os.html" data-id="ckuelnhp7000xexoj9js45fcs" class="article-share-link">Share</a>
+      
+        <a href="https://kaichu.se/OS/2020/05/11/understand-different-levels-of-hypervisors-beneath-os.html#disqus_thread" class="article-comment-link">Comments</a>
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/hypervisors/" rel="tag">hypervisors</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/kvm/" rel="tag">kvm</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/qemu/" rel="tag">qemu</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/virtulization/" rel="tag">virtulization</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-start-a-nodejs-project-and-publish-it-into-public-npm-registry" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/Nodejs/2020/05/01/start-a-nodejs-project-and-publish-it-into-public-npm-registry.html" class="article-date">
+  <time datetime="2020-05-01T19:56:21.000Z" itemprop="datePublished">2020-05-01</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/Nodejs/">Nodejs</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/Nodejs/2020/05/01/start-a-nodejs-project-and-publish-it-into-public-npm-registry.html">Start a nodejs project and publish it into public npm registry</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>This is all about the basic steps to start a npm project and publish it into <a target="_blank" rel="noopener" href="https://www.npmjs.com/">npmjs</a></p>
+<p>Npmjs is a public npm registry which is managing packages. Anyone can register an account and publish his or her package to share with others. It’s free if you are only about publishing publich packages and can be accessed by anyone. Paid features can be found <a target="_blank" rel="noopener" href="https://www.npmjs.com/products">here</a></p>
+<h2 id="Register-an-account"><a href="#Register-an-account" class="headerlink" title="Register an account"></a>Register an account</h2><p>To manage your own packages, an account is required in <a target="_blank" rel="noopener" href="https://www.npmjs.com/">npmjs</a></p>
+<h2 id="Create-a-project"><a href="#Create-a-project" class="headerlink" title="Create a project"></a>Create a project</h2><p>Simply create a folder in your local machine and run npm init to start a npm project</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line">$ mkdir node_starter &amp;&amp; <span class="built_in">cd</span> node_starter</span><br><span class="line">node_starter$ npm init --scope=kaichu</span><br><span class="line"></span><br><span class="line">package name: (@kaichu/node_starter) </span><br><span class="line">version: (1.0.0) </span><br><span class="line">git repository: </span><br><span class="line">keywords: </span><br><span class="line">license: (ISC) </span><br><span class="line">About to write to /Users/kaichu/Workspace/Dev/js/poc/node_in_deep/node_starter/package.json:</span><br><span class="line">&#123;</span><br><span class="line">  <span class="string">&quot;name&quot;</span>: <span class="string">&quot;@kaichu/node_starter&quot;</span>,</span><br><span class="line">  <span class="string">&quot;version&quot;</span>: <span class="string">&quot;1.0.0&quot;</span>,</span><br><span class="line">  <span class="string">&quot;description&quot;</span>: <span class="string">&quot;A starter demo&quot;</span>,</span><br><span class="line">  <span class="string">&quot;main&quot;</span>: <span class="string">&quot;index.js&quot;</span>,</span><br><span class="line">  <span class="string">&quot;scripts&quot;</span>: &#123;</span><br><span class="line">    <span class="string">&quot;test&quot;</span>: <span class="string">&quot;echo \&quot;Error: no test specified\&quot; &amp;&amp; exit 1&quot;</span></span><br><span class="line">  &#125;,</span><br><span class="line">  <span class="string">&quot;author&quot;</span>: <span class="string">&quot;Kai Chu&quot;</span>,</span><br><span class="line">  <span class="string">&quot;license&quot;</span>: <span class="string">&quot;ISC&quot;</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="Create-the-index-js-file"><a href="#Create-the-index-js-file" class="headerlink" title="Create the index.js file"></a>Create the index.js file</h2><p>which is the main entrypoint of the package as specified in the package key “main”</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">node_starter$ touch index.js</span><br><span class="line">node_starter$ <span class="built_in">echo</span> <span class="string">&#x27;console.log(&quot;hi nodejs&quot;)&#x27;</span> &gt;&gt; index.js</span><br></pre></td></tr></table></figure>
+
+<h2 id="Login-the-registry-from-command"><a href="#Login-the-registry-from-command" class="headerlink" title="Login the registry from command"></a>Login the registry from command</h2><p>Looks good enough to try out the publish, before a publish, you need to login the the registy in your local command. Run following command and fill in your username and password you have setup in the Step 1</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ npm login</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>which actually create a authToken in your home ~/.npmrc file</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">$ cat ~&#x2F;.npmrc </span><br><span class="line">&#x2F;&#x2F;registry.npmjs.org&#x2F;:_authToken&#x3D;&quot;xxxxx-xxxx-xxx&quot;</span><br></pre></td></tr></table></figure>
+
+<h2 id="Publish-your-first-npm-package"><a href="#Publish-your-first-npm-package" class="headerlink" title="Publish your first npm package"></a>Publish your first npm package</h2><p>Make sure you are in the node_starter dir and run publich. the –access will tell npm registry if it’s a public or restricted package.<br>Since we are not paying, only public options are useful.</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ npm publish --access&#x3D;public</span><br></pre></td></tr></table></figure>
+
+<h2 id="Check-the-published-result"><a href="#Check-the-published-result" class="headerlink" title="Check the published result"></a>Check the published result</h2><p>You should have got an email and tell you haved published your package Go to npm regisry and </p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">&#x2F;&#x2F;Email</span><br><span class="line">Successfully published @kaichu&#x2F;node_starter@1.0.0</span><br><span class="line"></span><br><span class="line">&#x2F;&#x2F; Npm registry </span><br><span class="line">Click your profile pic -&gt; packages, node_starter is ready for you there.</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<p><img src="/assets/npm_packages.png" alt="NPM packages"></p>
+<h2 id="Use-your-package"><a href="#Use-your-package" class="headerlink" title="Use your package"></a>Use your package</h2><p>Since the package is published in npm registery, now you can use your <code>npm i</code> to install it. </p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">$ npm i @kaichu/node_starter</span><br><span class="line">``` </span><br><span class="line"></span><br><span class="line"><span class="comment">## Tag your published package</span></span><br><span class="line">When publishing a package, npm will add a tag `latest` to your package <span class="built_in">which</span> can be seen <span class="keyword">in</span> npmjs as following</span><br><span class="line">![Latest tag default](/assets/npm_before_tag.png)</span><br><span class="line"></span><br><span class="line">When publish packages, we can add extra options --tag to add new tag to a publish. </span><br><span class="line">```bash</span><br><span class="line">npm publish --access=public --tag=dev</span><br></pre></td></tr></table></figure>
+
+<p>However, since we have publihed the package, in default, we cannot publish the same version again. We can use<br>another separate npm cli to add dev tag.</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">$ npm dist-tag add @kaichu&#x2F;node_starter@1.0.0 dev</span><br><span class="line">$ npm dist-tag ls @kaichu&#x2F;node_starter@1.0.0</span><br></pre></td></tr></table></figure>
+<p>The result will be shown in npmjs as well.<br><img src="/assets/npm_after_tag.png" alt="Latest tag default"></p>
+<h2 id="References"><a href="#References" class="headerlink" title="References"></a>References</h2><ol>
+<li><a target="_blank" rel="noopener" href="https://www.npmjs.com/package/@kaichu/node_starter">my node_starter</a></li>
+</ol>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://kaichu.se/Nodejs/2020/05/01/start-a-nodejs-project-and-publish-it-into-public-npm-registry.html" data-id="ckuelnhp6000texoj6l59etgk" class="article-share-link">Share</a>
+      
+        <a href="https://kaichu.se/Nodejs/2020/05/01/start-a-nodejs-project-and-publish-it-into-public-npm-registry.html#disqus_thread" class="article-comment-link">Comments</a>
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/nodejs/" rel="tag">nodejs</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/starter/" rel="tag">starter</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-setup-airflow-with-openldap-authentication-with-docker" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/Airflow/2020/04/24/setup-airflow-with-openldap-authentication-with-docker.html" class="article-date">
+  <time datetime="2020-04-24T22:10:16.000Z" itemprop="datePublished">2020-04-24</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/Airflow/">Airflow</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/Airflow/2020/04/24/setup-airflow-with-openldap-authentication-with-docker.html">Setup airflow with openldap authentication with docker</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>Airflow provides a few ways to add authentication. <a target="_blank" rel="noopener" href="https://airflow.apache.org/docs/stable/security.html">https://airflow.apache.org/docs/stable/security.html</a><br>In this post, I want to demo how to setup a ldap server with docker and airflow to use that ldap.</p>
+<p>1 Setup openldap using docker image, remember to enable LDAP_RFC2307BIS_SCHEMA, which will bring in the groupOfNames, posixGroup schema definition</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">$ docker run -p 389:389 -p 636:636 -v C:\Users\kach07:&#x2F;ldap \</span><br><span class="line">--env LDAP_RFC2307BIS_SCHEMA&#x3D;true  \</span><br><span class="line">--name my-openldap-container \</span><br><span class="line">--detach \</span><br><span class="line">osixia&#x2F;openldap:1.3.0</span><br></pre></td></tr></table></figure>
+<p>2 Create two files and put them in you home folder so that you can find them inside the container C:\Users\kach07<br>I’m lazy, I have mapped the whole home dir to my container. Alternatively, you can you docker cp to move files into your container.</p>
+<ul>
+<li><p>group.ldif</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">dn: cn&#x3D;airflow-super-users,dc&#x3D;example,dc&#x3D;org</span><br><span class="line">cn: airflow-super-users</span><br><span class="line">objectClass: top</span><br><span class="line">objectClass: groupOfNames</span><br><span class="line">objectClass: posixGroup</span><br><span class="line">member: uid&#x3D;test_user,dc&#x3D;example,dc&#x3D;org</span><br><span class="line">gidNumber: 100</span><br><span class="line">memberUid: test_user</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>user.ldif</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">dn: uid&#x3D;test_user,dc&#x3D;example,dc&#x3D;org</span><br><span class="line">uid: test_user</span><br><span class="line">sn: User</span><br><span class="line">cn: Test User</span><br><span class="line">objectClass: person</span><br><span class="line">objectClass: organizationalPerson</span><br><span class="line">objectClass: posixAccount</span><br><span class="line">objectClass: top</span><br><span class="line">loginShell: &#x2F;bin&#x2F;bash</span><br><span class="line">homeDirectory: &#x2F;home&#x2F;testuser</span><br><span class="line">uidNumber: 1001</span><br><span class="line">gidNumber: 1001</span><br></pre></td></tr></table></figure></li>
+<li><p>You can chagne the password for your test_user [Commands are running inside your container]</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">$ docker exec -it my-openldap-container &#x2F;bin&#x2F;bash</span><br><span class="line">$ ldappasswd -x -H ldap:&#x2F;&#x2F;localhost -D &quot;cn&#x3D;admin,dc&#x3D;example,dc&#x3D;org&quot; -w admin -S -ZZ uid&#x3D;test_user,dc&#x3D;example,dc&#x3D;org</span><br></pre></td></tr></table></figure>
+<p>or </p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">$ docker exec my-openldap-container \</span><br><span class="line"> ldappasswd -x -H ldap:&#x2F;&#x2F;localhost -D &quot;cn&#x3D;admin,dc&#x3D;example,dc&#x3D;org&quot; -w admin -S -ZZ uid&#x3D;test_user,dc&#x3D;example,dc&#x3D;org</span><br></pre></td></tr></table></figure>
+
+</li>
+</ul>
+<p>3 Go into the container to use ldapadd command to add user and group entries [Commands are running inside your container]</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">$ docker exec -it my-openldap-container &#x2F;bin&#x2F;bash</span><br><span class="line">$ cd &#x2F;ldap</span><br><span class="line">$ ldapadd -x -H ldap:&#x2F;&#x2F;localhost -w admin -D &#39;cn&#x3D;admin,dc&#x3D;example,dc&#x3D;org&#39; -f &#x2F;ldap&#x2F;user.ldif</span><br><span class="line">$ ldapadd -x -H ldap:&#x2F;&#x2F;localhost -w admin -D &#39;cn&#x3D;admin,dc&#x3D;example,dc&#x3D;org&#39; -f &#x2F;ldap&#x2F;group.ldif</span><br></pre></td></tr></table></figure>
+<p>4 Check you container ip [], if you are running in linux, you can your docker run –network host to skip this part. I’m lazy to add network for two containers, and use the ip later in airflow to connect to the ldap server.</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">$ docker inspect my-openldap-container --format&#x3D;&#39;&#123;&#123;range .NetworkSettings.Networks&#125;&#125;&#123;&#123;.IPAddress&#125;&#125;&#123;&#123;end&#125;&#125;&#39;</span><br><span class="line">&#x2F;&#x2F;my output &#x3D;&gt;  172.17.0.2</span><br></pre></td></tr></table></figure>
+
+<p>5 Change config in your airflow.cfg </p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">[webserver]</span><br><span class="line">authenticate &#x3D; True</span><br><span class="line">auth_backend &#x3D; airflow.contrib.auth.backends.ldap_auth</span><br><span class="line"></span><br><span class="line">[ldap]</span><br><span class="line"># set this to ldaps:&#x2F;&#x2F;&lt;your.ldap.server&gt;:&lt;port&gt;</span><br><span class="line">uri &#x3D;ldap:&#x2F;&#x2F;172.17.0.2:389</span><br><span class="line">user_filter &#x3D; objectClass&#x3D;*</span><br><span class="line">user_name_attr &#x3D; uid</span><br><span class="line">group_member_attr &#x3D; memberOf</span><br><span class="line">superuser_filter &#x3D; memberOf&#x3D;CN&#x3D;airflow-super-users,dc&#x3D;example,dc&#x3D;org</span><br><span class="line">data_profiler_filter &#x3D;</span><br><span class="line">bind_user &#x3D; cn&#x3D;admin,dc&#x3D;example,dc&#x3D;org</span><br><span class="line">bind_password &#x3D; admin</span><br><span class="line">basedn &#x3D; dc&#x3D;example,dc&#x3D;org</span><br><span class="line"># You cannot comment it out, explicitly use cacert&#x3D; is important</span><br><span class="line">cacert &#x3D;</span><br><span class="line">search_scope &#x3D; LEVEL</span><br></pre></td></tr></table></figure>
+<p>6 Start your airflow docker</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ docker run  --mount type&#x3D;bind,source&#x3D;&quot;C:&#x2F;Users&#x2F;kach07&#x2F;airflow&#x2F;airflow.cfg&quot;,target&#x3D;&#x2F;usr&#x2F;local&#x2F;airflow&#x2F;airflow.cfg -p 8080:8080 testairflow webserver</span><br></pre></td></tr></table></figure>
+<p>I have built my own local container, since airflow.contrib.auth.backends.ldap_auth requires ldap3 and airflow[ldap] module</p>
+<p>7 Open you airflow in browser, you shall be asked to input your password. Use the user test_user and password you setup to login.<br><a target="_blank" rel="noopener" href="http://localhost:8080/admin">http://localhost:8080/admin</a> </p>
+<p>8 More things to say</p>
+<ul>
+<li><p>Others: if you want to play around ldapsearch in your command<br>ldapsearch -xLLL -H ldap://localhost -w admin -D ‘cn=admin,dc=example,dc=org’ -b dc=example,dc=org cn=*</p>
+</li>
+<li><p>Important:<br>Don’t add any quote in your configurations, I have # in my password, then I decide to use an env to test my setup </p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">docker run  --mount type&#x3D;bind,source&#x3D;&quot;C:&#x2F;Users&#x2F;kach07&#x2F;airflow&#x2F;airflow.cfg&quot;,target&#x3D;&#x2F;usr&#x2F;local&#x2F;airflow&#x2F;airflow.cfg --env </span><br><span class="line">&quot;AIRFLOW__LDAP__BIND_PASSWORD&#x3D;Fw5Mk#Sr&quot; -p 8080:8080 testairflow webserver</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>For AD Users</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">user_name_attr &#x3D; sAMAccountName</span><br><span class="line">search_scope &#x3D; SUBTREE</span><br></pre></td></tr></table></figure>
+
+</li>
+</ul>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://kaichu.se/Airflow/2020/04/24/setup-airflow-with-openldap-authentication-with-docker.html" data-id="ckuelnhp5000rexojhr9203gx" class="article-share-link">Share</a>
+      
+        <a href="https://kaichu.se/Airflow/2020/04/24/setup-airflow-with-openldap-authentication-with-docker.html#disqus_thread" class="article-comment-link">Comments</a>
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Airflow/" rel="tag">Airflow</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Authentication/" rel="tag">Authentication</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Docker/" rel="tag">Docker</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Openldap/" rel="tag">Openldap</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-start-a-ansible-project" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/Ansible/2020/04/24/start-a-ansible-project.html" class="article-date">
+  <time datetime="2020-04-24T07:15:36.000Z" itemprop="datePublished">2020-04-24</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/Ansible/">Ansible</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/Ansible/2020/04/24/start-a-ansible-project.html">Start a ansible project</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <ol>
+<li>Create a folder to hold all your files<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ mkdir ansible-project</span><br></pre></td></tr></table></figure></li>
+<li>Add hosts file<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">$ touch hosts</span><br><span class="line">$ vi hosts</span><br><span class="line">abc[1:4].example.domain</span><br></pre></td></tr></table></figure></li>
+<li>Add ansible.cfg file<br>Create a template in project folder and copy it to your home folder so that other won’t operate it by mistake, regarding configurations can be refered <a target="_blank" rel="noopener" href="https://docs.ansible.com/ansible/latest/reference_appendices/config.html">https://docs.ansible.com/ansible/latest/reference_appendices/config.html</a><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">$ touch ansible.cfg.template</span><br><span class="line">[remote_user]</span><br><span class="line">YOUR_USER_NAME</span><br><span class="line">$ copy ansible.cfg.template ~&#x2F;.ansbile.cfg</span><br></pre></td></tr></table></figure></li>
+<li>Run ping to test connection<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ ansible -i hosts all -k -m ping</span><br></pre></td></tr></table></figure></li>
+<li>Add vars or vaults <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">mkdir vars &amp;&amp; cd vars</span><br><span class="line">ansible-vault create vaults.yml </span><br><span class="line">touch vars.yml</span><br></pre></td></tr></table></figure></li>
+<li>Add main.yml <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">- hosts: all</span><br><span class="line">  vars_files:</span><br><span class="line">    - vars&#x2F;vars.yml</span><br><span class="line">  tasks:</span><br><span class="line">    - name: Push dags to remote </span><br><span class="line">      taskName:</span><br></pre></td></tr></table></figure>
+</li>
+</ol>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://kaichu.se/Ansible/2020/04/24/start-a-ansible-project.html" data-id="ckuelnhp3000nexoj41de62lc" class="article-share-link">Share</a>
+      
+        <a href="https://kaichu.se/Ansible/2020/04/24/start-a-ansible-project.html#disqus_thread" class="article-comment-link">Comments</a>
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/ansible/" rel="tag">ansible</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-using-airflow-jinja-to-render-a-template-with-your-own-context" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/Airflow/2020/04/21/using-airflow-jinja-to-render-a-template-with-your-own-context.html" class="article-date">
+  <time datetime="2020-04-21T17:02:32.000Z" itemprop="datePublished">2020-04-21</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/Airflow/">Airflow</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/Airflow/2020/04/21/using-airflow-jinja-to-render-a-template-with-your-own-context.html">Using airflow jinja to render a template with your own context</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>Jinja is well explained when using with operators which has support for a template field. It could be a bash_command parameters in a BashOperator as following</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">templated_command &#x3D; &quot;&quot;&quot;</span><br><span class="line">&#123;% for i in range(5) %&#125;</span><br><span class="line">    echo &quot;&#123;&#123; ds &#125;&#125;&quot;</span><br><span class="line">    echo &quot;&#123;&#123; macros.ds_add(ds, 7)&#125;&#125;&quot;</span><br><span class="line">    echo &quot;&#123;&#123; params.my_param &#125;&#125;&quot;</span><br><span class="line">&#123;% endfor %&#125;</span><br><span class="line">&quot;&quot;&quot;</span><br><span class="line"></span><br><span class="line">t3 &#x3D; BashOperator(</span><br><span class="line">    task_id&#x3D;&#39;templated&#39;,</span><br><span class="line">    depends_on_past&#x3D;False,</span><br><span class="line">    bash_command&#x3D;templated_command,</span><br><span class="line">    params&#x3D;&#123;&#39;my_param&#39;: &#39;Parameter I passed in&#39;&#125;,</span><br><span class="line">    dag&#x3D;dag,</span><br><span class="line">)</span><br></pre></td></tr></table></figure>
+
+<p>Using jinja template in a op_args or op_kwargs in a python operator<br>def my_sleeping_function(**context):<br>    # here context.random_base will be the actual execution_date, e.g. 2020-02-20</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">task &#x3D; PythonOperator(</span><br><span class="line">    task_id&#x3D;&#39;sleep&#39;</span><br><span class="line">    python_callable&#x3D;my_sleeping_function,</span><br><span class="line">    op_kwargs&#x3D;&#123;&#39;random_base&#39;: &#39;&#123;&#123;ds&#125;&#125;&#39;&#125;,</span><br><span class="line">    dag&#x3D;dag,</span><br><span class="line">)</span><br></pre></td></tr></table></figure>
+
+<p>however, if you have a python code where you want to render your own variables, you can using following method from helpers module.<br>There is an helper method which is built on top of jinja in airflow, you can import it in your dag file</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">from airflow.utils.helpers import parse_template_string</span><br></pre></td></tr></table></figure>
+
+<p>Suppose you have a template string in your dag definition, however, you only know the context when the dag task is running.<br>For example, the execution_date which is provided in context.ds<br>Then you can use parse_template_string method to get a template and use the render with context to get your filename as following</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">filename_template&#x3D;&#39;abc-&#123;&#123;ds&#125;&#125;.csv&#39;</span><br><span class="line"></span><br><span class="line">def my_sleeping_function(**context):</span><br><span class="line">  filename_template, filename_jinja_template &#x3D; parse_template_string(filename_template)</span><br><span class="line">  filename &#x3D; filename_jinja_template.render(**context)</span><br><span class="line"></span><br><span class="line">task &#x3D; PythonOperator(</span><br><span class="line">    task_id&#x3D;&#39;sleep&#39;</span><br><span class="line">    python_callable&#x3D;my_sleeping_function,</span><br><span class="line">    op_kwargs&#x3D;&#123;&#39;random_base&#39;: &#39;&#123;&#123;ds&#125;&#125;&#39;&#125;,</span><br><span class="line">    dag&#x3D;dag,</span><br><span class="line">)</span><br></pre></td></tr></table></figure>
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://kaichu.se/Airflow/2020/04/21/using-airflow-jinja-to-render-a-template-with-your-own-context.html" data-id="ckuelnhp2000mexoj4584asy0" class="article-share-link">Share</a>
+      
+        <a href="https://kaichu.se/Airflow/2020/04/21/using-airflow-jinja-to-render-a-template-with-your-own-context.html#disqus_thread" class="article-comment-link">Comments</a>
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/jinja/" rel="tag">jinja</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/python/" rel="tag">python</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-airflow-execution-time-and-dag-parsing-time" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/Airflow/2020/04/08/airflow-execution-time-and-dag-parsing-time.html" class="article-date">
+  <time datetime="2020-04-08T12:28:39.000Z" itemprop="datePublished">2020-04-08</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/Airflow/">Airflow</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/Airflow/2020/04/08/airflow-execution-time-and-dag-parsing-time.html">Understand airflow execution time and dag parsing time</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>Airflow dags are written in python, there are actually two runtimes for the same codes. Firstly, airflow will parse the dags and create metadata in the database<br>And then when execution time is met, worker will run the python codes to do the actual schedule work.</p>
+<p>Don’t mix them when writting a airflow dag. I’ll have a small example to tell the differences in between.</p>
+<p>In this example, I want to demo how it is important for developers to keep that in mind.<br>Usually, when we create a dag, we need to give a paramerter so that we can reuse it in different environments without changing the code.<br>It is implemented by using variables.<br>In the following case, I want to get the python pip version and show it when the dag is executed.<br>I have printed in two places. One is the root level and the other one is in the python operator’s callable function.</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">&#x2F;&#x2F;demo-airflow-capability.py</span><br><span class="line">import os</span><br><span class="line">...</span><br><span class="line">print(os.environ[&#39;PYTHON_PIP_VERSION&#39;])</span><br><span class="line"></span><br><span class="line">def print_env():</span><br><span class="line">    print(os.environ[&#39;PYTHON_PIP_VERSION&#39;])</span><br><span class="line"></span><br><span class="line">with dag:</span><br><span class="line">    os_operator &#x3D; PythonOperator(task_id &#x3D; &quot;os_operator&quot;, python_callable&#x3D;print_env)</span><br><span class="line">...</span><br></pre></td></tr></table></figure>
+
+<p>As we know, we can use python demo-airflow-capability.py to validate the syntax, which is also how the parse does.<br>The python version is printed pip version is shown once when parsed</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">$ python demo-airflow-capability.py</span><br><span class="line">&#39;20.0.2&#39;</span><br></pre></td></tr></table></figure>
+
+<p>When we trigger the dag to be executed, you will find the python pip version <code>&#39;20.0.2&#39;</code> is printed once as well.<br>That is from the python operator.<br>To test a dag execution, we can use the command from airflow cli</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ airflow test demo-airflow-capability os_operator -e 2020-04-08</span><br></pre></td></tr></table></figure>
+
+<p>Conclusion:</p>
+<ol>
+<li>The same dag file will be parsed and executed in two different places with different logic routines.</li>
+<li>Think dag file as a main entry of parser</li>
+<li>Think root operator of the dependency tree as a main entry of executor</li>
+<li>Keep time consuming operations out of dag parsing phase, such as fetching <a target="_blank" rel="noopener" href="https://airflow.apache.org/docs/stable/best-practices.html#variables">variables</a></li>
+</ol>
+<p>Appendix:</p>
+<p>Dag file demo-airflow-capability.py</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line">from airflow.utils.dates import days_ago</span><br><span class="line">from airflow.models import DAG</span><br><span class="line">from airflow.operators.python_operator import PythonOperator</span><br><span class="line">import os</span><br><span class="line"></span><br><span class="line">args &#x3D; &#123;</span><br><span class="line">    &#39;owner&#39;: &#39;airflow&#39;,</span><br><span class="line">    &#39;start_date&#39;: days_ago(2),</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">dag &#x3D; DAG(</span><br><span class="line">    dag_id&#x3D;&#39;demo-airflow-capability&#39;,</span><br><span class="line">    default_args&#x3D;args,</span><br><span class="line">    schedule_interval&#x3D;&quot;@once&quot;,</span><br><span class="line">    tags&#x3D;[&#39;example&#39;]</span><br><span class="line">)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">print(os.environ[&#39;PYTHON_PIP_VERSION&#39;])</span><br><span class="line"></span><br><span class="line">def print_env():</span><br><span class="line">    print(os.environ[&#39;PYTHON_PIP_VERSION&#39;])</span><br><span class="line"></span><br><span class="line">with dag:</span><br><span class="line">    os_operator &#x3D; PythonOperator(task_id &#x3D; &quot;os_operator&quot;, python_callable&#x3D;print_env)</span><br><span class="line"></span><br><span class="line">os_operator</span><br></pre></td></tr></table></figure>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://kaichu.se/Airflow/2020/04/08/airflow-execution-time-and-dag-parsing-time.html" data-id="ckuelnhp1000hexojbtt28wxy" class="article-share-link">Share</a>
+      
+        <a href="https://kaichu.se/Airflow/2020/04/08/airflow-execution-time-and-dag-parsing-time.html#disqus_thread" class="article-comment-link">Comments</a>
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/bigdata/" rel="tag">bigdata</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/datalake/" rel="tag">datalake</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/scheduler/" rel="tag">scheduler</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-ways-to-add-tasks-to-ansible-playbook" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/Ansible/2019/12/19/ways-to-add-tasks-to-ansible-playbook.html" class="article-date">
+  <time datetime="2019-12-19T16:28:39.000Z" itemprop="datePublished">2019-12-19</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/Ansible/">Ansible</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/Ansible/2019/12/19/ways-to-add-tasks-to-ansible-playbook.html">Ways to add tasks to ansible playbook</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>Going through official website for beginner is somehow difficult and confused, since ansible provides a few slightly different ways to add tasks to<br>playbook. As a software developer, I always think this is not make users’s world better, in contrast, which makes it hard to work.<br>My opinion is that </p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Giving a unique interface will make users much more easier than giving freedom to do the same thing in a few ways.</span><br></pre></td></tr></table></figure>
+
+<p>In this post, I’m summerizing 4 ways of adding tasks to ansible book. I do recommand that u shouldn’t mix them too much. </p>
+<h1 id="1-Tasks"><a href="#1-Tasks" class="headerlink" title="1 Tasks"></a>1 Tasks</h1><h2 id="1-1-Use-tasks-with-key-values"><a href="#1-1-Use-tasks-with-key-values" class="headerlink" title="1.1 Use tasks with key-values"></a>1.1 Use tasks with key-values</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">---</span><br><span class="line">- hosts: webservers</span><br><span class="line">  tasks:</span><br><span class="line">  - name: make sure apache is running</span><br><span class="line">    service:</span><br><span class="line">      name: httpd</span><br><span class="line">      state: started</span><br></pre></td></tr></table></figure>
+<h2 id="1-2-Use-tasks-with-module-argument-lists"><a href="#1-2-Use-tasks-with-module-argument-lists" class="headerlink" title="1.2 Use tasks with module argument lists"></a>1.2 Use tasks with module argument lists</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">---</span><br><span class="line">- hosts: webservers</span><br><span class="line">  tasks:</span><br><span class="line">  - name: run this command and ignore the result</span><br><span class="line">    shell: &#x2F;usr&#x2F;bin&#x2F;somecommand || &#x2F;bin&#x2F;true</span><br></pre></td></tr></table></figure>
+<h2 id="1-3-Use-tasks-with-import-tasks"><a href="#1-3-Use-tasks-with-import-tasks" class="headerlink" title="1.3 Use tasks with import_tasks"></a>1.3 Use tasks with import_tasks</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">---</span><br><span class="line">- hosts: webservers</span><br><span class="line">  tasks:</span><br><span class="line">  - name: run this command and ignore the result</span><br><span class="line">    import_tasks: sometask.yaml</span><br></pre></td></tr></table></figure>
+<p>The command and shell modules are the only modules that just take a list of arguments and don’t use the key=value form</p>
+<h1 id="2-Roles"><a href="#2-Roles" class="headerlink" title="2 Roles"></a>2 Roles</h1><h2 id="2-1-Use-roles-with-simple-name"><a href="#2-1-Use-roles-with-simple-name" class="headerlink" title="2.1 Use roles with simple name"></a>2.1 Use roles with simple name</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">---</span><br><span class="line">- hosts: webservers</span><br><span class="line">  roles:</span><br><span class="line">    - common</span><br></pre></td></tr></table></figure>
+<h2 id="2-2-Use-roles-with-full-key-values"><a href="#2-2-Use-roles-with-full-key-values" class="headerlink" title="2.2 Use roles with full key-values"></a>2.2 Use roles with full key-values</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">---</span><br><span class="line">- hosts: webservers</span><br><span class="line">  roles:</span><br><span class="line">  - role: common</span><br><span class="line">    vars:</span><br><span class="line">       dir: &#39;&#x2F;opt&#x2F;a&#39;</span><br></pre></td></tr></table></figure>
+<p>In 2.2, we add the key - role explicitly.</p>
+<h1 id="3-Task-Role-Ansible-2-4"><a href="#3-Task-Role-Ansible-2-4" class="headerlink" title="3. Task Role (Ansible 2.4)"></a>3. Task Role (Ansible 2.4)</h1><p>Using import_role or include_role to add tasks in the target role, [Difference between import and include] (<a target="_blank" rel="noopener" href="https://docs.ansible.com/ansible/latest/user_guide/playbooks_reuse.html#dynamic-vs-static">https://docs.ansible.com/ansible/latest/user_guide/playbooks_reuse.html#dynamic-vs-static</a>)</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">---</span><br><span class="line">- hosts: webservers</span><br><span class="line">  tasks:  &#x2F;&#x2F; Here is tasks, not roles compared to section 2</span><br><span class="line">  - import_role:</span><br><span class="line">      name: example</span><br><span class="line">  - include_role:</span><br><span class="line">      name: example</span><br><span class="line">    vars:</span><br><span class="line">      dir: &#39;&#x2F;opt&#x2F;a&#39;</span><br></pre></td></tr></table></figure>
+
+<h1 id="4-Import-a-whole-playbook"><a href="#4-Import-a-whole-playbook" class="headerlink" title="4. Import a whole playbook"></a>4. Import a whole playbook</h1><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">---</span><br><span class="line">- name: Include a play after another play &#x2F;&#x2F; here is top level of playbook</span><br><span class="line">  import_playbook: otherplays.yaml </span><br><span class="line"></span><br><span class="line">&#x2F;&#x2F;otherplays.yaml</span><br><span class="line">---</span><br><span class="line">- hosts: webservers</span><br><span class="line">  tasks:</span><br><span class="line">    ...</span><br></pre></td></tr></table></figure>
+
+<h1 id="5-References"><a href="#5-References" class="headerlink" title="5. References"></a>5. References</h1><p><a target="_blank" rel="noopener" href="https://docs.ansible.com/ansible/latest/user_guide/playbooks_intro.html">https://docs.ansible.com/ansible/latest/user_guide/playbooks_intro.html</a><br><a target="_blank" rel="noopener" href="https://docs.ansible.com/ansible/latest/user_guide/playbooks_reuse_roles.html">https://docs.ansible.com/ansible/latest/user_guide/playbooks_reuse_roles.html</a></p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://kaichu.se/Ansible/2019/12/19/ways-to-add-tasks-to-ansible-playbook.html" data-id="ckuelnhoz000fexojbzu40t04" class="article-share-link">Share</a>
+      
+        <a href="https://kaichu.se/Ansible/2019/12/19/ways-to-add-tasks-to-ansible-playbook.html#disqus_thread" class="article-comment-link">Comments</a>
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/ansible-playbook/" rel="tag">ansible-playbook</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/ansible-roles/" rel="tag">ansible-roles</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/ansible-tasks/" rel="tag">ansible-tasks</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+
+
+  <nav id="page-nav">
+    
+    <a class="extend prev" rel="prev" href="/">&amp;laquo; Prev</a><a class="page-number" href="/">1</a><span class="page-number current">2</span><a class="page-number" href="/page/3/">3</a><a class="extend next" rel="next" href="/page/3/">Next &amp;raquo;</a>
+  </nav>
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Recent Posts</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/Gatling/2021/10/05/How-to-save-variables-in-session-or-query-results-into-files-in-gatling.html">- How to save variables in gatling session or query results into files</a>
+          </li>
+        
+          <li>
+            <a href="/Docker/2021/04/18/Setup-two-stages-of-Dockerfile-to-build-a-nodejs-app.html">- Setup two stages of Dockerfile to build a nodejs app</a>
+          </li>
+        
+          <li>
+            <a href="/Ansible/2020/09/23/Ansible-built-in-module-with-items.html">- Ansible built-in module - with_items</a>
+          </li>
+        
+          <li>
+            <a href="/Kubernetes/2020/09/21/Kubernetes-02-the-3-practical-ways-to-use-k8s-secret.html">- Kubernetes - 02 - the 3 practical ways to use k8s secret</a>
+          </li>
+        
+          <li>
+            <a href="/Kubernetes/2020/09/19/kubernetes-01-the-3-practical-ways-to-create-k8s-secret.html">- Kubernetes - 01 - the 3 practical ways to create k8s secret</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Categories</h3>
+    <div class="widget">
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/Airflow/">Airflow</a><span class="category-list-count">8</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Ansible/">Ansible</a><span class="category-list-count">6</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Docker/">Docker</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Gatling/">Gatling</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Kubernetes/">Kubernetes</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Nodejs/">Nodejs</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/OS/">OS</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Python/">Python</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Rancher/">Rancher</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Reactjs/">Reactjs</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Site/">Site</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Web/">Web</a><span class="category-list-count">1</span></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archives</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/10/">October 2021</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/04/">April 2021</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/09/">September 2020</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/08/">August 2020</a><span class="archive-list-count">8</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/05/">May 2020</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/04/">April 2020</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/12/">December 2019</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/11/">November 2019</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/10/">October 2019</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/09/">September 2019</a><span class="archive-list-count">2</span></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tag Cloud</h3>
+    <div class="widget tagcloud">
+      <a href="/tags/Airflow/" style="font-size: 20px;">Airflow</a> <a href="/tags/Ansible/" style="font-size: 12.5px;">Ansible</a> <a href="/tags/Architecture/" style="font-size: 12.5px;">Architecture</a> <a href="/tags/Authentication/" style="font-size: 10px;">Authentication</a> <a href="/tags/Bigdata/" style="font-size: 17.5px;">Bigdata</a> <a href="/tags/Datalake/" style="font-size: 12.5px;">Datalake</a> <a href="/tags/DevOps/" style="font-size: 12.5px;">DevOps</a> <a href="/tags/Docker/" style="font-size: 12.5px;">Docker</a> <a href="/tags/Gatling/" style="font-size: 10px;">Gatling</a> <a href="/tags/Isomorphic/" style="font-size: 10px;">Isomorphic</a> <a href="/tags/Jinja2/" style="font-size: 12.5px;">Jinja2</a> <a href="/tags/Loadtest/" style="font-size: 10px;">Loadtest</a> <a href="/tags/Nodejs/" style="font-size: 10px;">Nodejs</a> <a href="/tags/Openldap/" style="font-size: 10px;">Openldap</a> <a href="/tags/Promise/" style="font-size: 10px;">Promise</a> <a href="/tags/Python/" style="font-size: 10px;">Python</a> <a href="/tags/SPA/" style="font-size: 10px;">SPA</a> <a href="/tags/Template/" style="font-size: 10px;">Template</a> <a href="/tags/ansible/" style="font-size: 15px;">ansible</a> <a href="/tags/ansible-playbook/" style="font-size: 10px;">ansible-playbook</a> <a href="/tags/ansible-roles/" style="font-size: 10px;">ansible-roles</a> <a href="/tags/ansible-tasks/" style="font-size: 10px;">ansible-tasks</a> <a href="/tags/backup/" style="font-size: 10px;">backup</a> <a href="/tags/bash/" style="font-size: 10px;">bash</a> <a href="/tags/bigdata/" style="font-size: 12.5px;">bigdata</a> <a href="/tags/blog/" style="font-size: 12.5px;">blog</a> <a href="/tags/cloud/" style="font-size: 10px;">cloud</a> <a href="/tags/component/" style="font-size: 10px;">component</a> <a href="/tags/datalake/" style="font-size: 10px;">datalake</a> <a href="/tags/devops/" style="font-size: 12.5px;">devops</a> <a href="/tags/event-loop/" style="font-size: 10px;">event loop</a> <a href="/tags/frontend/" style="font-size: 12.5px;">frontend</a> <a href="/tags/html/" style="font-size: 10px;">html</a> <a href="/tags/hypervisors/" style="font-size: 10px;">hypervisors</a> <a href="/tags/javascript/" style="font-size: 10px;">javascript</a> <a href="/tags/jinja/" style="font-size: 10px;">jinja</a> <a href="/tags/k8s/" style="font-size: 12.5px;">k8s</a> <a href="/tags/kvm/" style="font-size: 10px;">kvm</a> <a href="/tags/nodejs/" style="font-size: 12.5px;">nodejs</a> <a href="/tags/python/" style="font-size: 10px;">python</a> <a href="/tags/qemu/" style="font-size: 10px;">qemu</a> <a href="/tags/rancher/" style="font-size: 10px;">rancher</a> <a href="/tags/react/" style="font-size: 10px;">react</a> <a href="/tags/reactjs/" style="font-size: 10px;">reactjs</a> <a href="/tags/scheduler/" style="font-size: 10px;">scheduler</a> <a href="/tags/secret/" style="font-size: 12.5px;">secret</a> <a href="/tags/setImmediate/" style="font-size: 10px;">setImmediate</a> <a href="/tags/setTimeout/" style="font-size: 10px;">setTimeout</a> <a href="/tags/site/" style="font-size: 10px;">site</a> <a href="/tags/starter/" style="font-size: 10px;">starter</a> <a href="/tags/tools/" style="font-size: 10px;">tools</a> <a href="/tags/virtulization/" style="font-size: 10px;">virtulization</a>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2021 Kai Chu<br>
+      Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+<script>
+  var disqus_shortname = 'kaichu-se';
+  
+  (function(){
+    var dsq = document.createElement('script');
+    dsq.type = 'text/javascript';
+    dsq.async = true;
+    dsq.src = '//' + disqus_shortname + '.disqus.com/count.js';
+    (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+  })();
+</script>
+
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+
+
+  
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+
+  
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+
+
+<script src="/js/script.js"></script>
+
+
+
+
+  </div>
+</body>
+</html>

@@ -1,0 +1,652 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+  
+  <url>
+    <loc>https://kaichu.se/Site/2019/09/20/welcome-my-site.html</loc>
+    
+    <lastmod>2021-10-05</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>https://kaichu.se/Site/2019/09/21/simple-bash-to-create-a-blog-in-jekyll-minima.html</loc>
+    
+    <lastmod>2021-10-05</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>https://kaichu.se/Ansible/2019/10/12/concepts-before-starting-to-use-ansible.html</loc>
+    
+    <lastmod>2021-10-05</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>https://kaichu.se/Reactjs/2019/10/17/concepts-before-starting-to-use-reactjs.html</loc>
+    
+    <lastmod>2021-10-05</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>https://kaichu.se/Web/2019/10/22/something-in-mind-when-creating-web-pages.html</loc>
+    
+    <lastmod>2021-10-05</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>https://kaichu.se/Nodejs/2019/11/29/a-story-and-a-piece-of-code-to-understand-nodejs-event-loop.html</loc>
+    
+    <lastmod>2021-10-05</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>https://kaichu.se/Rancher/2019/12/17/scripts-to-backup-rancher.html</loc>
+    
+    <lastmod>2021-10-05</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>https://kaichu.se/Ansible/2019/12/19/ways-to-add-tasks-to-ansible-playbook.html</loc>
+    
+    <lastmod>2021-10-05</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>https://kaichu.se/Airflow/2020/04/08/airflow-execution-time-and-dag-parsing-time.html</loc>
+    
+    <lastmod>2021-10-05</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>https://kaichu.se/Airflow/2020/04/21/using-airflow-jinja-to-render-a-template-with-your-own-context.html</loc>
+    
+    <lastmod>2021-10-05</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>https://kaichu.se/Ansible/2020/04/24/start-a-ansible-project.html</loc>
+    
+    <lastmod>2021-10-05</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>https://kaichu.se/Airflow/2020/04/24/setup-airflow-with-openldap-authentication-with-docker.html</loc>
+    
+    <lastmod>2021-10-05</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>https://kaichu.se/Nodejs/2020/05/01/start-a-nodejs-project-and-publish-it-into-public-npm-registry.html</loc>
+    
+    <lastmod>2021-10-05</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>https://kaichu.se/OS/2020/05/11/understand-different-levels-of-hypervisors-beneath-os.html</loc>
+    
+    <lastmod>2021-10-05</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>https://kaichu.se/Airflow/2020/08/06/what-is-apache-airflow.html</loc>
+    
+    <lastmod>2021-10-05</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>https://kaichu.se/Airflow/2020/08/11/understand-some-details-about-airflow-dags.html</loc>
+    
+    <lastmod>2021-10-05</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>https://kaichu.se/Python/2020/08/12/Python-template-engine-Jinja2.html</loc>
+    
+    <lastmod>2021-10-05</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>https://kaichu.se/Airflow/2020/08/13/Advanced-utils-you-would-love-in-Airflow.html</loc>
+    
+    <lastmod>2021-10-05</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>https://kaichu.se/Ansible/2020/08/13/using-ansible-playbook-in-a-devops-pipeline.html</loc>
+    
+    <lastmod>2021-10-05</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>https://kaichu.se/Airflow/2020/08/16/Airflow-start-date-with-cron-schedule-interval-is-not-confused-anymore-when-you-know-this.html</loc>
+    
+    <lastmod>2021-10-05</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>https://kaichu.se/Ansible/2020/08/19/Another-recommended-layout-to-use-profiles-in-an-ansible-playbook-project.html</loc>
+    
+    <lastmod>2021-10-05</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>https://kaichu.se/Airflow/2020/08/26/Airflow-variables-in-DAG.html</loc>
+    
+    <lastmod>2021-10-05</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>https://kaichu.se/Kubernetes/2020/09/19/kubernetes-01-the-3-practical-ways-to-create-k8s-secret.html</loc>
+    
+    <lastmod>2021-10-05</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>https://kaichu.se/Kubernetes/2020/09/21/Kubernetes-02-the-3-practical-ways-to-use-k8s-secret.html</loc>
+    
+    <lastmod>2021-10-05</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>https://kaichu.se/Ansible/2020/09/23/Ansible-built-in-module-with-items.html</loc>
+    
+    <lastmod>2021-10-05</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>https://kaichu.se/Docker/2021/04/18/Setup-two-stages-of-Dockerfile-to-build-a-nodejs-app.html</loc>
+    
+    <lastmod>2021-10-05</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>https://kaichu.se/Gatling/2021/10/05/How-to-save-variables-in-session-or-query-results-into-files-in-gatling.html</loc>
+    
+    <lastmod>2021-10-05</lastmod>
+    
+  </url>
+  
+
+  <url>
+    <loc>https://kaichu.se/</loc>
+    <lastmod>2021-10-05</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>1.0</priority>
+  </url>
+
+  
+  <url>
+    <loc>https://kaichu.se/tags/blog/</loc>
+    <lastmod>2021-10-05</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://kaichu.se/tags/site/</loc>
+    <lastmod>2021-10-05</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://kaichu.se/tags/tools/</loc>
+    <lastmod>2021-10-05</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://kaichu.se/tags/bash/</loc>
+    <lastmod>2021-10-05</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://kaichu.se/tags/devops/</loc>
+    <lastmod>2021-10-05</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://kaichu.se/tags/ansible/</loc>
+    <lastmod>2021-10-05</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://kaichu.se/tags/frontend/</loc>
+    <lastmod>2021-10-05</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://kaichu.se/tags/reactjs/</loc>
+    <lastmod>2021-10-05</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://kaichu.se/tags/react/</loc>
+    <lastmod>2021-10-05</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://kaichu.se/tags/component/</loc>
+    <lastmod>2021-10-05</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://kaichu.se/tags/javascript/</loc>
+    <lastmod>2021-10-05</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://kaichu.se/tags/html/</loc>
+    <lastmod>2021-10-05</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://kaichu.se/tags/SPA/</loc>
+    <lastmod>2021-10-05</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://kaichu.se/tags/Isomorphic/</loc>
+    <lastmod>2021-10-05</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://kaichu.se/tags/nodejs/</loc>
+    <lastmod>2021-10-05</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://kaichu.se/tags/event-loop/</loc>
+    <lastmod>2021-10-05</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://kaichu.se/tags/setImmediate/</loc>
+    <lastmod>2021-10-05</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://kaichu.se/tags/setTimeout/</loc>
+    <lastmod>2021-10-05</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://kaichu.se/tags/Promise/</loc>
+    <lastmod>2021-10-05</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://kaichu.se/tags/cloud/</loc>
+    <lastmod>2021-10-05</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://kaichu.se/tags/rancher/</loc>
+    <lastmod>2021-10-05</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://kaichu.se/tags/backup/</loc>
+    <lastmod>2021-10-05</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://kaichu.se/tags/ansible-playbook/</loc>
+    <lastmod>2021-10-05</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://kaichu.se/tags/ansible-roles/</loc>
+    <lastmod>2021-10-05</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://kaichu.se/tags/ansible-tasks/</loc>
+    <lastmod>2021-10-05</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://kaichu.se/tags/bigdata/</loc>
+    <lastmod>2021-10-05</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://kaichu.se/tags/datalake/</loc>
+    <lastmod>2021-10-05</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://kaichu.se/tags/scheduler/</loc>
+    <lastmod>2021-10-05</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://kaichu.se/tags/jinja/</loc>
+    <lastmod>2021-10-05</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://kaichu.se/tags/python/</loc>
+    <lastmod>2021-10-05</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://kaichu.se/tags/Docker/</loc>
+    <lastmod>2021-10-05</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://kaichu.se/tags/Airflow/</loc>
+    <lastmod>2021-10-05</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://kaichu.se/tags/Openldap/</loc>
+    <lastmod>2021-10-05</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://kaichu.se/tags/Authentication/</loc>
+    <lastmod>2021-10-05</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://kaichu.se/tags/starter/</loc>
+    <lastmod>2021-10-05</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://kaichu.se/tags/hypervisors/</loc>
+    <lastmod>2021-10-05</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://kaichu.se/tags/kvm/</loc>
+    <lastmod>2021-10-05</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://kaichu.se/tags/qemu/</loc>
+    <lastmod>2021-10-05</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://kaichu.se/tags/virtulization/</loc>
+    <lastmod>2021-10-05</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://kaichu.se/tags/Bigdata/</loc>
+    <lastmod>2021-10-05</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://kaichu.se/tags/Datalake/</loc>
+    <lastmod>2021-10-05</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://kaichu.se/tags/Architecture/</loc>
+    <lastmod>2021-10-05</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://kaichu.se/tags/Jinja2/</loc>
+    <lastmod>2021-10-05</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://kaichu.se/tags/Python/</loc>
+    <lastmod>2021-10-05</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://kaichu.se/tags/Template/</loc>
+    <lastmod>2021-10-05</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://kaichu.se/tags/Ansible/</loc>
+    <lastmod>2021-10-05</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://kaichu.se/tags/DevOps/</loc>
+    <lastmod>2021-10-05</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://kaichu.se/tags/k8s/</loc>
+    <lastmod>2021-10-05</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://kaichu.se/tags/secret/</loc>
+    <lastmod>2021-10-05</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://kaichu.se/tags/Nodejs/</loc>
+    <lastmod>2021-10-05</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://kaichu.se/tags/Loadtest/</loc>
+    <lastmod>2021-10-05</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://kaichu.se/tags/Gatling/</loc>
+    <lastmod>2021-10-05</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+
+  
+  <url>
+    <loc>https://kaichu.se/categories/Site/</loc>
+    <lastmod>2021-10-05</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://kaichu.se/categories/Ansible/</loc>
+    <lastmod>2021-10-05</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://kaichu.se/categories/Reactjs/</loc>
+    <lastmod>2021-10-05</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://kaichu.se/categories/Web/</loc>
+    <lastmod>2021-10-05</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://kaichu.se/categories/Nodejs/</loc>
+    <lastmod>2021-10-05</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://kaichu.se/categories/Rancher/</loc>
+    <lastmod>2021-10-05</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://kaichu.se/categories/Airflow/</loc>
+    <lastmod>2021-10-05</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://kaichu.se/categories/OS/</loc>
+    <lastmod>2021-10-05</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://kaichu.se/categories/Python/</loc>
+    <lastmod>2021-10-05</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://kaichu.se/categories/Kubernetes/</loc>
+    <lastmod>2021-10-05</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://kaichu.se/categories/Docker/</loc>
+    <lastmod>2021-10-05</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://kaichu.se/categories/Gatling/</loc>
+    <lastmod>2021-10-05</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+</urlset>

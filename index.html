@@ -1,0 +1,1255 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+<!-- Google Analytics -->
+<script type="text/javascript">
+(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+ga('create', 'UA-128479674-2', 'auto');
+ga('send', 'pageview');
+
+</script>
+<!-- End Google Analytics -->
+
+
+  
+  <title>Kai ｜ 凯</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta property="og:type" content="website">
+<meta property="og:title" content="Kai ｜ 凯">
+<meta property="og:url" content="https://kaichu.se/index.html">
+<meta property="og:site_name" content="Kai ｜ 凯">
+<meta property="og:locale" content="en_US">
+<meta property="article:author" content="Kai Chu">
+<meta name="twitter:card" content="summary">
+  
+    <link rel="alternate" href="/atom.xml" title="Kai ｜ 凯" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.ico">
+  
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+<meta name="generator" content="Hexo 5.0.0"></head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">Kai ｜ 凯</a>
+      </h1>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="Search"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="https://kaichu.se"></form>
+      </div>
+    </div>
+  </div>
+</header>
+      <div class="outer">
+        <section id="main">
+  
+    <article id="post-How-to-save-variables-in-session-or-query-results-into-files-in-gatling" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/Gatling/2021/10/05/How-to-save-variables-in-session-or-query-results-into-files-in-gatling.html" class="article-date">
+  <time datetime="2021-10-05T00:00:00.000Z" itemprop="datePublished">2021-10-05</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/Gatling/">Gatling</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/Gatling/2021/10/05/How-to-save-variables-in-session-or-query-results-into-files-in-gatling.html">How to save variables in gatling session or query results into files</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>This post is for users who is using gatling gradle plugin <code>io.gatling.gradle</code> and trying to solve the runtime resource path problem with <code>./bin/gatling.sh</code> after building the bundle.</p>
+<h1 id="Background"><a href="#Background" class="headerlink" title="Background"></a>Background</h1><p>I have intially setup a project following the gradle plugin, however, after developing the load tests. I realized it’s not super fun to run it with gradle in a remote host. I decided to pack everything in a (bundle structure)[<a target="_blank" rel="noopener" href="https://gatling.io/docs/gatling/reference/current/general/bundle_structure/]">https://gatling.io/docs/gatling/reference/current/general/bundle_structure/]</a> so that I can use command line to run my tests anywhere, this post will not go into how I build the bundle. It works out in the beginning for a simple Simulation, however, as long as I started to use resources, specially I use a <a target="_blank" rel="noopener" href="https://gatling.io/docs/gatling/reference/current/session/feeder/">Feeder</a> to inject some users’ data, which resources folder my test is using keeps bothers me in the gradle project and in the bundle. </p>
+<p>The gradle project has following files:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">project</span><br><span class="line">+ build</span><br><span class="line">++ classes</span><br><span class="line">++ resources</span><br><span class="line">+++ MyFile.csv</span><br><span class="line">+ src</span><br><span class="line">++ gatling</span><br><span class="line">+++ resources</span><br><span class="line">++++ myFile.csv</span><br><span class="line">+++ scala</span><br><span class="line">++++ MySimulation</span><br></pre></td></tr></table></figure>
+
+<p>The structure of the gatling bundle:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">bundle</span><br><span class="line">+ bin</span><br><span class="line">++ gatling.sh</span><br><span class="line">+ conf</span><br><span class="line">++ gatling.conf</span><br><span class="line">+ lib</span><br><span class="line">+ user-files</span><br><span class="line">++ resources</span><br><span class="line">+++ myFile.csv</span><br><span class="line">++ simulations</span><br><span class="line">+++ MySimulation</span><br></pre></td></tr></table></figure>
+
+<h1 id="What-is-the-problem-and-Where-I-meet-it"><a href="#What-is-the-problem-and-Where-I-meet-it" class="headerlink" title="What is the problem and Where I meet it"></a>What is the problem and Where I meet it</h1><p>In gatling, it’s quite common that we utilize the <a target="_blank" rel="noopener" href="https://gatling.io/docs/gatling/reference/current/session/session_api/">Session</a> to save or fetch data for a virtul user.</p>
+<p>In a recent project, I realized that we might have a few Simulations which might not be ran at the same time, in fact, one Simulation may use the results from another Simulation or we need to log the results from on Simulation. </p>
+<p>So I decide to use a PrintWriter to write some session variables into a file which is under the gradle project. I also want to persist it in the git repo so that I can rerun the Simulation which needs the results.</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">.exec(session &#x3D;&gt; &#123;</span><br><span class="line">    val writer &#x3D; new PrintWriter(new FileOutputStream(new File(src&#x2F;gatling&#x2F;resources&#x2F;myFile.csv), true))</span><br><span class="line">    writer.write(session(&quot;username&quot;).as[String] + &quot;,&quot; + session(&quot;sessionKey&quot;).as[String])</span><br><span class="line">    writer.write(&quot;\n&quot;)</span><br><span class="line">    writer.close()</span><br><span class="line">    session</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="The-runtime-resource-path-problem"><a href="#The-runtime-resource-path-problem" class="headerlink" title="The runtime resource path problem"></a>The runtime resource path problem</h2><p>Running gatling Simulations with gradle task in IDE is super great, however, as I packed things in a bundle, it’s easily known that the above codes won’t work, as there is no src/gatling anymore. There’s a resources folder in the gatling class path if we check the bash gatling.sh</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">GATLING_CLASSPATH&#x3D;&quot;$GATLING_HOME&#x2F;lib&#x2F;*:$GATLING_HOME&#x2F;user-files&#x2F;resources:$GATLING_HOME&#x2F;user-files:$GATLING_CONF:&quot;</span><br></pre></td></tr></table></figure>
+<p>which means we could use the classloader to help us to find the resources by getClass.getResource(“/myFile.csv”).getPath, it should give me the path to the file.</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">.exec(session &#x3D;&gt; &#123;</span><br><span class="line">    val writer &#x3D; new PrintWriter(new FileOutputStream(new File(getClass.getResource(&quot;&#x2F;myFile.csv&quot;).getPath), true))</span><br><span class="line">    writer.write(session(&quot;username&quot;).as[String] + &quot;,&quot; + session(&quot;sessionKey&quot;).as[String])</span><br><span class="line">    writer.write(&quot;\n&quot;)</span><br><span class="line">    writer.close()</span><br><span class="line">    session</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="The-gradle-src-resource-path-problem"><a href="#The-gradle-src-resource-path-problem" class="headerlink" title="The gradle src resource path problem"></a>The gradle src resource path problem</h2><p>With the code changes, we can still run the Simulations with gradle, however, as gradle will copy src/resources into the build/resources. The classloader shall be able to find the filepath in the build/resources. Whenever I run the simulations, I will have files generated in the build/resources, which will be deleted when I clean the project, by intention or accidentally.<br><code>Oh no, I need this file and I copied it to my src/resources each time I run it</code>, it’s not fun but it’s fine…</p>
+<h1 id="Easy-solution"><a href="#Easy-solution" class="headerlink" title="Easy solution"></a>Easy solution</h1><p>Put an environment variable Bundle in the gatling.sh and uses following wrappers to get a file path</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"> &#x2F;&#x2F; env Bundle&#x3D;true</span><br><span class="line"></span><br><span class="line">def testGeneratedFilePath(filename: String): String &#x3D; &#123;</span><br><span class="line">    var path &#x3D; &quot;&quot;</span><br><span class="line">    val isBundle &#x3D; System.getenv(&quot;Bundle&quot;) !&#x3D; null</span><br><span class="line">    if (isBundle)</span><br><span class="line">      path &#x3D; s&quot;src&#x2F;gatling&#x2F;resources&#x2F;$&#123;filename&#125;&quot;</span><br><span class="line">    else</span><br><span class="line">      path &#x3D; getClass.getResource(s&quot;&#x2F;$&#123;filename&#125;&quot;).getPath</span><br><span class="line">    path</span><br><span class="line">&#125;</span><br><span class="line">  </span><br><span class="line">val testFileAbsolutePath &#x3D; new File(testGeneratedFilePath(&quot;myFile.csv&quot;));</span><br></pre></td></tr></table></figure>
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://kaichu.se/Gatling/2021/10/05/How-to-save-variables-in-session-or-query-results-into-files-in-gatling.html" data-id="ckuelnhqs0060exoj25ve9kzb" class="article-share-link">Share</a>
+      
+        <a href="https://kaichu.se/Gatling/2021/10/05/How-to-save-variables-in-session-or-query-results-into-files-in-gatling.html#disqus_thread" class="article-comment-link">Comments</a>
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Gatling/" rel="tag">Gatling</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Loadtest/" rel="tag">Loadtest</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-Setup-two-stages-of-Dockerfile-to-build-a-nodejs-app" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/Docker/2021/04/18/Setup-two-stages-of-Dockerfile-to-build-a-nodejs-app.html" class="article-date">
+  <time datetime="2021-04-18T21:08:13.000Z" itemprop="datePublished">2021-04-18</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/Docker/">Docker</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/Docker/2021/04/18/Setup-two-stages-of-Dockerfile-to-build-a-nodejs-app.html">Setup two stages of Dockerfile to build a nodejs app</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>In this post, I’ll create a simple http server app with nodejs and setup build scripts to bundle a project into a dist folder.<br>After validating that works well, I’ll create a Dockerfile to build the nodejs app in a container and then create a final image with only the dist folder as a new image layer.</p>
+<h1 id="An-simple-Nodejs-App"><a href="#An-simple-Nodejs-App" class="headerlink" title="An simple Nodejs App"></a>An simple Nodejs App</h1><ul>
+<li>Create a folder <code>mkdir -p ~/two-stages-docker-build-nodejs-app</code> and go to that folder <code>cd ~/two-stages-docker-build-nodejs-app</code> to intilize an npm project <code>npm init --yes</code>. </li>
+<li>Add license <code>npx license Apache-2</code></li>
+<li>Create a src folder <code>mkdir -p ~/two-stages-docker-build-nodejs-app/src</code> and add a index.js file <code>cd ~/two-stages-docker-build-nodejs-app/src &amp;&amp; touch index.js</code> with a simplest http server.<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">var http &#x3D; require(&#39;http&#39;);</span><br><span class="line"></span><br><span class="line">&#x2F;&#x2F;create a server object:</span><br><span class="line">http.createServer(function (req, res) &#123;</span><br><span class="line">  res.write(&#39;Hello World!&#39;); &#x2F;&#x2F;write a response to the client</span><br><span class="line">  res.end(); &#x2F;&#x2F;end the response</span><br><span class="line">&#125;).listen(8080); &#x2F;&#x2F;the server object listens on port 8080</span><br></pre></td></tr></table></figure></li>
+<li>We want to have gulp as a bundle tool and add babel, uglify and rename pipe to it<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">npm install @babel&#x2F;core gulp gulp-babel gulp-uglify gulp-rename --save-dev</span><br></pre></td></tr></table></figure></li>
+<li>Create a <code>gulpfile.js</code> and add a simple build task in it, we take everything from src folder and put the result into dist folder<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">const &#123; src, dest, parallel &#125; &#x3D; require(&#39;gulp&#39;);</span><br><span class="line">const babel &#x3D; require(&#39;gulp-babel&#39;);</span><br><span class="line">const uglify &#x3D; require(&#39;gulp-uglify&#39;);</span><br><span class="line">const rename &#x3D; require(&#39;gulp-rename&#39;);</span><br><span class="line"></span><br><span class="line">function srcBuild() &#123;</span><br><span class="line">    return src(&quot;src&#x2F;*.js&quot;)</span><br><span class="line">    .pipe(babel())</span><br><span class="line">    .pipe(dest(&#39;dist&#x2F;&#39;))</span><br><span class="line">    .pipe(uglify())</span><br><span class="line">    .pipe(rename(&#123; extname: &#39;.min.js&#39; &#125;))</span><br><span class="line">    .pipe(dest(&#39;dist&#x2F;&#39;));</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">exports.default &#x3D; srcBuild</span><br></pre></td></tr></table></figure></li>
+<li>Run the build to test it works <code>npx gulp</code></li>
+<li>Run the server to test it works <code>node dist/index.min.js</code></li>
+</ul>
+<h1 id="To-build-the-nodejs-app-into-a-docker-container"><a href="#To-build-the-nodejs-app-into-a-docker-container" class="headerlink" title="To build the nodejs app into a docker container"></a>To build the nodejs app into a docker container</h1><ul>
+<li><p>Create a Dockerfile under the root of the project <code>touch Dockerfile</code> </p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">FROM node:12 AS builder</span><br><span class="line">WORKDIR &#x2F;build</span><br><span class="line">COPY . .</span><br><span class="line">RUN npm install &amp;&amp; npx gulp</span><br><span class="line"></span><br><span class="line">FROM node:12</span><br><span class="line">WORKDIR &#x2F;app</span><br><span class="line">COPY --from&#x3D;builder &#x2F;build&#x2F;dist .</span><br><span class="line">ENTRYPOINT [ &quot;node&quot;, &quot;.&#x2F;index.js&quot; ]</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>Build the image <code>docker build . -t two-stages-docker-nodejs</code></p>
+</li>
+<li><p>Run the image <code>docker run -p 8080:8080 two-stages-docker</code></p>
+</li>
+<li><p>Access in the browser <a target="_blank" rel="noopener" href="http://localhost:8080/">http://localhost:8080</a></p>
+</li>
+</ul>
+<h1 id="Related-tools"><a href="#Related-tools" class="headerlink" title="Related tools:"></a>Related tools:</h1><p>NPM<br>Gulp<br>Docker</p>
+<h1 id="References"><a href="#References" class="headerlink" title="References:"></a>References:</h1><p><a target="_blank" rel="noopener" href="https://gulpjs.com/docs/en/getting-started/quick-start">https://gulpjs.com/docs/en/getting-started/quick-start</a><br><a target="_blank" rel="noopener" href="https://docs.npmjs.com/getting-started">https://docs.npmjs.com/getting-started</a><br><a target="_blank" rel="noopener" href="https://docs.docker.com/develop/develop-images/multistage-build/">https://docs.docker.com/develop/develop-images/multistage-build/</a></p>
+<h1 id="Source-code"><a href="#Source-code" class="headerlink" title="Source code"></a>Source code</h1><p><a target="_blank" rel="noopener" href="https://github.com/kai-chu/PieceOfCodes/tree/master/two-stages-docker-build-nodejs-app">https://github.com/kai-chu/PieceOfCodes/tree/master/two-stages-docker-build-nodejs-app</a></p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://kaichu.se/Docker/2021/04/18/Setup-two-stages-of-Dockerfile-to-build-a-nodejs-app.html" data-id="ckuelnhpq001wexoj84e6ecfr" class="article-share-link">Share</a>
+      
+        <a href="https://kaichu.se/Docker/2021/04/18/Setup-two-stages-of-Dockerfile-to-build-a-nodejs-app.html#disqus_thread" class="article-comment-link">Comments</a>
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Docker/" rel="tag">Docker</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Nodejs/" rel="tag">Nodejs</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-Ansible-built-in-module-with-items" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/Ansible/2020/09/23/Ansible-built-in-module-with-items.html" class="article-date">
+  <time datetime="2020-09-23T23:23:42.000Z" itemprop="datePublished">2020-09-23</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/Ansible/">Ansible</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/Ansible/2020/09/23/Ansible-built-in-module-with-items.html">Ansible built-in module - with_items</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p><img src="/assets/ansible.png" alt="ansible"></p>
+<p>This is an demo to ansible built-in item, with_items</p>
+<p>Before the topic, I want to remind of the <a target="_blank" rel="noopener" href="https://docs.ansible.com/ansible/latest/reference_appendices/YAMLSyntax.html#yaml-basics">yaml basic syntax</a> about list and dictionary.<br>To create a list in yaml, there are two forms(yaml or an abbreviated form) which are equivalent, and we can write both of those in the yaml file</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">listName:</span><br><span class="line">- 1</span><br><span class="line">- 2</span><br><span class="line">- 3</span><br><span class="line">&#x2F;&#x2F;&#x2F;&#x2F; which is the same as the abbreviated form</span><br><span class="line">listName: [1,2,3]</span><br></pre></td></tr></table></figure>
+<p>And it’s the same for dictionary</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">- firstName: kai</span><br><span class="line">  lastName: chu</span><br><span class="line">  age: 29</span><br><span class="line">  phone: 888888</span><br><span class="line">&#x2F;&#x2F;&#x2F;&#x2F; which is the same as the abbreviated form </span><br><span class="line">&#123;firstName: kai, lastName: chu, age: 29, phone: 888888&#125;</span><br></pre></td></tr></table></figure>
+
+<p>Keeping that in mind, it’s easier to understand different usages in different projects, regardless of mixed syntax playbooks written by the DevOps.</p>
+<p>The following explaination will be similar as what have been given by the <a target="_blank" rel="noopener" href="https://docs.ansible.com/ansible/latest/collections/ansible/builtin/items_lookup.html">offical examples</a><br>If you have clearly understood the offical examples, then you don’t have to go further with this post.</p>
+<p>This post gives examples about <em>list of values</em> and <em>list of dictionaries</em></p>
+<p>In an ansible playbook, we can use with_items with a list of values, list of dictionaries or a variable, it can either yaml syntax or in an abbreviated form.</p>
+<h2 id="4-forms-of-using-list-of-values"><a href="#4-forms-of-using-list-of-values" class="headerlink" title="4 forms of using list of values"></a>4 forms of using list of values</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br></pre></td><td class="code"><pre><span class="line">---</span><br><span class="line">- name: &gt;- </span><br><span class="line">  Demo ansible build-in withItems with list, </span><br><span class="line">  this lookup returns a list of items given to it, </span><br><span class="line">  if any of the top level items is also a list it will flatten it, </span><br><span class="line">  but it will not recurse</span><br><span class="line">  hosts: localhost</span><br><span class="line">  connection: local</span><br><span class="line">  vars:</span><br><span class="line">    list_in_var: </span><br><span class="line">    - green</span><br><span class="line">    - red</span><br><span class="line">    - blue</span><br><span class="line">    </span><br><span class="line">    list_in_var_as_abbreviated_form: [green, red, blue]</span><br><span class="line"></span><br><span class="line">  tasks:</span><br><span class="line">  - name: &quot;[List of items - 01] items defined in the same playbook&quot;</span><br><span class="line">    debug:</span><br><span class="line">      msg: &quot;An item: &#123;&#123; item &#125;&#125;&quot;</span><br><span class="line">    with_items:</span><br><span class="line">    - green</span><br><span class="line">    - red</span><br><span class="line">    - blue</span><br><span class="line"></span><br><span class="line">  - name: &quot;[List of items - 02] items defined in a variable&quot;</span><br><span class="line">    debug:</span><br><span class="line">      msg: &quot;An item: &#123;&#123; item &#125;&#125;&quot;</span><br><span class="line">    with_items: &quot;&#123;&#123; list_in_var &#125;&#125;&quot;</span><br><span class="line"></span><br><span class="line">  - name: &quot;[List of items - 03] items in an abbreviated form defined in the same playbook&quot;</span><br><span class="line">    debug:</span><br><span class="line">      msg: &quot;An item: &#123;&#123; item &#125;&#125;&quot;</span><br><span class="line">    with_items: [green, red, blue]</span><br><span class="line"></span><br><span class="line">  - name: &quot;[List of items - 04] items in an abbreviated form variable&quot;</span><br><span class="line">    debug:</span><br><span class="line">      msg: &quot;An item: &#123;&#123; item &#125;&#125;&quot;</span><br><span class="line">    with_items: &quot;&#123;&#123;list_in_var_as_abbreviated_form&#125;&#125;&quot;</span><br></pre></td></tr></table></figure>
+
+<p>The output: </p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">$ ansible-playbook playbook.yaml </span><br><span class="line"></span><br><span class="line">PLAY [Demo ansible build-in withItems,  this lookup returns a list of items given to it,  if any of the top level items is also a list it will flatten it,  but it will not recurse] ***</span><br><span class="line"></span><br><span class="line">TASK [Gathering Facts] *********************************************************</span><br><span class="line">ok: [localhost]</span><br><span class="line"></span><br><span class="line">TASK [[List of items - 01] items defined in the same playbook] *****************</span><br><span class="line">ok: [localhost] &#x3D;&gt; (item&#x3D;green) &#x3D;&gt; &#123;</span><br><span class="line">    &quot;msg&quot;: &quot;An item: green&quot;</span><br><span class="line">&#125;</span><br><span class="line">ok: [localhost] &#x3D;&gt; (item&#x3D;red) &#x3D;&gt; &#123;</span><br><span class="line">    &quot;msg&quot;: &quot;An item: red&quot;</span><br><span class="line">&#125;</span><br><span class="line">ok: [localhost] &#x3D;&gt; (item&#x3D;blue) &#x3D;&gt; &#123;</span><br><span class="line">    &quot;msg&quot;: &quot;An item: blue&quot;</span><br><span class="line">&#125;</span><br><span class="line">...</span><br></pre></td></tr></table></figure>
+
+<h2 id="4-forms-of-using-list-of-dictionaries"><a href="#4-forms-of-using-list-of-dictionaries" class="headerlink" title="4 forms of using list of dictionaries"></a>4 forms of using list of dictionaries</h2><p>There is nothing special for dictionaries compared with list of values. The <em>item</em> will be a dictionary in this case and we can use item.key to access the value. </p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br></pre></td><td class="code"><pre><span class="line">---</span><br><span class="line">- name: &gt;- </span><br><span class="line">    Demo ansible build-in with_items with list of dictionaries, </span><br><span class="line">    this lookup returns a list of items given to it, </span><br><span class="line">    if any of the top level items is also a list it will flatten it, </span><br><span class="line">    but it will not recurse</span><br><span class="line">  hosts: localhost</span><br><span class="line">  connection: local</span><br><span class="line">  vars:</span><br><span class="line">    list_of_dictionaries_in_var:</span><br><span class="line">    - name: Green</span><br><span class="line">      color: green</span><br><span class="line">    - name: Red</span><br><span class="line">      color: red</span><br><span class="line">    - name: Blue</span><br><span class="line">      color: blue</span><br><span class="line"></span><br><span class="line">    list_of_dictionaries_in_var_as_abbreviated_form:</span><br><span class="line">    - &#123;name: Green, color: green&#125;</span><br><span class="line">    - &#123;name: Red, color: red&#125;</span><br><span class="line">    - &#123;name: Blue, color: blue&#125;</span><br><span class="line"></span><br><span class="line">  tasks:</span><br><span class="line">  - name: &quot;[list of dict items - 01] items defined in the same playbook&quot;</span><br><span class="line">    debug:</span><br><span class="line">      msg: &quot;An item name: &#123;&#123; item.name &#125;&#125;, color: &#123;&#123; item.color &#125;&#125;&quot;</span><br><span class="line">    with_items:</span><br><span class="line">    - name: Green</span><br><span class="line">      color: green</span><br><span class="line">    - name: Red</span><br><span class="line">      color: red</span><br><span class="line">    - name: Blue</span><br><span class="line">      color: blue</span><br><span class="line"></span><br><span class="line">  - name: &quot;[list of dict items - 01] items defined in the same playbook&quot;</span><br><span class="line">    debug:</span><br><span class="line">      msg: &quot;An item name: &#123;&#123; item.name &#125;&#125;, color: &#123;&#123; item.color &#125;&#125;&quot;</span><br><span class="line">    with_items: </span><br><span class="line">    - &#123; name: Green, color: green &#125;</span><br><span class="line">    - &#123; name: Red, color: red &#125;</span><br><span class="line">    - &#123; name: Blue, color: blue &#125;</span><br><span class="line"></span><br><span class="line">  - name: &quot;[List of dict items - 02] items defined in an variable&quot;</span><br><span class="line">    debug:</span><br><span class="line">      msg: &quot;An item name: &#123;&#123; item.name &#125;&#125;, color: &#123;&#123; item.color &#125;&#125;&quot;</span><br><span class="line">    with_items: &quot;&#123;&#123; list_of_dictionaries_in_var &#125;&#125;&quot;</span><br><span class="line"></span><br><span class="line">  - name: &quot;[List of dict items - 03] items defined in an abbreviated form variable&quot;</span><br><span class="line">    debug:</span><br><span class="line">      msg: &quot;An item name: &#123;&#123; item.name &#125;&#125;, color: &#123;&#123; item.color &#125;&#125;&quot;</span><br><span class="line">    with_items: &quot;&#123;&#123;list_of_dictionaries_in_var_as_abbreviated_form&#125;&#125;&quot;</span><br></pre></td></tr></table></figure>
+
+<p>The output: </p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">$ ansible-playbook playbook-with-items-dict.yaml </span><br><span class="line"></span><br><span class="line">PLAY [Demo ansible build-in with_items with list of dictionaries,  this lookup returns a list of items given to it,  if any of the top level items is also a list it will flatten it,  but it will not recurse] ***</span><br><span class="line"></span><br><span class="line">TASK [Gathering Facts] *********************************************************</span><br><span class="line">ok: [localhost]</span><br><span class="line"></span><br><span class="line">TASK [[list of dict items - 01] items defined in the same playbook] ************</span><br><span class="line">ok: [localhost] &#x3D;&gt; (item&#x3D;&#123;u&#39;color&#39;: u&#39;green&#39;, u&#39;name&#39;: u&#39;Green&#39;&#125;) &#x3D;&gt; &#123;</span><br><span class="line">    &quot;msg&quot;: &quot;An item name: Green, color: green&quot;</span><br><span class="line">&#125;</span><br><span class="line">ok: [localhost] &#x3D;&gt; (item&#x3D;&#123;u&#39;color&#39;: u&#39;red&#39;, u&#39;name&#39;: u&#39;Red&#39;&#125;) &#x3D;&gt; &#123;</span><br><span class="line">    &quot;msg&quot;: &quot;An item name: Red, color: red&quot;</span><br><span class="line">&#125;</span><br><span class="line">ok: [localhost] &#x3D;&gt; (item&#x3D;&#123;u&#39;color&#39;: u&#39;blue&#39;, u&#39;name&#39;: u&#39;Blue&#39;&#125;) &#x3D;&gt; &#123;</span><br><span class="line">    &quot;msg&quot;: &quot;An item name: Blue, color: blue&quot;</span><br><span class="line">&#125;</span><br><span class="line">...</span><br></pre></td></tr></table></figure>
+
+<h2 id="Summary"><a href="#Summary" class="headerlink" title="Summary"></a>Summary</h2><p>I found the module with_items is really useful when it comes to adding a few configurations for a provision. It is much flexible when we put configurations as key values in a variable file, with with_items module in a playbook, we don’t have to change the playbook when we need to add a new item.</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://kaichu.se/Ansible/2020/09/23/Ansible-built-in-module-with-items.html" data-id="ckuelnhpp001texojbymq818p" class="article-share-link">Share</a>
+      
+        <a href="https://kaichu.se/Ansible/2020/09/23/Ansible-built-in-module-with-items.html#disqus_thread" class="article-comment-link">Comments</a>
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/ansible/" rel="tag">ansible</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/devops/" rel="tag">devops</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-Kubernetes-02-the-3-practical-ways-to-use-k8s-secret" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/Kubernetes/2020/09/21/Kubernetes-02-the-3-practical-ways-to-use-k8s-secret.html" class="article-date">
+  <time datetime="2020-09-21T22:07:33.000Z" itemprop="datePublished">2020-09-21</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/Kubernetes/">Kubernetes</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/Kubernetes/2020/09/21/Kubernetes-02-the-3-practical-ways-to-use-k8s-secret.html">Kubernetes - 02 - the 3 practical ways to use k8s secret</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p><img src="/assets/kubernetes.png" alt="kubernetes"></p>
+<p>This is the second post about kubernetes secret, in the previous, I have list the 3 ways to create secrets. We can create as many secrets as we want. In this post, I will give the 3 practical ways to use the secrets in k8s deployment.</p>
+<p>Let’s assume we have created a secret named my secret as following </p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">apiVersion: v1</span><br><span class="line">kind: Secret</span><br><span class="line">metadata:</span><br><span class="line">  name: mysecret</span><br><span class="line">type: Opaque</span><br><span class="line">stringData:</span><br><span class="line">  username: admin</span><br><span class="line">  password: 1f2d1e2e67df</span><br></pre></td></tr></table></figure>
+
+<h1 id="3-ways-to-use-k8s-secrets"><a href="#3-ways-to-use-k8s-secrets" class="headerlink" title="3 ways to use k8s secrets"></a>3 ways to use k8s secrets</h1><ul>
+<li>As environments</li>
+<li>As volume files</li>
+<li>As Kubelet auth credentials to pull image</li>
+</ul>
+<h1 id="1-Used-as-environments"><a href="#1-Used-as-environments" class="headerlink" title="1 Used as environments"></a>1 Used as environments</h1><p>A secret is a dictionary, we can put it in a environment as key-values.<br>We can put the whole dictionary into the environment or we refer one of the keys and use its value</p>
+<h2 id="1-1-Use-as-a-value-of-a-user-defined-env-var"><a href="#1-1-Use-as-a-value-of-a-user-defined-env-var" class="headerlink" title="1.1 Use as a value of a user defined env var"></a>1.1 Use as a value of a user defined env var</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">apiVersion: v1</span><br><span class="line">kind: Pod</span><br><span class="line">metadata:</span><br><span class="line">  name: secret-env-pod</span><br><span class="line">spec:</span><br><span class="line">- containers</span><br><span class="line">  - name: container-name</span><br><span class="line">    env:</span><br><span class="line">    - name: PGDATA</span><br><span class="line">      value: &#x2F;var&#x2F;lib&#x2F;postgresql&#x2F;data&#x2F;pgdata</span><br><span class="line">    - name: POSTGRES_USER</span><br><span class="line">      valueFrom:</span><br><span class="line">        secretKeyRef:</span><br><span class="line">          name: mysecret</span><br><span class="line">          key: username</span><br></pre></td></tr></table></figure>
+
+<p>The environment variable <code>POSTGRES_USER</code> shall be the value <code>admin</code></p>
+<h2 id="1-2-Use-keys-from-secret-directly-as-env-key-word-envFrom"><a href="#1-2-Use-keys-from-secret-directly-as-env-key-word-envFrom" class="headerlink" title="1.2 Use keys from secret directly as env, key word envFrom"></a>1.2 Use keys from secret directly as env, key word <code>envFrom</code></h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">apiVersion: v1</span><br><span class="line">kind: Pod</span><br><span class="line">metadata:</span><br><span class="line">  name: secret-env-pod</span><br><span class="line">spec:</span><br><span class="line">- containers</span><br><span class="line">  - name: container-name</span><br><span class="line">    env:</span><br><span class="line">    - name: PGDATA</span><br><span class="line">      value: &#x2F;var&#x2F;lib&#x2F;postgresql&#x2F;data&#x2F;pgdata</span><br><span class="line">    envFrom:</span><br><span class="line">    - secretRef:</span><br><span class="line">        name: test-secret</span><br></pre></td></tr></table></figure>
+<p>The environment variable <code>username</code> and <code>password</code> shall be available in the container.</p>
+<h1 id="2-Used-as-volume-files"><a href="#2-Used-as-volume-files" class="headerlink" title="2 Used as volume files"></a>2 Used as volume files</h1><p>We can use the secret keys to generate files in a volume, and mount it into a container. We have 2 keys in our secret, which means we will have two files (/username and /password) created in the volume.</p>
+<h2 id="2-1-Mount-all-keys"><a href="#2-1-Mount-all-keys" class="headerlink" title="2.1 Mount all keys"></a>2.1 Mount all keys</h2><p>Two steps to mount a secret into a container.</p>
+<h3 id="2-2-1-Create-a-volume-from-a-secret"><a href="#2-2-1-Create-a-volume-from-a-secret" class="headerlink" title="2.2.1 Create a volume from a secret"></a>2.2.1 Create a volume from a secret</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">volumes:</span><br><span class="line">- name: volume-from-secret</span><br><span class="line">  secret:</span><br><span class="line">    secretName: mysecret</span><br></pre></td></tr></table></figure>
+
+<h3 id="2-2-2-Mount-the-volume-to-a-directory"><a href="#2-2-2-Mount-the-volume-to-a-directory" class="headerlink" title="2.2.2 Mount the volume to a directory"></a>2.2.2 Mount the volume to a directory</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">volumeMounts:</span><br><span class="line">- name: volume-from-secret</span><br><span class="line">  mountPath: &quot;&#x2F;etc&#x2F;foo&quot;</span><br><span class="line">  readOnly: true</span><br></pre></td></tr></table></figure>
+
+<p>Put them together in a pod yaml file</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">apiVersion: v1</span><br><span class="line">kind: Pod</span><br><span class="line">metadata:</span><br><span class="line">  name: mypod</span><br><span class="line">spec:</span><br><span class="line">  containers:</span><br><span class="line">  - name: mypod</span><br><span class="line">    image: redis</span><br><span class="line">    volumeMounts:</span><br><span class="line">    - name: foo</span><br><span class="line">      mountPath: &quot;&#x2F;etc&#x2F;foo&quot;</span><br><span class="line">      readOnly: true</span><br><span class="line">  volumes:</span><br><span class="line">  - name: foo</span><br><span class="line">    secret:</span><br><span class="line">      secretName: mysecret</span><br></pre></td></tr></table></figure>
+<p>Since we mount the <code>secret volume</code> (I call a volume created from a secret) to /etc/foo, we can use the values from the files created from the secret keys.</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">$cat &#x2F;etc&#x2F;foo&#x2F;username </span><br><span class="line">admin</span><br><span class="line">$cat &#x2F;etc&#x2F;foo&#x2F;password </span><br><span class="line">1f2d1e2e67df</span><br></pre></td></tr></table></figure>
+
+<h2 id="2-2-Mount-subset-of-the-secret-keys-to-user-defind-subfolder"><a href="#2-2-Mount-subset-of-the-secret-keys-to-user-defind-subfolder" class="headerlink" title="2.2 Mount subset of the secret keys to user defind subfolder"></a>2.2 Mount subset of the secret keys to user defind subfolder</h2><p>To select a specific key instead of mount all keys into the folder, we can add <code>items</code> when creating the <code>secret volume</code></p>
+<h3 id="2-2-1-Create-a-volume-from-a-secret-1"><a href="#2-2-1-Create-a-volume-from-a-secret-1" class="headerlink" title="2.2.1 Create a volume from a secret"></a>2.2.1 Create a volume from a secret</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">volumes:</span><br><span class="line">- name: volume-from-secret</span><br><span class="line">  secret:</span><br><span class="line">    secretName: mysecret</span><br><span class="line"></span><br><span class="line">    items:</span><br><span class="line">      - key: username</span><br><span class="line">        path: my-group&#x2F;my-username</span><br></pre></td></tr></table></figure>
+
+<h3 id="2-2-2-Mount-the-volume-to-a-directory-which-is-the-same-as-above"><a href="#2-2-2-Mount-the-volume-to-a-directory-which-is-the-same-as-above" class="headerlink" title="2.2.2 Mount the volume to a directory(which is the same as above)"></a>2.2.2 Mount the volume to a directory(which is the same as above)</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line">apiVersion: v1</span><br><span class="line">kind: Pod</span><br><span class="line">metadata:</span><br><span class="line">  name: mypod</span><br><span class="line">spec:</span><br><span class="line">  containers:</span><br><span class="line">  - name: mypod</span><br><span class="line">    image: redis</span><br><span class="line">    volumeMounts:</span><br><span class="line">    - name: foo</span><br><span class="line">      mountPath: &quot;&#x2F;etc&#x2F;foo&quot;</span><br><span class="line">      readOnly: true</span><br><span class="line">  volumes:</span><br><span class="line">  - name: foo</span><br><span class="line">    secret:</span><br><span class="line">      secretName: mysecret</span><br><span class="line">      </span><br><span class="line">      </span><br><span class="line">      items:</span><br><span class="line">      - key: username</span><br><span class="line">        path: my-group&#x2F;my-username</span><br></pre></td></tr></table></figure>
+<p>Now you will find only username is projected.</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">$cat &#x2F;etc&#x2F;foo&#x2F;my-group&#x2F;my-username</span><br><span class="line">admin</span><br></pre></td></tr></table></figure>
+
+<h2 id="2-3-File-mode"><a href="#2-3-File-mode" class="headerlink" title="2.3 File mode"></a>2.3 File mode</h2><p>0644 is used by default, which can be changed as following</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">volumes:</span><br><span class="line">- name: foo</span><br><span class="line">  secret:</span><br><span class="line">    secretName: mysecret</span><br><span class="line">    defaultMode: 0400</span><br></pre></td></tr></table></figure>
+
+<h1 id="3-Kubelet-auth-to-pull-image"><a href="#3-Kubelet-auth-to-pull-image" class="headerlink" title="3 Kubelet auth to pull image"></a>3 Kubelet auth to pull image</h1><h2 id="3-1-Use-image-pull-secret-in-pod-spec"><a href="#3-1-Use-image-pull-secret-in-pod-spec" class="headerlink" title="3.1 Use image pull secret in pod spec"></a>3.1 Use image pull secret in pod spec</h2><p>When k8s is trying to pull image from image registry, it will check list of <code>docker-registry</code> secrets in <code>the same namespace</code> in the field <code>imagePullSecrets</code> from your pod yaml specification. </p>
+<ul>
+<li><p>To create a secret for docker authentication </p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">kubectl create secret docker-registry myregistrykey --docker-server&#x3D;DOCKER_REGISTRY_SERVER --docker-username&#x3D;DOCKER_USER --docker-password&#x3D;DOCKER_PASSWORD --docker-email&#x3D;DOCKER_EMAIL</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>Refer the secret in the pod spec</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">apiVersion: v1</span><br><span class="line">kind: Pod</span><br><span class="line">metadata:</span><br><span class="line">  name: foo</span><br><span class="line">  namespace: awesomeapps</span><br><span class="line">spec:</span><br><span class="line">  containers:</span><br><span class="line">    - name: foo</span><br><span class="line">      image: YOUR_PRIVATE_DOCKER_IMAGE</span><br><span class="line">  imagePullSecrets:</span><br><span class="line">    - name: myregistrykey</span><br></pre></td></tr></table></figure>
+
+</li>
+</ul>
+<h2 id="3-2-Use-image-pull-secret-in-pod-service-account"><a href="#3-2-Use-image-pull-secret-in-pod-service-account" class="headerlink" title="3.2 Use image pull secret in pod service account"></a>3.2 Use image pull secret in pod service account</h2><p>Since each pod will be associated with an service account, we can also add the <code>imagePullSecrets</code> to the service account<br>Usually if we don’t specify a service account when defining pod or deployment, the <code>default</code> service account is used in that case. </p>
+<h3 id="3-2-1-Associate-a-secret-to-service-account"><a href="#3-2-1-Associate-a-secret-to-service-account" class="headerlink" title="3.2.1 Associate a secret to service account"></a>3.2.1 Associate a secret to service account</h3><p>To add a secret to a service account, add a field ‘imagePullSecrets’ to the sa spec.</p>
+<ul>
+<li><p>Patch an existing service account<br>We can patch the service account as following</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">kubectl patch serviceaccount default -p &#39;&#123;&quot;imagePullSecrets&quot;: [&#123;&quot;name&quot;: &quot;myregistrykey&quot;&#125;]&#125;&#39;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>Create a new one service account with imagePullSecrets</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">apiVersion: v1</span><br><span class="line">kind: ServiceAccount</span><br><span class="line">metadata:</span><br><span class="line">  name: my-pod-used-service-account</span><br><span class="line">  namespace: default</span><br><span class="line"></span><br><span class="line">imagePullSecrets:</span><br><span class="line">  - name: myregistrykey</span><br></pre></td></tr></table></figure>
+
+</li>
+</ul>
+<h3 id="3-2-2-Config-a-pod-to-use-the-service-account-field-‘serviceAccountName’-in-Pod-spec"><a href="#3-2-2-Config-a-pod-to-use-the-service-account-field-‘serviceAccountName’-in-Pod-spec" class="headerlink" title="3.2.2 Config a pod to use the service account, field ‘serviceAccountName’ in Pod spec"></a>3.2.2 Config a pod to use the service account, field ‘serviceAccountName’ in Pod spec</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">apiVersion: v1</span><br><span class="line">kind: Pod</span><br><span class="line">metadata:</span><br><span class="line">  name: foo</span><br><span class="line">  namespace: awesomeapps</span><br><span class="line">spec:</span><br><span class="line">  containers:</span><br><span class="line">    - name: foo</span><br><span class="line">      image: YOUR_PRIVATE_DOCKER_IMAGE</span><br><span class="line">  serviceAccountName: my-pod-used-service-account</span><br></pre></td></tr></table></figure>
+
+<p>When pod is created with service account <code>my-pod-used-service-account</code>, the imagePullSecrets will be added automatically in the spec, we can verify </p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">kubectl get pod THE_POD_NAME -o&#x3D;jsonpath&#x3D;&#39;&#123;.spec.imagePullSecrets[0].name&#125;&#123;&quot;\n&quot;&#125;&#39;</span><br></pre></td></tr></table></figure>
+
+<p>Related:<br><a href="https://kaichu.se/Kubernetes/2020/09/19/kubernetes-01-the-3-practical-ways-to-create-k8s-secret.html">https://kaichu.se/Kubernetes/2020/09/19/kubernetes-01-the-3-practical-ways-to-create-k8s-secret.html</a></p>
+<p>References:<br><a target="_blank" rel="noopener" href="https://kubernetes.io/docs/concepts/configuration/secret/#using-secrets-as-files-from-a-pod">https://kubernetes.io/docs/concepts/configuration/secret/#using-secrets-as-files-from-a-pod</a></p>
+<p><a target="_blank" rel="noopener" href="https://kubernetes.io/docs/tasks/configure-pod-container/configure-service-account/">https://kubernetes.io/docs/tasks/configure-pod-container/configure-service-account/</a></p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://kaichu.se/Kubernetes/2020/09/21/Kubernetes-02-the-3-practical-ways-to-use-k8s-secret.html" data-id="ckuelnhpn001qexojgg4kgfo6" class="article-share-link">Share</a>
+      
+        <a href="https://kaichu.se/Kubernetes/2020/09/21/Kubernetes-02-the-3-practical-ways-to-use-k8s-secret.html#disqus_thread" class="article-comment-link">Comments</a>
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/k8s/" rel="tag">k8s</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/secret/" rel="tag">secret</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-kubernetes-01-the-3-practical-ways-to-create-k8s-secret" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/Kubernetes/2020/09/19/kubernetes-01-the-3-practical-ways-to-create-k8s-secret.html" class="article-date">
+  <time datetime="2020-09-19T17:42:16.000Z" itemprop="datePublished">2020-09-19</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/Kubernetes/">Kubernetes</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/Kubernetes/2020/09/19/kubernetes-01-the-3-practical-ways-to-create-k8s-secret.html">Kubernetes - 01 - the 3 practical ways to create k8s secret</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p><img src="/assets/kubernetes.png" alt="kubernetes"><br>Just a summary about how to create k8s secret object, which is used to store a piece of sensitive information.</p>
+<h1 id="String-data-and-Base64-encoding"><a href="#String-data-and-Base64-encoding" class="headerlink" title="String data and Base64 encoding"></a>String data and Base64 encoding</h1><p>An secret is saved as base64 encoded string, to generate a based64 string from your password in bash</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ echo -n &quot;mypassword123&quot; | base64 -w0</span><br></pre></td></tr></table></figure>
+<p>To decode a base64 string</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ echo &#39;MWYyZDFlMmU2N2Rm&#39; | base64 --decode</span><br></pre></td></tr></table></figure>
+<p>Note: The serialized JSON and YAML values of Secret data are encoded as base64 strings. Newlines are not valid within these strings and must be omitted. When using the base64 utility on Darwin/macOS, users should avoid using the -b option to split long lines. Conversely, Linux users should add the option -w 0 to base64 commands or the pipeline base64 | tr -d ‘\n’ if the -w option is not available.</p>
+<h1 id="3-ways-to-manage-secrets"><a href="#3-ways-to-manage-secrets" class="headerlink" title="3 ways to manage secrets"></a>3 ways to manage secrets</h1><p>There are 3 ways to use <a target="_blank" rel="noopener" href="https://kubernetes.io/docs/concepts/overview/working-with-objects/object-management/">kubectl cli</a>, the 3 corresponding ways to create secrets are as following.</p>
+<h2 id="3-1-Imperative-commands-to-edit"><a href="#3-1-Imperative-commands-to-edit" class="headerlink" title="3.1 Imperative commands to edit"></a>3.1 Imperative commands to edit</h2><h3 id="3-1-1-Create-from-file"><a href="#3-1-1-Create-from-file" class="headerlink" title="3.1.1 Create from file"></a>3.1.1 Create from file</h3><ul>
+<li>Generate base64 string to file<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">$ echo -n &#39;admin&#39; &gt; .&#x2F;username.txt</span><br><span class="line">$ echo -n &#39;1f2d1e2e67df&#39; &gt; .&#x2F;password.txt</span><br></pre></td></tr></table></figure></li>
+<li>Create secrets from file, the key of the secrets will be the filenames<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">$ kubectl create secret generic db-user-pass \</span><br><span class="line">  --from-file&#x3D;.&#x2F;username.txt \</span><br><span class="line">  --from-file&#x3D;.&#x2F;password.txt</span><br></pre></td></tr></table></figure>
+To specify another names<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">$ kubectl create secret generic db-user-pass \</span><br><span class="line">  --from-file&#x3D;username&#x3D;.&#x2F;username.txt \</span><br><span class="line">  --from-file&#x3D;password&#x3D;.&#x2F;password.txt</span><br></pre></td></tr></table></figure>
+
+</li>
+</ul>
+<h3 id="3-1-2-Create-from-literal"><a href="#3-1-2-Create-from-literal" class="headerlink" title="3.1.2 Create from literal"></a>3.1.2 Create from literal</h3><p>Literal escape with single quote (‘)</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">kubectl create secret generic dev-db-secret \</span><br><span class="line">  --from-literal&#x3D;username&#x3D;devuser \</span><br><span class="line">  --from-literal&#x3D;password&#x3D;&#39;S!B\*d$zDsb&#x3D;&#39; </span><br></pre></td></tr></table></figure>
+<p>Note: To edit secret, command to use: <code>kubectl edit secrets dev-db-secret</code></p>
+<h2 id="3-2-Imperative-object-files"><a href="#3-2-Imperative-object-files" class="headerlink" title="3.2 Imperative object files"></a>3.2 Imperative object files</h2><h3 id="3-2-1-Using-here-doc"><a href="#3-2-1-Using-here-doc" class="headerlink" title="3.2.1 Using here doc"></a>3.2.1 Using here doc</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">cat &lt;&lt;EOF | kubectl apply -f -</span><br><span class="line">apiVersion: v1</span><br><span class="line">kind: Secret</span><br><span class="line">metadata:</span><br><span class="line">  name: mysecret</span><br><span class="line">type: Opaque</span><br><span class="line">data:</span><br><span class="line">  password: $(echo -n &quot;s33msi4&quot; | base64 -w0)</span><br><span class="line">  username: $(echo -n &quot;jane&quot; | base64 -w0)</span><br><span class="line">EOF</span><br></pre></td></tr></table></figure>
+
+<h3 id="3-2-2-yaml-File"><a href="#3-2-2-yaml-File" class="headerlink" title="3.2.2 yaml File"></a>3.2.2 yaml File</h3><p>which is the same as the following 2 commands and a yaml file</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">$echo -n &#39;admin&#39; | base64</span><br><span class="line">$echo -n &#39;1f2d1e2e67df&#39; | base64</span><br><span class="line"></span><br><span class="line">&#x2F;&#x2F;mysecret.yaml</span><br><span class="line">apiVersion: v1</span><br><span class="line">kind: Secret</span><br><span class="line">metadata:</span><br><span class="line">  name: mysecret</span><br><span class="line">type: Opaque</span><br><span class="line">data:</span><br><span class="line">  username: YWRtaW4&#x3D;</span><br><span class="line">  password: MWYyZDFlMmU2N2Rm</span><br></pre></td></tr></table></figure>
+
+<h3 id="3-2-3-string-data"><a href="#3-2-3-string-data" class="headerlink" title="3.2.3 string data"></a>3.2.3 string data</h3><p>The above is the same as following string data example, the string data will be encoded when k8s creates secret</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">apiVersion: v1</span><br><span class="line">kind: Secret</span><br><span class="line">metadata:</span><br><span class="line">  name: mysecret</span><br><span class="line">type: Opaque</span><br><span class="line">stringData:</span><br><span class="line">  username: admin</span><br><span class="line">  password: 1f2d1e2e67df</span><br></pre></td></tr></table></figure>
+
+<p>Note: you can specify both data and stringdata in the same secret, the stringData will be used. I found this is useful if I want to encode a few lines of information</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">apiVersion: v1</span><br><span class="line">kind: Secret</span><br><span class="line">metadata:</span><br><span class="line">  name: mysecret</span><br><span class="line">type: Opaque</span><br><span class="line">data:</span><br><span class="line">  username: YWRtaW4&#x3D;</span><br><span class="line">  password: MWYyZDFlMmU2N2Rm</span><br><span class="line">stringData:</span><br><span class="line">  username: admin</span><br><span class="line">  password: 1f2d1e2e67df</span><br></pre></td></tr></table></figure>
+<p>The values from stringData will be used.</p>
+<h2 id="3-3-Using-kustomization-yml-file-Declarative-object-configuration"><a href="#3-3-Using-kustomization-yml-file-Declarative-object-configuration" class="headerlink" title="3.3 Using kustomization.yml file, Declarative object configuration"></a>3.3 Using kustomization.yml file, Declarative object configuration</h2><p>To use <a target="_blank" rel="noopener" href="https://kubernetes.io/docs/tasks/manage-kubernetes-objects/kustomization/">kustomization feature</a>, we need to create a folder first and add our file there</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">$ mkdir myconfigs</span><br><span class="line">$ touch kustomization.yaml</span><br></pre></td></tr></table></figure>
+<h3 id="3-3-1-Generate-from-file"><a href="#3-3-1-Generate-from-file" class="headerlink" title="3.3.1 Generate from file"></a>3.3.1 Generate from file</h3><ul>
+<li>Create base64 stirng <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">$ echo -n &#39;admin&#39; &gt; .&#x2F;username.txt</span><br><span class="line">$ echo -n &#39;1f2d1e2e67df&#39; &gt; .&#x2F;password.txt</span><br></pre></td></tr></table></figure></li>
+<li>Add following generator to kustomization.yaml file<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">secretGenerator:</span><br><span class="line">- name: db-user-pass</span><br><span class="line">  files:</span><br><span class="line">  - username.txt</span><br><span class="line">  - password.txt</span><br></pre></td></tr></table></figure>
+
+</li>
+</ul>
+<h3 id="3-3-2-Generate-from-literal"><a href="#3-3-2-Generate-from-literal" class="headerlink" title="3.3.2 Generate from literal"></a>3.3.2 Generate from literal</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">secretGenerator:</span><br><span class="line">- name: db-user-pass</span><br><span class="line">  literals:</span><br><span class="line">  - username&#x3D;admin</span><br><span class="line">  - password&#x3D;1f2d1e2e67df</span><br></pre></td></tr></table></figure>
+
+
+<p>The next post will be <code>the 3 practical ways to use k8s secret</code></p>
+<p>References:<br><a target="_blank" rel="noopener" href="https://kubernetes.io/docs/concepts/configuration/secret/">https://kubernetes.io/docs/concepts/configuration/secret/</a><br><a target="_blank" rel="noopener" href="https://kubernetes.io/docs/tasks/configmap-secret/managing-secret-using-kustomize/">https://kubernetes.io/docs/tasks/configmap-secret/managing-secret-using-kustomize/</a></p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://kaichu.se/Kubernetes/2020/09/19/kubernetes-01-the-3-practical-ways-to-create-k8s-secret.html" data-id="ckuelnhpm001oexojef9yf9sm" class="article-share-link">Share</a>
+      
+        <a href="https://kaichu.se/Kubernetes/2020/09/19/kubernetes-01-the-3-practical-ways-to-create-k8s-secret.html#disqus_thread" class="article-comment-link">Comments</a>
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/k8s/" rel="tag">k8s</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/secret/" rel="tag">secret</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-Airflow-variables-in-DAG" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/Airflow/2020/08/26/Airflow-variables-in-DAG.html" class="article-date">
+  <time datetime="2020-08-26T22:53:59.000Z" itemprop="datePublished">2020-08-26</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/Airflow/">Airflow</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/Airflow/2020/08/26/Airflow-variables-in-DAG.html">Airflow variables in DAG</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>Variables are a generic way to store and retrieve arbitrary content or settings as a simple key value store within Airflow. </p>
+<p>While your pipeline code definition and most of your constants and variables should be defined in code and stored in source control, it can be useful to have some variables or configuration items accessible and modifiable through the UI.</p>
+<p>It can also be used as a context for different environments.</p>
+<p>There are 3 ways to create variables</p>
+<ul>
+<li>UI</li>
+<li>CLI</li>
+<li>code</li>
+</ul>
+<h2 id="UI"><a href="#UI" class="headerlink" title="UI"></a>UI</h2><p>From the UI, we can navigate to Admin-Variables to manage.</p>
+<h2 id="CLI"><a href="#CLI" class="headerlink" title="CLI"></a>CLI</h2><p>From the CLI, we can use following commands </p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">airflow variables -g key</span><br><span class="line">airflow variables -s key value</span><br></pre></td></tr></table></figure>
+
+<h2 id="Code"><a href="#Code" class="headerlink" title="Code"></a>Code</h2><p>No matter where we setup a variable, in the end we want to read variables in a DAG so that we can easily change the context of a DAG run.</p>
+<p>There are two ways to read variables in a DAG</p>
+<ul>
+<li><p>Python Code</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">from airflow.models import Variable</span><br><span class="line">Variable.set(&quot;foo&quot;, &quot;value&quot;)</span><br><span class="line">foo &#x3D; Variable.get(&quot;foo&quot;)</span><br><span class="line">bar &#x3D; Variable.get(&quot;bar&quot;, deserialize_json&#x3D;True)</span><br><span class="line">baz &#x3D; Variable.get(&quot;baz&quot;, default_var&#x3D;None)</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>Jinja template<br>You can use a variable from a jinja template with the syntax, such as a bash operator command: </p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">echo &#123;&#123; var.value.&lt;variable_name&gt; &#125;&#125;</span><br></pre></td></tr></table></figure>
+<p>or if you need to deserialize a json object from the variable :</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">echo &#123;&#123; var.json.&lt;variable_name&gt; &#125;&#125;</span><br></pre></td></tr></table></figure>
+
+</li>
+</ul>
+<h2 id="Best-practice"><a href="#Best-practice" class="headerlink" title="Best practice"></a>Best practice</h2><p>You should avoid usage of Variables outside an operator’s execute() method or Jinja templates if possible, as Variables create a connection to metadata DB of Airflow to fetch the value, which can slow down parsing and place extra load on the DB.</p>
+<p>Variables will create db connection every time scheduler parses a DAG</p>
+<h2 id="Example-to-understand-best-practice"><a href="#Example-to-understand-best-practice" class="headerlink" title="Example to understand best practice"></a>Example to understand best practice</h2><ul>
+<li><p>Let’s set variable env=dev from CLI</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ airflow variables -s env dev</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>Create a DAG</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">from airflow.models import Variable</span><br><span class="line"></span><br><span class="line">env &#x3D; Variable.get(&quot;env&quot;)</span><br><span class="line">print(&#39;&#39; if env is None else env + &#39;parse time&#39;)</span><br><span class="line"></span><br><span class="line">with dag:</span><br><span class="line">    os_operator &#x3D; PythonOperator(task_id &#x3D; &quot;os_operator&quot;, python_callable&#x3D;print_env)</span><br><span class="line">    jinja_operator &#x3D; BashOperator(task_id&#x3D;&quot;get_variable_value&quot;, bash_command&#x3D;&#39;echo &#123;&#123; var.value.env &#125;&#125; &#39;)</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+</li>
+<li><p>Running explaination<br>When the scheduler parses the DAG, which shall happen every a few seconds, we will find <em>devparse time</em> in the log<br>When the DAG is scheduled, we will see bashoperator print the <em>dev</em> variables</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">&#x2F;&#x2F;os_operator</span><br><span class="line">[2020-04-08 14:56:50,752] &#123;&#123;logging_mixin.py:112&#125;&#125; INFO - devexecution time</span><br><span class="line">...</span><br><span class="line">&#x2F;&#x2F;get_variable_value</span><br><span class="line">[2020-04-08 14:56:59,133] &#123;&#123;bash_operator.py:115&#125;&#125; INFO - Running command: echo dev </span><br><span class="line">[2020-04-08 14:56:59,151] &#123;&#123;bash_operator.py:122&#125;&#125; INFO - Output:</span><br><span class="line">[2020-04-08 14:56:59,158] &#123;&#123;bash_operator.py:126&#125;&#125; INFO - dev</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://kaichu.se/Airflow/2020/08/26/Airflow-variables-in-DAG.html" data-id="ckuelnhpk001kexojdql9h2d7" class="article-share-link">Share</a>
+      
+        <a href="https://kaichu.se/Airflow/2020/08/26/Airflow-variables-in-DAG.html#disqus_thread" class="article-comment-link">Comments</a>
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Airflow/" rel="tag">Airflow</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Bigdata/" rel="tag">Bigdata</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-Another-recommended-layout-to-use-profiles-in-an-ansible-playbook-project" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/Ansible/2020/08/19/Another-recommended-layout-to-use-profiles-in-an-ansible-playbook-project.html" class="article-date">
+  <time datetime="2020-08-19T21:04:31.000Z" itemprop="datePublished">2020-08-19</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/Ansible/">Ansible</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/Ansible/2020/08/19/Another-recommended-layout-to-use-profiles-in-an-ansible-playbook-project.html">Another recommended layout to use profiles in an ansible-playbook project</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>Usually, I prefer to start a project from the recommended <a target="_blank" rel="noopener" href="https://docs.ansible.com/ansible/latest/user_guide/playbooks_best_practices.html#alternative-directory-layout">best practice layout</a> in ansible official website.</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><span class="line">inventories&#x2F;</span><br><span class="line">   production&#x2F;</span><br><span class="line">      hosts               # inventory file for production servers</span><br><span class="line">      group_vars&#x2F;</span><br><span class="line">         group1.yml       # here we assign variables to particular groups</span><br><span class="line">         group2.yml</span><br><span class="line">      host_vars&#x2F;</span><br><span class="line">         hostname1.yml    # here we assign variables to particular systems</span><br><span class="line">         hostname2.yml</span><br><span class="line"></span><br><span class="line">   staging&#x2F;</span><br><span class="line">      hosts               # inventory file for staging environment</span><br><span class="line">      group_vars&#x2F;</span><br><span class="line">         group1.yml       # here we assign variables to particular groups</span><br><span class="line">         group2.yml</span><br><span class="line">      host_vars&#x2F;</span><br><span class="line">         stagehost1.yml   # here we assign variables to particular systems</span><br><span class="line">         stagehost2.yml</span><br><span class="line"></span><br><span class="line">library&#x2F;</span><br><span class="line">module_utils&#x2F;</span><br><span class="line">filter_plugins&#x2F;</span><br><span class="line"></span><br><span class="line">site.yml</span><br><span class="line">webservers.yml</span><br><span class="line">dbservers.yml</span><br><span class="line"></span><br><span class="line">roles&#x2F;</span><br><span class="line">    common&#x2F;</span><br><span class="line">    webtier&#x2F;</span><br><span class="line">    monitoring&#x2F;</span><br><span class="line">    fooapp&#x2F;</span><br></pre></td></tr></table></figure>
+
+<p>It covers the essential mulitple environments deployment so that we can easily switch deployment by running following command in production or staging</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">$ ansible-playbook -i inventories&#x2F;production webservers.yml -k -K --ask-vault-pass</span><br><span class="line">$ ansible-playbook -i inventories&#x2F;staging webservers.yml -k -K --ask-vault-pass</span><br></pre></td></tr></table></figure>
+<p>As I mentioned in my previous post <a href="https://kaichu.se/Ansible/2020/08/13/using-ansible-playbook-in-a-devops-pipeline.html">Using ansible playbook in a DevOps pipeline</a>, we could add an all.yml file in the playbook group_vars to provide following information to ansible-playbook to prevent from inputing password.</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">ansible_user: YOUR_USER_NAME</span><br><span class="line">ansible_password: YOUR_USER_PASSWORD</span><br><span class="line">ansible_become_password: YOUR_BECOME_PASSWORD</span><br></pre></td></tr></table></figure>
+<p>The group_vars in the root of the playbook is called <code>playbook group_vars</code></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">inventories&#x2F;</span><br><span class="line">group_vars</span><br><span class="line">     all.yml</span><br><span class="line">webservers.yml</span><br></pre></td></tr></table></figure>
+
+<p>I feel it’s so inconvienient when I’m using my own user password instead of a shared service account between team members.<br>I don’t want tell others my vault password, in that case others can know my <code>ansible_password</code> and <code>ansible_become_password</code>.<br>Initially, I think I can create a template and everyone who wants to use the playbook should copy the project template and create their all.yml locally. It results in following project structure. </p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">inventories&#x2F;</span><br><span class="line">group_vars</span><br><span class="line">     .gitignore -&gt; all.yml</span><br><span class="line">     all.yml.cfg</span><br><span class="line">     all.yml (Anyone who doesnt&#39; want to use -k -K --ask-vault-password options can create this in this local machine)</span><br><span class="line">webservers.yml</span><br></pre></td></tr></table></figure>
+<p>It turns out it’s even more cumbersome, obviously… </p>
+<p>I find another better solution out, where we can use the –extra-vars options to achieve my goal without constraints.<br>I decide to use the profile concept which I’ve learnt from ant build scripts in my previous company.<br>Here we don’t use playbook group_vars, instead, we create a profiles folder and add the vars for each profile, such as kai, chu</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">inventories&#x2F;</span><br><span class="line">    production&#x2F;</span><br><span class="line">    staging&#x2F;</span><br><span class="line">profiles&#x2F;</span><br><span class="line">    template&#x2F;</span><br><span class="line">        all.yml</span><br><span class="line">    kai&#x2F;</span><br><span class="line">        all.yml</span><br><span class="line">    chu&#x2F;</span><br><span class="line">        all.yml</span><br><span class="line">webservers.yml</span><br></pre></td></tr></table></figure>
+
+<p>I have put <code>ansible_user</code>, <code>ansible_password</code> and <code>ansible_become_password</code> in the all.yml in folder <code>kai</code><br>Now we gain the benefit of the profile by running following command</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ ansible-playbook -i inventories&#x2F;production --extra-vars @profiles&#x2F;kai&#x2F;all.yml webservers.yml --vault-password-file ~&#x2F;.ansible-vault-pass</span><br></pre></td></tr></table></figure>
+<p>It is an env/profile matrix solution, it gives the flexibility to test our ansible-playbook with any favourate vars<br>Let’s run the playbook with chu’s profile in staging before finish this posts</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ ansible-playbook -i inventories&#x2F;staging --extra-vars @profiles&#x2F;chu&#x2F;all.yml webservers.yml --vault-password-file ~&#x2F;.ansible-vault-pass</span><br></pre></td></tr></table></figure>
+
+<h1 id="Summary"><a href="#Summary" class="headerlink" title="Summary"></a>Summary</h1><ul>
+<li>It’s good to use –extra-vars when we have some variables setup which is the ansible playbook user related, in other words, the variables are different for different ansible user. </li>
+<li>It would be more appropriate to add one more inventories/test if there are a lot environment related differences.</li>
+</ul>
+<p><img src="/assets/ansible-sible-book.png" alt="an sible book"><br><a target="_blank" rel="noopener" href="https://www.urbandictionary.com/define.php?term=Sible">Check out what sible means here in the urban dictionary</a></p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://kaichu.se/Ansible/2020/08/19/Another-recommended-layout-to-use-profiles-in-an-ansible-playbook-project.html" data-id="ckuelnhpj001jexojgqc5f44d" class="article-share-link">Share</a>
+      
+        <a href="https://kaichu.se/Ansible/2020/08/19/Another-recommended-layout-to-use-profiles-in-an-ansible-playbook-project.html#disqus_thread" class="article-comment-link">Comments</a>
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Ansible/" rel="tag">Ansible</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/DevOps/" rel="tag">DevOps</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-Airflow-start-date-with-cron-schedule-interval-is-not-confused-anymore-when-you-know-this" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/Airflow/2020/08/16/Airflow-start-date-with-cron-schedule-interval-is-not-confused-anymore-when-you-know-this.html" class="article-date">
+  <time datetime="2020-08-16T10:29:55.000Z" itemprop="datePublished">2020-08-16</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/Airflow/">Airflow</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/Airflow/2020/08/16/Airflow-start-date-with-cron-schedule-interval-is-not-confused-anymore-when-you-know-this.html">Airflow start_date with cron schedule_interval is not confused anymore when you know this</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>Airflow DAG start_date with days_ago is making us confused all the time. When a dag will be kick off? Will it be started?</p>
+<blockquote>
+<p>The first DAG Run is created based on the minimum start_date for the tasks in your DAG.<br>Subsequent DAG Runs are created by the scheduler process, based on your DAG’s schedule_interval, sequentially.</p>
+</blockquote>
+<p>The notes from airflow official website makes sense when you look at it in the first look, however, when you try to create you airflow DAG with a cron string, you never know what it means.<br>When my friend Yuxia comes to discuss about her case about running a dag every even day at 1 a.m., I thought it was so easy to do that.</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">default_args &#x3D; &#123;</span><br><span class="line">  start_date &#x3D; days_ago(1)</span><br><span class="line">&#125;</span><br><span class="line">dag &#x3D; DAG(&#39;demo-cron-schedule-interval&#39;, default_args &#x3D; default_args, schedule_interval&#x3D;&#39;0 1 2-30&#x2F;2 * *&#39;, ...)</span><br></pre></td></tr></table></figure>
+<ul>
+<li>I can check the correctness with (Crontab guru)[<a target="_blank" rel="noopener" href="https://crontab.guru/#0_1_1-31/2_*_*]">https://crontab.guru/#0_1_1-31/2_*_*]</a><br>Today is 2020-08-14, initially from above quote, the start_date will be 2020-08-13 and the first DAG Run shall be created, but my cron says it shouldn’t create a DAG Run yesterday since it’s odd day. </li>
+</ul>
+<p>In fact, when she checked the system, there was not DAG Run started at 2020-08-14 01:00:00.</p>
+<p>So what’s wrong with the quote? Why Yuxia’s DAG was not running?</p>
+<p>Curiously, I checked the code logic in the <a target="_blank" rel="noopener" href="https://github.com/apache/airflow/blob/514eb6d1e350818b31dca5adeaec2d7fd32b23ee/airflow/jobs/scheduler_job.py#L537">scheduler_job</a><br>In this post, I’ll try to explain the outcome.</p>
+<h1 id="What-scope"><a href="#What-scope" class="headerlink" title="What scope"></a>What scope</h1><p>A DAG has start_date <em>not set</em> as datetiem.timedelta, it could e.g. <code>dags_ago(1)</code><br>The start_date is set in default args <em>ONLY</em><br>A DAG is using cron string or preset as schedule_interval, <code>0 1 2-30/2 * *</code></p>
+<h1 id="Issue-to-explain"><a href="#Issue-to-explain" class="headerlink" title="Issue to explain"></a>Issue to explain</h1><p>Will the first DAG Run be kicked off by airflow scheduler?</p>
+<h1 id="Concepts-from-code"><a href="#Concepts-from-code" class="headerlink" title="Concepts from code"></a>Concepts from code</h1><ul>
+<li><p>DAG start_date resolve, the scheduler is parsing the DAGs every 5 seconds (depending on setup).<br>Each time when the scheduler is running, it will calculate a start_date depending on current time(utcnow()).<br>days_ago(1) will be resolved as following. </p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">start_date &#x3D; utcnow() - (1 day) and By default the time is set to midnight, e.g. day - 1 00:00:00</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>It’s very important to realise that <code>start_date + (1 day) != utcnow()</code></p>
+</blockquote>
+</li>
+<li><p>DAG start_date adjustment, airflow will start subprocesses to create DAG Runs, it firstly checks the schedule_interval and calculate previous cron time(previous_cron), the further previous time(previous_pre_cron) and next cron time(next_cron) based on current time.<br>previous_pre_cron -&gt; previous_cron -&gt; utcnow() -&gt; next_cron.<br><img src="/assets/airflow/start_date1.jpg" alt="The cron times"><br>The start_date of a DAG will be adjusted by the scheduler. In our scope, we can think the start_date will be adjusted as following rules.<br>It picks the later one from previous_pre_cron and the resolved start_date and update dag.start_date</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">dag.start_date &#x3D; max(previous_pre_cron, dag.start_date)</span><br></pre></td></tr></table></figure></li>
+<li><p>Normalize_schedule to next_run_date which is the execution date, which is named as <code>normalize_schedule</code> in the code logic. It is the adjusted start_date that will be normalized. The next_run_date will be DAG Run execution_date. It will try to align the start_date to one of the cron times.<br>For examples, cron times is <code>08-14 01:00:00</code> and <code>08-16 01:00:00</code>, any start_time in between, e.g. <code>08-15 00:00:00</code> shall be aligned to <code>08-16 01:00:00</code>. which means next cron time from the start date. If a start_time equals to a cron time, then the result will be the same. e.g. <code>normalize_schedule(08-14 01:00:00)=08-14 01:00:00</code></p>
+</li>
+<li><p>Period end<br>From <a target="_blank" rel="noopener" href="https://airflow.apache.org/docs/stable/faq.html">FAQ</a>, we know that <strong>Airflow scheduler triggers the task soon after the start_date + schedule_interval is passed</strong>, which I doult it results in confusion when it comes to cron schedule_interval context. </p>
+<blockquote>
+<p>From the code logic, I think it means the execution_date + schedule_interval. If you cron means every 2 days, then the schedule_interval shall be 2 day.</p>
+</blockquote>
+</li>
+</ul>
+<h1 id="Figure-out-when-a-dag-will-be-scheduled"><a href="#Figure-out-when-a-dag-will-be-scheduled" class="headerlink" title="Figure out when a dag will be scheduled"></a>Figure out when a dag will be scheduled</h1><p>To answer the question, we need to do 4 steps to get the result</p>
+<ul>
+<li>Cron time calculation, previous_pre_cron, previous_cron, next_cron</li>
+<li>Resolve start_date</li>
+<li>Adjust start_date to align with schedule_interval</li>
+<li>Normalize adjusted start_date</li>
+<li>Calcurate Period</li>
+<li>Decide a DAG run</li>
+</ul>
+<p>Let’s assume some facts to continue a calculation example.</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">cron is set: &#96;0 1 2-30&#x2F;2 * *&#96; </span><br><span class="line">start_date: days_ago(1)</span><br><span class="line">today: 2020-08-14 </span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>Calculate previous_pre_cron, previous_cron and next_cron time based on the time when the scheduler runs. Since it runs peridically, so those times probably are changing during the day. We can take 3 examples as following. </li>
+</ul>
+<table>
+<thead>
+<tr>
+<th>scheduler time</th>
+<th>previous_pre_cron</th>
+<th>previous_cron</th>
+<th>next_cron</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>08-14 00:30:00</td>
+<td>08-10 01:00:00</td>
+<td>08-12 01:00:00</td>
+<td>08-14 01:00:00</td>
+</tr>
+<tr>
+<td>08-14 02:00:00</td>
+<td>08-12 01:00:00</td>
+<td>08-14 01:00:00</td>
+<td>08-16 01:00:00</td>
+</tr>
+<tr>
+<td>08-15 08:00:00</td>
+<td>08-12 01:00:00</td>
+<td>08-14 01:00:00</td>
+<td>08-16 01:00:00</td>
+</tr>
+</tbody></table>
+<ul>
+<li><p>Resolve start_date<br>Calculate the start_date based on the time when the scheduler runs, it changes as well when given config such as days_ago(1).<br>It will have the same start_date during different scheduler times in a day. They all have the mid night of previous day as you can see as folowing.</p>
+<table>
+<thead>
+<tr>
+<th>scheduler time</th>
+<th>start_date</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>08-14 00:30:00</td>
+<td>08-13 00:00:00</td>
+</tr>
+<tr>
+<td>08-14 02:00:00</td>
+<td>08-13 00:00:00</td>
+</tr>
+<tr>
+<td>08-15 08:00:00</td>
+<td>08-14 00:00:00</td>
+</tr>
+</tbody></table>
+</li>
+<li><p>Adjust start_date to align with schedule_interval<br>As discussed above, we compare the start_date with previous-pre cron to get the real start_date. The bigger one wins!</p>
+<table>
+<thead>
+<tr>
+<th>scheduler time</th>
+<th><strong>previous_pre_cron</strong></th>
+<th>previous_cron</th>
+<th>next_cron</th>
+<th><strong>start_date</strong></th>
+<th>adjusted_start</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>08-14 00:30:00</td>
+<td><strong>08-10 01:00:00</strong></td>
+<td>08-12 01:00:00</td>
+<td>08-14 01:00:00</td>
+<td><span style="color:green"><strong>08-13 00:00:00</strong></span></td>
+<td><span style="color:green">08-13 00:00:00</span></td>
+</tr>
+<tr>
+<td>08-14 02:00:00</td>
+<td><strong>08-12 01:00:00</strong></td>
+<td>08-14 01:00:00</td>
+<td>08-16 01:00:00</td>
+<td><span style="color:green"><strong>08-13 00:00:00</strong></span></td>
+<td><span style="color:green">08-13 00:00:00</span></td>
+</tr>
+<tr>
+<td>08-15 08:00:00</td>
+<td><strong>08-12 01:00:00</strong></td>
+<td>08-14 01:00:00</td>
+<td>08-16 01:00:00</td>
+<td><span style="color:green"><strong>08-14 00:00:00</strong></span></td>
+<td><span style="color:green">08-14 00:00:00</span></td>
+</tr>
+</tbody></table>
+</li>
+<li><p>Normalize the adjusted start_date to find possible execution_date.<br>Nomalize start_date(execution_date) is calculated by two steps, </p>
+<ul>
+<li>Find the next cron time (next_cron(adjusted_start)) and pre cron time (pre_cron(adjusted_start)) based on the <em>adjusted_start_date</em>. (which is different from now())</li>
+<li>Compare to normalize</li>
+</ul>
+</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">nomalize(adjusted_start) &#x3D; adjusted_start &#x3D;&#x3D; pre_cron(adjusted_start) ? pre_cron(adjusted_start) : next_cron(adjusted_start)&#96;</span><br></pre></td></tr></table></figure>
+<table>
+<thead>
+<tr>
+<th>adjusted_start</th>
+<th>pre_cron(adjusted_start)</th>
+<th>next_cron(adjusted_start)</th>
+<th>nomalize(adjusted_start)</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>08-13 00:00:00</td>
+<td>08-12 01:00:00</td>
+<td><span style="color:green">08-14 01:00:00</span></td>
+<td><span style="color:green">08-14 01:00:00</span></td>
+</tr>
+<tr>
+<td>08-13 00:00:00</td>
+<td>08-12 01:00:00</td>
+<td><span style="color:green">08-14 01:00:00</span></td>
+<td><span style="color:green">08-14 01:00:00</span></td>
+</tr>
+<tr>
+<td>08-14 00:00:00</td>
+<td>08-14 01:00:00</td>
+<td><span style="color:green">08-16 01:00:00</span></td>
+<td><span style="color:green">08-16 01:00:00</span></td>
+</tr>
+</tbody></table>
+<ul>
+<li><p>Period end<br>It’s easier to get period end from the normalized start date</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Period end &#x3D; nomalize(adjusted_start) + schedule_interval</span><br></pre></td></tr></table></figure>
+<table>
+<thead>
+<tr>
+<th>adjusted_start</th>
+<th>nomalize(adjusted_start)</th>
+<th>Period end</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>08-13 00:00:00</td>
+<td><strong>08-14 01:00:00</strong></td>
+<td><strong>08-16 01:00:00</strong></td>
+</tr>
+<tr>
+<td>08-13 00:00:00</td>
+<td><strong>08-14 01:00:00</strong></td>
+<td><strong>08-16 01:00:00</strong></td>
+</tr>
+<tr>
+<td>08-14 00:00:00</td>
+<td><strong>08-16 01:00:00</strong></td>
+<td><strong>08-18 01:00:00</strong></td>
+</tr>
+</tbody></table>
+</li>
+<li><p>Decide if a run will be started<br>We need to compare the normalized start date and period end with the current time again, if either one is later then now(), then scheduler won’t create a DAG Run</p>
+<table>
+<thead>
+<tr>
+<th>scheduler time</th>
+<th>adjusted_start</th>
+<th>nomalize(adjusted_start)</th>
+<th>Period end</th>
+<th>DAG Run?</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>08-14 00:30:00</td>
+<td>08-13 00:00:00</td>
+<td><span style="color:red">08-14 01:00:00</span></td>
+<td>08-16 01:00:00</td>
+<td>no</td>
+</tr>
+<tr>
+<td>08-14 02:00:00</td>
+<td>08-13 00:00:00</td>
+<td>08-14 01:00:00</td>
+<td><span style="color:red">08-16 01:00:00</span></td>
+<td>no</td>
+</tr>
+<tr>
+<td>08-15 08:00:00</td>
+<td>08-14 00:00:00</td>
+<td><span style="color:red">08-16 01:00:00</span></td>
+<td>08-18 01:00:00</td>
+<td>no</td>
+</tr>
+</tbody></table>
+</li>
+</ul>
+<p>Let’s take the same example above, however, change the start_date to <code>days_ago(2)</code></p>
+<ul>
+<li><p>Cron times and adjusted_start</p>
+<table>
+<thead>
+<tr>
+<th>scheduler time</th>
+<th>previous_pre_cron</th>
+<th>previous_cron</th>
+<th>next_cron</th>
+<th>start_date</th>
+<th>adjusted_start</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>08-14 00:30:00</td>
+<td>08-10 01:00:00</td>
+<td><strong>08-12 01:00:00</strong></td>
+<td>08-14 01:00:00</td>
+<td>08-12 00:00:00</td>
+<td><strong>08-12 00:00:00</strong></td>
+</tr>
+<tr>
+<td>08-14 02:00:00</td>
+<td><strong>08-12 01:00:00</strong></td>
+<td>08-14 01:00:00</td>
+<td>08-16 01:00:00</td>
+<td>08-12 00:00:00</td>
+<td><strong>08-12 01:00:00</strong></td>
+</tr>
+</tbody></table>
+</li>
+<li><p>normalize</p>
+<table>
+<thead>
+<tr>
+<th>scheduler time</th>
+<th>adjusted_start</th>
+<th>pre_cron(adjusted_start)</th>
+<th>next_cron(adjusted_start)</th>
+<th>nomalize(adjusted_start)</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>08-14 00:30:00</td>
+<td>08-12 00:00:00</td>
+<td>08-10 01:00:00</td>
+<td>08-12 01:00:00</td>
+<td>08-12 01:00:00</td>
+</tr>
+<tr>
+<td>08-14 02:00:00</td>
+<td>08-12 01:00:00</td>
+<td>08-12 01:00:00</td>
+<td>08-14 01:00:00</td>
+<td>08-12 01:00:00</td>
+</tr>
+</tbody></table>
+</li>
+<li><p>Period end and decision </p>
+<table>
+<thead>
+<tr>
+<th>scheduler time</th>
+<th>nomalize(adjusted_start)</th>
+<th>Period end</th>
+<th>Dag Run?</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>08-14 00:30:00</td>
+<td>08-12 01:00:00</td>
+<td><span style="color:red">08-14 01:00:00</span></td>
+<td><span style="color:red">no</span></td>
+</tr>
+<tr>
+<td>08-14 02:00:00</td>
+<td>08-12 01:00:00</td>
+<td><span style="color:green">08-14 01:00:00</span></td>
+<td><span style="color:green">yes</span></td>
+</tr>
+</tbody></table>
+</li>
+</ul>
+<h1 id="Summary"><a href="#Summary" class="headerlink" title="Summary"></a>Summary</h1><ul>
+<li><p>The first DAG Run is created based on the minimum start_date for the tasks in your DAG.<br>It says <em>based on</em>, which doesn’t mean it will run the DAG at start_date.</p>
+</li>
+<li><p>Airflow scheduler triggers the task soon after the start_date + schedule_interval is passed<br>The start_date doesn’t mean the start_date you put in the default_args, In fact, it doesn’t mean any start_date, when the schedule interval is cron job.<br>It means the normalized-adjusted-and-resolved start_date that you give.</p>
+</li>
+<li><p>Will a DAG Run be started?<br>If we want to make sure a DAG Run started in a specific day(2020-08-14). When we think about airflow scheduler is runing for that day from (08-14 00:00:00 to 08-14 23:59:59), the start_date resolved from days_ago(2) is actually fixed (2020-08-12 00:00:00). It makes things easier to make sure a DAG Run triggered.<br><img src="/assets/airflow/airflow_start_date_duration.jpg" alt="The start_date"></p>
+</li>
+</ul>
+<p><strong>The simple rules</strong> is to setup the number in days_ago(number_of_days) the same as or larger than your interval in your cron. e.g. if cron is saying every 2 days, then start_date is days_ago(2).</p>
+<ul>
+<li>More<br>Once a DAG Run is triggered, the start date is not that important anymore. The sub sequential run will be calculated from previous DAG Run execution date, which is already normalized and fixed date. </li>
+</ul>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://kaichu.se/Airflow/2020/08/16/Airflow-start-date-with-cron-schedule-interval-is-not-confused-anymore-when-you-know-this.html" data-id="ckuelnhph001eexoj51dicory" class="article-share-link">Share</a>
+      
+        <a href="https://kaichu.se/Airflow/2020/08/16/Airflow-start-date-with-cron-schedule-interval-is-not-confused-anymore-when-you-know-this.html#disqus_thread" class="article-comment-link">Comments</a>
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Airflow/" rel="tag">Airflow</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Bigdata/" rel="tag">Bigdata</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-Advanced-utils-you-would-love-in-Airflow" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/Airflow/2020/08/13/Advanced-utils-you-would-love-in-Airflow.html" class="article-date">
+  <time datetime="2020-08-13T22:25:44.000Z" itemprop="datePublished">2020-08-13</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/Airflow/">Airflow</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/Airflow/2020/08/13/Advanced-utils-you-would-love-in-Airflow.html">Advanced utils you would love in Airflow</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>There are some objects in airflow which are usually not in any demo from the offical website, sometimes we need to read the source code to get inspired by some pieces of code.<br>In this post, I will try to collect some of the usages that I have tested and hopefully someone lands in this page will take them away and use them in their project.</p>
+<h1 id="To-get-connection-details-in-a-DAG"><a href="#To-get-connection-details-in-a-DAG" class="headerlink" title="To get connection details in a DAG"></a>To get connection details in a DAG</h1><p>In my working case, I have some db details that we are noting using airflow operator to fetch data from, instead of that I need to give those db details, such as host, username and password<br>to another out system as parameters. I don’t want to have them in my code, the best concept for keeping those information in airflow is the connections!<br>So I create a connection in airflow and I will need to get those details in my dag. here is the working example.</p>
+<ul>
+<li>Create a connection from cli<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">$ airflow connections -a --conn_id test_connection_name \</span><br><span class="line"> --conn_type http \</span><br><span class="line"> --conn_host my_host_name.com \</span><br><span class="line"> --conn_port 8999 \</span><br><span class="line"> --conn_password 123456</span><br></pre></td></tr></table></figure></li>
+<li>Create a dag<br>We can use <code>BaseHook</code> class method to get connection details by id, A full dag can be found <a target="_blank" rel="noopener" href="https://gist.github.com/kai-chu/01c0e28f20c80d0360c2c09216144c6a">here</a><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">from airflow.hooks.base_hook import BaseHook</span><br><span class="line">...</span><br><span class="line">connection &#x3D; BaseHook.get_connection(&quot;username_connection&quot;)</span><br><span class="line">password &#x3D; connection.password # This is a getter that returns the unencrypted password.</span><br></pre></td></tr></table></figure></li>
+<li>Backfill the DAG and check the log from the task in UI<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ airflow backfill test-connection-hook -s 2020-08-01 -e 2020-08-01</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">[2020-08-13 21:54:40,333] &#123;standard_task_runner.py:78&#125; INFO - Job 9150: Subtask getDetailsFromConnection</span><br><span class="line">...</span><br><span class="line">[2020-08-13 21:54:40,478] &#123;logging_mixin.py:112&#125; INFO - 41, 123456</span><br><span class="line">...</span><br><span class="line">[2020-08-13 21:54:45,256] &#123;local_task_job.py:102&#125; INFO - Task exited with return code 0</span><br></pre></td></tr></table></figure>
+
+</li>
+</ul>
+<h1 id="To-render-a-Jinja-template-by-using-your-own-context"><a href="#To-render-a-Jinja-template-by-using-your-own-context" class="headerlink" title="To render a Jinja template by using your own context"></a>To render a Jinja template by using your own context</h1><p>We usually provide operator args with a jinja template, if the args is templated, in the doc or code, you will find <code>template_fields</code> defined, such as <code>template_fields= [&#39;bash_command&#39;, &#39;env&#39;]</code> in the <a target="_blank" rel="noopener" href="https://airflow.apache.org/docs/stable/_api/airflow/operators/bash_operator/index.html?highlight=operator#module-airflow.operators.bash_operator">bash_operator</a></p>
+<p>However, if you have a python code where you want to render your own variables, you can using following method from helpers module.</p>
+<p>There is an helper method which is built on top of jinja in airflow, you can import it in your dag file</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">from airflow.utils.helpers import parse_template_string</span><br></pre></td></tr></table></figure>
+<p>Suppose you have a template string in your dag definition, however, you only know the context when the dag task is running.<br>For example, the execution_date which is provided in context.ds<br>Then you can use parse_template_string method to get a template and use the render with context to get your filename as following.</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">filename_template&#x3D;&#39;abc-&#123;&#123;my_name&#125;&#125;.csv&#39;</span><br><span class="line"></span><br><span class="line">def my_sleeping_function(**context):</span><br><span class="line">  filename_template, filename_jinja_template &#x3D; parse_template_string(filename_template)</span><br><span class="line">  filename &#x3D; filename_jinja_template.render(my_name&#x3D;&#39;Kai&#39;)</span><br><span class="line"></span><br><span class="line">task &#x3D; PythonOperator(</span><br><span class="line">    task_id&#x3D;&#39;sleep&#39;</span><br><span class="line">    python_callable&#x3D;my_sleeping_function,</span><br><span class="line">    dag&#x3D;dag,</span><br><span class="line">)</span><br></pre></td></tr></table></figure>
+<p>I have <a href="https://kaichu.se/Airflow/2020/04/21/using-airflow-jinja-to-render-a-template-with-your-own-context.html">another post with more details</a>.</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://kaichu.se/Airflow/2020/08/13/Advanced-utils-you-would-love-in-Airflow.html" data-id="ckuelnhpe0018exojh413azh1" class="article-share-link">Share</a>
+      
+        <a href="https://kaichu.se/Airflow/2020/08/13/Advanced-utils-you-would-love-in-Airflow.html#disqus_thread" class="article-comment-link">Comments</a>
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Airflow/" rel="tag">Airflow</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Jinja2/" rel="tag">Jinja2</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/bigdata/" rel="tag">bigdata</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-using-ansible-playbook-in-a-devops-pipeline" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/Ansible/2020/08/13/using-ansible-playbook-in-a-devops-pipeline.html" class="article-date">
+  <time datetime="2020-08-13T13:56:28.000Z" itemprop="datePublished">2020-08-13</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/Ansible/">Ansible</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/Ansible/2020/08/13/using-ansible-playbook-in-a-devops-pipeline.html">Using ansible playbook in a DevOps pipeline</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>In DevOps world, the monkeys only know automating everything. No interaction between human and machines!<br>Password prompt is always against the rule, here are a few steps to avoid that for ansible playbook. The solution is based on ssh username/password connection.</p>
+<p>In the manual way, we usually run a ansible playbook in the following way, ansible will prompt to ask us to input the password. </p>
+<ul>
+<li><p>In our situation, we cannot use ssh private key to connect to remote.</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ansible-playbook -i inventory playbook.yml --ask-pass --ask-become-pass --ask-vault-pass</span><br></pre></td></tr></table></figure>
+<p>However, it’s not very friendly with CI/CD process. A few steps to change your play book to make it easier to run in a pipeline.</p>
+</li>
+<li><p>Add group_vars or host_vars for your playbook, refer to <a target="_blank" rel="noopener" href="https://docs.ansible.com/ansible/latest/user_guide/intro_inventory.html#id14">Organize group vars</a></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">playbook</span><br><span class="line">- group_vars</span><br><span class="line">  - your_group_name.yml</span><br><span class="line">playbook.yml</span><br></pre></td></tr></table></figure></li>
+<li><p>Config ansible_user, ansible_password, ansible_become_password in your_group_name.yml file, they will be loaded when we run the playbook to avoid –ask-pass and –ask-become-pass<br><a target="_blank" rel="noopener" href="https://docs.ansible.com/ansible/latest/user_guide/intro_inventory.html#group-variables">More info</a></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">ansible_user: YOUR_USER_NAME</span><br><span class="line">ansible_password: YOUR_USER_PASSWORD</span><br><span class="line">ansible_become_password: YOUR_BECOME_PASSWORD</span><br></pre></td></tr></table></figure></li>
+<li><p>Encrypt your group vars to avoid clear password</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">$ pwd</span><br><span class="line">playbook</span><br><span class="line">$ ansible-vault encrypt group_vars&#x2F;your_group_name.yml</span><br><span class="line"># input the vault password YOUR_VAULT_PASS</span><br></pre></td></tr></table></figure>
+<p>Now if you run the playbook with following command, you shall be able to execute the playbook by only inputing the vault password</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ ansible-playbook -i inventory playbook.yml --ask-vault-pass</span><br></pre></td></tr></table></figure>
+<p>Btw, you can always use <code>ansible-vault edit group_vars/your_group_name.yml</code> to change the variables.</p>
+</li>
+<li><p>Create a vault file instead of using prompt way,<a target="_blank" rel="noopener" href="https://docs.ansible.com/ansible/latest/user_guide/vault.html">two ways of giving password for vault</a></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ echo YOUR_VAULT_PASS &gt;&gt; ~&#x2F;.ansible_vault_pass &amp;&amp; chmod 600 ~&#x2F;.ansible_vault_pass</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>The last step, run your ansible playbook with vault password file instead of asking</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ ansible-playbook -i inventory --vault-password-file ~&#x2F;.ansible-vault-pass</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://kaichu.se/Ansible/2020/08/13/using-ansible-playbook-in-a-devops-pipeline.html" data-id="ckuelnhpg001cexoj5f859vz2" class="article-share-link">Share</a>
+      
+        <a href="https://kaichu.se/Ansible/2020/08/13/using-ansible-playbook-in-a-devops-pipeline.html#disqus_thread" class="article-comment-link">Comments</a>
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Ansible/" rel="tag">Ansible</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/DevOps/" rel="tag">DevOps</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+
+
+  <nav id="page-nav">
+    
+    <span class="page-number current">1</span><a class="page-number" href="/page/2/">2</a><a class="page-number" href="/page/3/">3</a><a class="extend next" rel="next" href="/page/2/">Next &amp;raquo;</a>
+  </nav>
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Recent Posts</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/Gatling/2021/10/05/How-to-save-variables-in-session-or-query-results-into-files-in-gatling.html">- How to save variables in gatling session or query results into files</a>
+          </li>
+        
+          <li>
+            <a href="/Docker/2021/04/18/Setup-two-stages-of-Dockerfile-to-build-a-nodejs-app.html">- Setup two stages of Dockerfile to build a nodejs app</a>
+          </li>
+        
+          <li>
+            <a href="/Ansible/2020/09/23/Ansible-built-in-module-with-items.html">- Ansible built-in module - with_items</a>
+          </li>
+        
+          <li>
+            <a href="/Kubernetes/2020/09/21/Kubernetes-02-the-3-practical-ways-to-use-k8s-secret.html">- Kubernetes - 02 - the 3 practical ways to use k8s secret</a>
+          </li>
+        
+          <li>
+            <a href="/Kubernetes/2020/09/19/kubernetes-01-the-3-practical-ways-to-create-k8s-secret.html">- Kubernetes - 01 - the 3 practical ways to create k8s secret</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Categories</h3>
+    <div class="widget">
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/Airflow/">Airflow</a><span class="category-list-count">8</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Ansible/">Ansible</a><span class="category-list-count">6</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Docker/">Docker</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Gatling/">Gatling</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Kubernetes/">Kubernetes</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Nodejs/">Nodejs</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/OS/">OS</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Python/">Python</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Rancher/">Rancher</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Reactjs/">Reactjs</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Site/">Site</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Web/">Web</a><span class="category-list-count">1</span></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archives</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/10/">October 2021</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/04/">April 2021</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/09/">September 2020</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/08/">August 2020</a><span class="archive-list-count">8</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/05/">May 2020</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/04/">April 2020</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/12/">December 2019</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/11/">November 2019</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/10/">October 2019</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/09/">September 2019</a><span class="archive-list-count">2</span></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tag Cloud</h3>
+    <div class="widget tagcloud">
+      <a href="/tags/Airflow/" style="font-size: 20px;">Airflow</a> <a href="/tags/Ansible/" style="font-size: 12.5px;">Ansible</a> <a href="/tags/Architecture/" style="font-size: 12.5px;">Architecture</a> <a href="/tags/Authentication/" style="font-size: 10px;">Authentication</a> <a href="/tags/Bigdata/" style="font-size: 17.5px;">Bigdata</a> <a href="/tags/Datalake/" style="font-size: 12.5px;">Datalake</a> <a href="/tags/DevOps/" style="font-size: 12.5px;">DevOps</a> <a href="/tags/Docker/" style="font-size: 12.5px;">Docker</a> <a href="/tags/Gatling/" style="font-size: 10px;">Gatling</a> <a href="/tags/Isomorphic/" style="font-size: 10px;">Isomorphic</a> <a href="/tags/Jinja2/" style="font-size: 12.5px;">Jinja2</a> <a href="/tags/Loadtest/" style="font-size: 10px;">Loadtest</a> <a href="/tags/Nodejs/" style="font-size: 10px;">Nodejs</a> <a href="/tags/Openldap/" style="font-size: 10px;">Openldap</a> <a href="/tags/Promise/" style="font-size: 10px;">Promise</a> <a href="/tags/Python/" style="font-size: 10px;">Python</a> <a href="/tags/SPA/" style="font-size: 10px;">SPA</a> <a href="/tags/Template/" style="font-size: 10px;">Template</a> <a href="/tags/ansible/" style="font-size: 15px;">ansible</a> <a href="/tags/ansible-playbook/" style="font-size: 10px;">ansible-playbook</a> <a href="/tags/ansible-roles/" style="font-size: 10px;">ansible-roles</a> <a href="/tags/ansible-tasks/" style="font-size: 10px;">ansible-tasks</a> <a href="/tags/backup/" style="font-size: 10px;">backup</a> <a href="/tags/bash/" style="font-size: 10px;">bash</a> <a href="/tags/bigdata/" style="font-size: 12.5px;">bigdata</a> <a href="/tags/blog/" style="font-size: 12.5px;">blog</a> <a href="/tags/cloud/" style="font-size: 10px;">cloud</a> <a href="/tags/component/" style="font-size: 10px;">component</a> <a href="/tags/datalake/" style="font-size: 10px;">datalake</a> <a href="/tags/devops/" style="font-size: 12.5px;">devops</a> <a href="/tags/event-loop/" style="font-size: 10px;">event loop</a> <a href="/tags/frontend/" style="font-size: 12.5px;">frontend</a> <a href="/tags/html/" style="font-size: 10px;">html</a> <a href="/tags/hypervisors/" style="font-size: 10px;">hypervisors</a> <a href="/tags/javascript/" style="font-size: 10px;">javascript</a> <a href="/tags/jinja/" style="font-size: 10px;">jinja</a> <a href="/tags/k8s/" style="font-size: 12.5px;">k8s</a> <a href="/tags/kvm/" style="font-size: 10px;">kvm</a> <a href="/tags/nodejs/" style="font-size: 12.5px;">nodejs</a> <a href="/tags/python/" style="font-size: 10px;">python</a> <a href="/tags/qemu/" style="font-size: 10px;">qemu</a> <a href="/tags/rancher/" style="font-size: 10px;">rancher</a> <a href="/tags/react/" style="font-size: 10px;">react</a> <a href="/tags/reactjs/" style="font-size: 10px;">reactjs</a> <a href="/tags/scheduler/" style="font-size: 10px;">scheduler</a> <a href="/tags/secret/" style="font-size: 12.5px;">secret</a> <a href="/tags/setImmediate/" style="font-size: 10px;">setImmediate</a> <a href="/tags/setTimeout/" style="font-size: 10px;">setTimeout</a> <a href="/tags/site/" style="font-size: 10px;">site</a> <a href="/tags/starter/" style="font-size: 10px;">starter</a> <a href="/tags/tools/" style="font-size: 10px;">tools</a> <a href="/tags/virtulization/" style="font-size: 10px;">virtulization</a>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2021 Kai Chu<br>
+      Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+<script>
+  var disqus_shortname = 'kaichu-se';
+  
+  (function(){
+    var dsq = document.createElement('script');
+    dsq.type = 'text/javascript';
+    dsq.async = true;
+    dsq.src = '//' + disqus_shortname + '.disqus.com/count.js';
+    (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+  })();
+</script>
+
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+
+
+  
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+
+  
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+
+
+<script src="/js/script.js"></script>
+
+
+
+
+  </div>
+</body>
+</html>
